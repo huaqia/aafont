@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="windowBackgroundColor">#FFEBEBEB</color>
+    <color name="whole_main_bg">#FFF0F3F6</color>
+    <color name="dark_black">#6e6e6e</color>
+    <color name="hint_edt_text">#ff999999</color>
+    <color name="btn_login_normal">#FF5677FC</color>
+    <color name="btn_login_pressed">#965677FC</color>
+    <color name="divider_color">#965677FC</color>
+    <color name="control_background">#224285f4</color>
+    <color name="filter_color_blue_dark">#3d5afe</color>
+</resources>

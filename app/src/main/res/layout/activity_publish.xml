@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_set"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/last_pic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter" />
+
+            <LinearLayout
+                android:id="@+id/label_area"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/notice" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/label_ind"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/label_text"/>
+
+                <EditText
+                    android:id="@+id/label_string"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="top"
+                    android:hint="@string/hint_feedback"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/sync_to_area"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal">
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/notice" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/sync_to_ind"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/sync_to"/>
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/notice" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/sync_to_wechat"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/sync_to"/>
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/notice" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/sync_to_weibo"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/sync_to"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/only_self_area"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/only_self_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="8dp"
+                    android:checked="true"
+                    android:text="@string/everyone"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_publish_picture"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
+                android:background="@drawable/btn_login_selector"
+                android:text="@string/publish_picture"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

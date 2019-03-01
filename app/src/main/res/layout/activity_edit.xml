@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_set"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary" />
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/save_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_gravity="right"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:text="@string/save_pic" />
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/pic_area"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:layout_above="@id/recycler_view" >
+
+        <com.hanmei.aafont.ui.widget.GPUImageView
+            android:id="@+id/image_area"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/frame_pic"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"/>
+
+        <com.hanmei.aafont.ui.widget.StickerView
+            android:id="@+id/sticker_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:showIcons="true"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_above="@id/label_area"
+        android:orientation="horizontal"/>
+
+    <LinearLayout
+        android:id="@+id/label_area"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/filter_icon"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/notice" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/card_icon"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/notice" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/font_icon"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/notice"/>
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/bg_icon"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/notice" />
+    </LinearLayout>
+</RelativeLayout>

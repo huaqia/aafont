@@ -1,0 +1,11 @@
+<resources>
+
+    <style name="AppTheme" parent="AppBaseTheme">
+        <item name="android:windowBackground">@color/windowBackgroundColor</item>
+    </style>
+
+    <style name="AppTheme.Launch">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+</resources>
