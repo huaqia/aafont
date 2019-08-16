@@ -118,21 +118,21 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/img_wechat_login"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/wechat_logo_selector" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/img_weibo_login"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/weibo_logo_selector" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/img_qq_login"
                 android:layout_width="48dp"
                 android:layout_height="48dp"

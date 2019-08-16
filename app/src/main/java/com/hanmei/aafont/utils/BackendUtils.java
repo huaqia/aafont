@@ -44,7 +44,6 @@ public class BackendUtils {
         });
         BmobPush.startWork(context);
     }
-
     public static User getCurrentUser() {
         return BmobUser.getCurrentUser(User.class);
     }
@@ -119,7 +118,6 @@ public class BackendUtils {
                 callback.onDone(e == null, 0);
             }
         });
-
     }
 
     public static void checkUserPhoneNumber(String phoneNumber, final DoneCallback callback) {
@@ -223,6 +221,18 @@ public class BackendUtils {
                 }
             }
         });
+    }
+
+    public static int dip2px(Context context,float dpValue)
+    {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int)(dpValue * scale +0.5f);
+    }
+
+    public static int px2dip(Context context,float pxValue)
+    {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int)(pxValue / scale + 0.5f);
     }
 
     public static void countForCondition(Map<String, Map<String, String>> conditions, final DoneCallback callback) {

@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.hanmei.aafont.R;
@@ -22,6 +23,7 @@ public class LoginActivity extends BaseActivity {
 
     @BindView(R.id.edt_login_password)
     EditText mPassword;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +80,27 @@ public class LoginActivity extends BaseActivity {
     @OnClick(R.id.text_forget_pwd)
     public void forgetPwdClick(View v) {
         startActivity(new Intent( this, ForgetPwdActivity.class) );
+    }
+
+    @OnClick(R.id.img_weibo_login)
+    public void weiboLoginClick(View v)
+    {
+        final Context context = getApplication();
+        boolean isNetWorkAvailable = NetworkUtils.isNetworkAvailable(context);
+    }
+
+    @OnClick(R.id.img_wechat_login)
+    public void weCatLoginClick(View v)
+    {
+        final Context context = getApplication();
+        boolean isNetWorkAvailable = NetworkUtils.isNetworkAvailable(context);
+    }
+
+    @OnClick(R.id.img_qq_login)
+    public void qqLoginClick(View v)
+    {
+        final Context context = getApplication();
+        boolean isNetWorkAvailable = NetworkUtils.isNetworkAvailable(context);
     }
 
     private boolean checkInput() {

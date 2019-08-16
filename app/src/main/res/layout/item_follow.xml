@@ -32,11 +32,13 @@
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/user_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"/>
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/product_time"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -92,9 +94,13 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <ExpandableListView
+        android:id="@+id/detail_page_lv_comment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </android.support.v7.widget.RecyclerView>
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:layout_marginBottom="40dp"
+        android:listSelector="@android:color/transparent"
+        android:scrollbars="none">
+    </ExpandableListView>
 </LinearLayout>

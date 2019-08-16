@@ -119,6 +119,7 @@ public class RegisterActivity extends BaseActivity {
     @OnClick(R.id.btn_get_rerify_code)
     public void getVerifyCodeClick(View view) {
         if (checkInput()) {
+
             Map<String, String> equalConditions = new HashMap<>();
             equalConditions.put("mobilePhoneNumber", mMobileNumber.getText().toString());
             Map<String, Map<String, String>> conditions = new HashMap<>();
@@ -156,8 +157,10 @@ public class RegisterActivity extends BaseActivity {
         }
     }
 
+    //检查输入的注册信息是否正确
     private boolean checkInput(){
         Context context = getApplicationContext();
+        //网络是否连接
         if (NetworkUtils.isNetworkAvailable(context)) {
             String name = mName.getText().toString();
             if (TextUtils.isEmpty(name)) {
@@ -166,6 +169,7 @@ public class RegisterActivity extends BaseActivity {
                 String mobileNumber = mMobileNumber.getText().toString();
                 if (TextUtils.isEmpty(mobileNumber)) {
                     Toast.makeText(context, "手机号不能为空", Toast.LENGTH_SHORT).show();
+                    //检查手机号是否为空
                 } else if (NetworkUtils.isMobileNumber(mobileNumber)) {
                     return true;
                 } else {
@@ -178,6 +182,7 @@ public class RegisterActivity extends BaseActivity {
         return false;
     }
 
+    //获取手机验证码
     private void getVerifyCode(){
         BackendUtils.requestSMSCode(mMobileNumber.getText().toString(), new BackendUtils.DoneCallback() {
             @Override
@@ -196,9 +201,10 @@ public class RegisterActivity extends BaseActivity {
         });
     }
 
+    //验证输入验证码是否正确
     private void verifyCode(String code){
         BackendUtils.verifySmsCode(mMobileNumber.getText().toString(), code, new BackendUtils.DoneCallback() {
-            @Override
+               @Override
             public void onDone(boolean success, int code) {
                 if (success) {
                     Message msg=new Message();
@@ -213,6 +219,7 @@ public class RegisterActivity extends BaseActivity {
         });
     }
 
+    //基于CountDownTimer的60s输入验证码倒计时
     class MyCountTimer extends CountDownTimer {
         public MyCountTimer(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
@@ -220,11 +227,14 @@ public class RegisterActivity extends BaseActivity {
         @Override
         public void onTick(long millisUntilFinished) {
             mGetCode.setText((millisUntilFinished / 1000) + "s后重发");
+            mGetCode.setClickable(false);
+            mGetCode.setEnabled(false);
         }
         @Override
         public void onFinish() {
             mGetCode.setText("重新发送");
             mGetCode.setEnabled(true);
+            mGetCode.setClickable(true);
         }
     }
 }

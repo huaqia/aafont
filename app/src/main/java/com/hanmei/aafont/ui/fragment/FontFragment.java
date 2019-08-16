@@ -1,12 +1,16 @@
 package com.hanmei.aafont.ui.fragment;
 
+import android.Manifest;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +52,7 @@ public class FontFragment extends BaseFragment {
     private List<DailyFont> mList;
 
     private int mCurentIdx;
+
     @Override
     public View createMyView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_font, container, false);
@@ -58,7 +63,10 @@ public class FontFragment extends BaseFragment {
         super.init();
         TelephonyManager tm = (TelephonyManager) getContext()
                 .getSystemService(Context.TELEPHONY_SERVICE);//
-        String id = tm.getDeviceId();
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            String id = tm.getDeviceId();
+            return;
+        }
         BmobQuery<DailyFont> query = new BmobQuery<>();
         query.order("-createdAt");
         query.findObjects(new FindListener<DailyFont>() {

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/comment_dialog_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/comment_ed"
+        android:layout_width="match_parent"
+        android:layout_height="105dp"
+        android:background="@drawable/comment_dialog_et_selector"
+        android:layout_margin="12dp"
+        android:hint="@string/comment_hint"
+        android:textSize="14sp"
+        android:gravity="left|top"
+        android:paddingLeft="15dp"
+        android:paddingTop="12dp"
+        android:textColor="@color/comment_et"
+        android:textColorHint="@color/comment_dialog_hint"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/comment_bt"
+            android:layout_width="72dp"
+            android:layout_height="32dp"
+            android:background="@color/comment_bt"
+            android:layout_marginBottom="14dp"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:layout_marginTop="6dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="12dp"
+            android:text="@string/comment_bt"/>
+    </RelativeLayout>
+</LinearLayout>

@@ -6,10 +6,13 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.hanmei.aafont.R;
 import com.hanmei.aafont.utils.BackendUtils;
+import com.hanmei.aafont.video.WindowSurface;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +20,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class SplashActivity extends BaseActivity {
     @BindView(R.id.splash_bg)
@@ -35,8 +39,10 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        int flag = WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        getWindow().setFlags(flag , flag);
         new FetchDataTask().execute(sUrl);
-        mHandler.postDelayed(mGotoMainRunnable, 1000);
+        mHandler.postDelayed(mGotoMainRunnable, 3000);
     }
 
     @Override
@@ -48,6 +54,12 @@ public class SplashActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         mHandler.removeCallbacks(mGotoMainRunnable);
+    }
+
+    @OnClick(R.id.slip_bt)
+    public void slipClick()
+    {
+        jumpinto();
     }
 
     private synchronized void jumpinto() {

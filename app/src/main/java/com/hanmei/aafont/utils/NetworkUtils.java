@@ -33,7 +33,7 @@ public class NetworkUtils {
     }
 
     public static boolean isPasswordNumber(String password){
-        if (password.length() == 6){
+        if (password.length()>= 6 || password.length() <= 20){
             return true;
         }
         return false;

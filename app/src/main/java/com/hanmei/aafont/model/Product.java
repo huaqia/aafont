@@ -12,6 +12,7 @@ public class Product extends BmobObject {
     private ArrayList<String> likeId;
     private BmobRelation like;
     private boolean choice;
+    private ArrayList<String> commentId;
 
     public User getUser() {
         return user;
@@ -50,5 +51,13 @@ public class Product extends BmobObject {
 
     public void setChoice(boolean choice) {
         this.choice = choice;
+    }
+
+    public ArrayList<String> getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(ArrayList<String> commentId) {
+        this.commentId = commentId;
     }
 }

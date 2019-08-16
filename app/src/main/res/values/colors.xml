@@ -14,4 +14,14 @@
     <color name="divider_color">#965677FC</color>
     <color name="control_background">#224285f4</color>
     <color name="filter_color_blue_dark">#3d5afe</color>
+    <color name="btn_slip_word">#ffffff</color>
+    <color name="btn_slip_back">#44343a40</color>
+    <color name="btn_slip_border">#ffffff</color>
+    <color name="comment_item_username">#5b595a</color>
+    <color name="comment_item_time">#989898</color>
+    <color name="comment_content">#484848</color>
+    <color name="comment_et">#808080</color>
+    <color name="comment_bt">#D8D8D8</color>
+    <color name="comment_dialog_et_selector">#f8f8f8</color>
+    <color name="comment_dialog_hint">#929292</color>
 </resources>

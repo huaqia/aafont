@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">aafont</string>
     <string name="text_aafont">啊啊字库</string>
+    <string name="slip">跳  过</string>
     <string name="text_store">商城</string>
     <string name="hint_username">请输入用户名或手机号</string>
     <string name="hint_password">请输入六位数密码</string>
@@ -93,4 +94,6 @@
     <string name="weibo_friends">微博好友</string>
     <string name="recommend_users">推荐用户</string>
     <string name="contact_name">通讯录名称：%1$s</string>
+    <string name="comment_hint">请输入评论内容</string>
+    <string name="comment_bt">发布</string>
 </resources>
