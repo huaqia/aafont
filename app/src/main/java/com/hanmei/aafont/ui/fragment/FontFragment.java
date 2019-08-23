@@ -61,12 +61,6 @@ public class FontFragment extends BaseFragment {
     @Override
     public void init() {
         super.init();
-        TelephonyManager tm = (TelephonyManager) getContext()
-                .getSystemService(Context.TELEPHONY_SERVICE);//
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            String id = tm.getDeviceId();
-            return;
-        }
         BmobQuery<DailyFont> query = new BmobQuery<>();
         query.order("-createdAt");
         query.findObjects(new FindListener<DailyFont>() {
@@ -104,7 +98,7 @@ public class FontFragment extends BaseFragment {
                                 file.download(saveFile, new DownloadFileListener() {
                                     @Override
                                     public void done(String s, BmobException e) {
-                                        Toast.makeText(getContext(), R.string.save_success,Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getContext(), R.string.save_success, Toast.LENGTH_SHORT).show();
                                     }
 
                                     @Override
@@ -126,6 +120,8 @@ public class FontFragment extends BaseFragment {
                                     intent.setComponent(new ComponentName("com.huawei.android.thememanager", "com.huawei.android.thememanager.SearchActivity"));
                                 } else if (RomUtils.isMiui()) {
                                     intent.setComponent(new ComponentName("com.android.thememanager", "com.android.thememanager.search.ThemeSearchActivity"));
+                                } else {
+                                    intent.setComponent(new ComponentName("com.samsung.android.themestore", "com.samsung.android.themestore.MainActivity"));
                                 }
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);

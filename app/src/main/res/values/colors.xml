@@ -24,4 +24,6 @@
     <color name="comment_bt">#D8D8D8</color>
     <color name="comment_dialog_et_selector">#f8f8f8</color>
     <color name="comment_dialog_hint">#929292</color>
+    <color name="card_background">#cfcfcf</color>
+    <color name="speak_tab_background">#f5f5f5</color>
 </resources>

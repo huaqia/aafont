@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class NetworkUtils {
-    public static boolean isNetworkAvailable(Context context){
+    public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager == null) {
             return false;
@@ -25,24 +25,24 @@ public class NetworkUtils {
         return false;
     }
 
-    public static boolean isMobileNumber(String number){
-        String regex="^(1\\d{10}$)";
-        Pattern pattern=Pattern.compile(regex);
-        Matcher matcher=pattern.matcher(number);
+    public static boolean isMobileNumber(String number) {
+        String regex = "^(1\\d{10}$)";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(number);
         return matcher.matches();
     }
 
-    public static boolean isPasswordNumber(String password){
-        if (password.length()>= 6 || password.length() <= 20){
+    public static boolean isPasswordNumber(String password) {
+        if (password.length() >= 6 && password.length() <= 20) {
             return true;
         }
         return false;
     }
 
-    public static boolean isNumber(String number){
-        String regex="^[0-9]*$";
-        Pattern pattern=Pattern.compile(regex);
-        Matcher matcher=pattern.matcher(number);
+    public static boolean isNumber(String number) {
+        String regex = "^[0-9]*$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(number);
         return matcher.matches();
     }
 }

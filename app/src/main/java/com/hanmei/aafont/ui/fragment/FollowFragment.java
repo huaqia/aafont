@@ -1,7 +1,10 @@
 package com.hanmei.aafont.ui.fragment;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
@@ -29,6 +32,7 @@ import com.hanmei.aafont.model.Comment;
 import com.hanmei.aafont.model.Product;
 import com.hanmei.aafont.model.User;
 import com.hanmei.aafont.ui.activity.MainActivity;
+import com.hanmei.aafont.ui.adapter.CommentExpandAdapter;
 import com.hanmei.aafont.ui.adapter.HeadAdapter;
 import com.hanmei.aafont.utils.BackendUtils;
 import com.hanmei.aafont.utils.TimeUtils;
@@ -49,9 +53,10 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobDate;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
-public class FollowFragment extends BaseFragment{
+public class FollowFragment extends BaseFragment {
     private static final int PULL_REFRESH = 0;
     private static final int LOAD_MORE = 1;
 
@@ -61,20 +66,26 @@ public class FollowFragment extends BaseFragment{
 
     private static final int PAGE_LIMIT = 4;
 
+    private static final String TAG = "FollowFragment";
+
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.swipeLayout_follow)
     SmartRefreshLayout mSwipeRefreshLayout;
 
     private List<Product> mProducts = new ArrayList<>();
+    private ArrayList<Comment> mComments = new ArrayList<>();
     private boolean mHasFooter;
     private FollowAdapter mAdapter;
+    private CommentExpandAdapter mCommentAdapter;
     private String mLastTime;
-    public AppCompatImageView[] tips;
-    public ArrayList<AppCompatImageView> viewLists ;
-    public AppCompatButton mComment;
-    public AppCompatEditText mCommentContent;
-    public int[] imgIdUrl;
+    private AppCompatImageView[] mTips;
+    private ArrayList<AppCompatImageView> mViewList;
+    private AppCompatButton mComment;
+    private AppCompatEditText mCommentContent;
+    private int[] mImgIdUrl;
+    private Context mContext;
+
     @Override
     public View createMyView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_follow, container, false);
@@ -83,6 +94,7 @@ public class FollowFragment extends BaseFragment{
     @Override
     public void init() {
         super.init();
+        this.mContext = getActivity();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -90,14 +102,12 @@ public class FollowFragment extends BaseFragment{
         mAdapter = new FollowAdapter();
         mRecyclerView.setAdapter(mAdapter);
         mSwipeRefreshLayout.autoRefresh();
-        //刷新的监听事件
         mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                fetchData(PULL_REFRESH);//请求数据
+                fetchData(PULL_REFRESH);
             }
         });
-        //加载的监听事件
         mSwipeRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
@@ -148,6 +158,8 @@ public class FollowFragment extends BaseFragment{
                     } else {
                         mSwipeRefreshLayout.setEnableLoadmore(false);
                     }
+                } else {
+                    Log.e(TAG, e.toString());
                 }
                 if (type == PULL_REFRESH) {
                     mSwipeRefreshLayout.finishRefresh();
@@ -158,25 +170,38 @@ public class FollowFragment extends BaseFragment{
         });
     }
 
+    private void goToChoiceFragment() {
+        ((MainActivity) getActivity()).goToChoiceFragment();
+    }
+
+
     class FollowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+        private Handler handler = new Handler() {
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case 0:
+                        mComments = (ArrayList<Comment>) msg.obj;
+                        break;
+                }
+            }
+        };
+
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             if (viewType == TYPE_HEAD) {
                 return new HeadViewHolder(inflater.inflate(R.layout.item_header, parent, false));
-            } else if (viewType == TYPE_CHILD){
+            } else if (viewType == TYPE_CHILD) {
                 return new FollowViewHolder(inflater.inflate(R.layout.item_follow, parent, false));
-            }
-            else
-            {
-                return new FooterViewHolder(inflater.inflate(R.layout.item_footer,parent,false));
+            } else {
+                return new FooterViewHolder(inflater.inflate(R.layout.item_footer, parent, false));
             }
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
             if (holder instanceof FollowViewHolder) {
-                FollowViewHolder followViewHolder = (FollowViewHolder) holder;
+                final FollowViewHolder followViewHolder = (FollowViewHolder) holder;
                 if (position >= 1) {
                     final Product product = mProducts.get(position - 1);
                     String url = product.getContent().getUrl();
@@ -228,30 +253,92 @@ public class FollowFragment extends BaseFragment{
                             });
                         }
                     });
-                    final ArrayList<String> commentIdList = product.getCommentId();
+                    followViewHolder.mCommentListView.setGroupIndicator(null);
+
+                    BmobQuery<Comment> query = new BmobQuery<>();
+                    query.addWhereEqualTo("product", product.getObjectId());
+                    query.include("user");
+                    query.order("-createdAt");
+                    query.findObjects(new FindListener<Comment>() {
+                        @Override
+                        public void done(List<Comment> list, BmobException e) {
+                            if (e == null) {
+                                Log.e(TAG, "查询成功" + list.size());
+                                if (list.size() >= 0) {
+                                    mComments.clear();
+                                }
+                                mComments.addAll(list);
+
+                                Message message = handler.obtainMessage();
+                                message.what = 0;
+                                message.obj = list;
+                                handler.sendMessage(message);
+
+                                mCommentAdapter = new CommentExpandAdapter(mContext, mComments);
+                                followViewHolder.mCommentListView.setAdapter(mCommentAdapter);
+                                Log.e(TAG, "mComments的数量" + mComments.size());
+                            } else {
+                                Log.e(TAG, e.toString());
+                            }
+                        }
+                    });
+
+                    Log.e(TAG, "mComments的数量" + mComments.size());
+                    for (int i = 0; i < mComments.size(); i++) {
+                        followViewHolder.mCommentListView.expandGroup(i);
+                    }
+                    followViewHolder.mCommentListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+                        @Override
+                        public boolean onGroupClick(ExpandableListView expandableListView, View view, int groupPosition, long l) {
+                            boolean isExpanded = followViewHolder.mCommentListView.isGroupExpanded(groupPosition);
+                            Log.e(TAG, "onGroupClick:当前的评论Id>>>" + mComments.get(groupPosition).getObjectId());
+                            if (isExpanded) {
+                                expandableListView.collapseGroup(groupPosition);
+                            } else {
+                                expandableListView.expandGroup(groupPosition, true);
+                            }
+                            return true;
+                        }
+                    });
                     followViewHolder.mToComment.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             final Dialog dialog = new BottomSheetDialog(getContext());
-                            final View commentView = LayoutInflater.from(getContext()).inflate(R.layout.comment_dialog_layout , null);
+                            final View commentView = LayoutInflater.from(getContext()).inflate(R.layout.comment_dialog_layout, null);
                             dialog.setContentView(commentView);
 
-                            mComment  = (AppCompatButton) commentView.findViewById(R.id.comment_bt);
-                            mCommentContent = (AppCompatEditText)commentView.findViewById(R.id.comment_ed);
+                            mComment = (AppCompatButton) commentView.findViewById(R.id.comment_bt);
+                            mCommentContent = (AppCompatEditText) commentView.findViewById(R.id.comment_ed);
 
                             View parent = (View) commentView.getParent();
                             BottomSheetBehavior behavior = BottomSheetBehavior.from(parent);
-                            commentView.measure(0,0);
+                            commentView.measure(0, 0);
                             behavior.setPeekHeight(commentView.getMeasuredHeight());
 
                             mComment.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
                                     String commentContent = mCommentContent.getText().toString().trim();
-                                    if (!TextUtils.isEmpty(commentContent))
-                                    {
+                                    if (!TextUtils.isEmpty(commentContent)) {
                                         dialog.dismiss();
                                         Comment comment = new Comment();
+                                        comment.setUser(currentUser);
+                                        comment.setContent(commentContent);
+                                        comment.setProduct(product);
+                                        comment.save(new SaveListener<String>() {
+                                            @Override
+                                            public void done(String s, BmobException e) {
+                                                if (e == null) {
+                                                    Log.e(TAG, "添加成功");
+                                                    fetchData(PULL_REFRESH);
+                                                } else {
+                                                    Log.e(TAG, "添加失败" + e.toString());
+                                                }
+                                            }
+                                        });
+                                        mCommentAdapter.notifyDataSetChanged();
+                                    } else {
+                                        Log.e(TAG, "评论内容为空");
                                     }
                                 }
                             });
@@ -260,52 +347,51 @@ public class FollowFragment extends BaseFragment{
                     });
 
                 }
-            }else if (holder instanceof FooterViewHolder){
+            } else if (holder instanceof FooterViewHolder) {
 
-            }else if (holder instanceof HeadViewHolder)
-            {
+            } else if (holder instanceof HeadViewHolder) {
+
                 HeadViewHolder headViewHolder = (HeadViewHolder) holder;
-                imgIdUrl = new int[]{R.drawable.item1, R.drawable.item2, R.drawable.item3};
-                tips = new AppCompatImageView[imgIdUrl.length];
-                for (int i = 0; i < tips.length; i++) {
+                mImgIdUrl = new int[]{R.drawable.item1, R.drawable.item2, R.drawable.item3};
+                mTips = new AppCompatImageView[mImgIdUrl.length];
+                headViewHolder.mViewGroup.removeAllViews();
+                for (int i = 0; i < mTips.length; i++) {
                     AppCompatImageView imageView = new AppCompatImageView(getActivity());
-                    tips[i] = imageView;
+                    mTips[i] = imageView;
                     if (i == 0) {
-                        tips[i].setBackgroundResource(R.drawable.head_item_chooice);
-                    }else {
-                        tips[i].setBackgroundResource(R.drawable.head_item_unchooice);
+                        mTips[i].setBackgroundResource(R.drawable.head_item_chooice);
+                    } else {
+                        mTips[i].setBackgroundResource(R.drawable.head_item_unchooice);
                     }
                     headViewHolder.mViewGroup.addView(imageView);
                 }
 
-                viewLists = new ArrayList<AppCompatImageView>();
+                mViewList = new ArrayList<AppCompatImageView>();
 
-                for (int i = 0; i < imgIdUrl.length; i++) {
+                for (int i = 0; i < mImgIdUrl.length; i++) {
                     AppCompatImageView imageView = new AppCompatImageView(getActivity());
-                    imageView.setBackgroundResource(imgIdUrl[i]);
-                    viewLists.add(imageView);
+                    imageView.setBackgroundResource(mImgIdUrl[i]);
+                    mViewList.add(imageView);
                 }
 
-                headViewHolder.mViewPage.setAdapter(new HeadAdapter(viewLists));
+                headViewHolder.mViewPage.setAdapter(new HeadAdapter(mViewList));
                 headViewHolder.mViewPage.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                     @Override
                     public void onPageScrolled(int arg0, float arg1, int arg2) {
 
                     }
+
                     @Override
                     public void onPageSelected(int arg0) {
-                        for (int i = 0 ;i < tips.length ; i++)
-                        {
-                            if (i == arg0)
-                            {
-                                tips[i].setBackgroundResource(R.drawable.head_item_chooice);
-                            }
-                            else
-                            {
-                                tips[i].setBackgroundResource(R.drawable.head_item_unchooice);
+                        for (int i = 0; i < mTips.length; i++) {
+                            if (i == arg0) {
+                                mTips[i].setBackgroundResource(R.drawable.head_item_chooice);
+                            } else {
+                                mTips[i].setBackgroundResource(R.drawable.head_item_unchooice);
                             }
                         }
                     }
+
                     @Override
                     public void onPageScrollStateChanged(int arg0) {
 
@@ -318,20 +404,16 @@ public class FollowFragment extends BaseFragment{
         public int getItemCount() {
             if (mHasFooter) {
                 return mProducts.size();
-            }else
-            {
-                return mProducts.size()-1;
+            } else {
+                return mProducts.size() - 1;
             }
         }
 
         @Override
         public int getItemViewType(int position) {
-            if (position == 0)
-            {
+            if (position == 0) {
                 return TYPE_HEAD;
-            }
-            else
-            {
+            } else {
                 if (position < mProducts.size() - 1) {
                     return TYPE_CHILD;
                 } else {
@@ -342,8 +424,7 @@ public class FollowFragment extends BaseFragment{
         }
     }
 
-    class HeadViewHolder extends RecyclerView.ViewHolder
-    {
+    class HeadViewHolder extends RecyclerView.ViewHolder {
         public ViewPager mViewPage;
         public ViewGroup mViewGroup;
 
@@ -354,6 +435,7 @@ public class FollowFragment extends BaseFragment{
 
         }
     }
+
     class FollowViewHolder extends RecyclerView.ViewHolder {
         public AppCompatImageView mThumbnailIcon;
         public AppCompatTextView mUserName;
@@ -394,9 +476,5 @@ public class FollowFragment extends BaseFragment{
                 }
             });
         }
-    }
-
-    private void goToChoiceFragment() {
-        ((MainActivity)getActivity()).goToChoiceFragment();
     }
 }

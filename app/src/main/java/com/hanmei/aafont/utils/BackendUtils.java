@@ -44,6 +44,7 @@ public class BackendUtils {
         });
         BmobPush.startWork(context);
     }
+
     public static User getCurrentUser() {
         return BmobUser.getCurrentUser(User.class);
     }
@@ -81,9 +82,9 @@ public class BackendUtils {
 
     public static boolean isLogin() {
         User user = BmobUser.getCurrentUser(User.class);
-        if(user == null){
+        if (user == null) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
@@ -121,7 +122,7 @@ public class BackendUtils {
     }
 
     public static void checkUserPhoneNumber(String phoneNumber, final DoneCallback callback) {
-        BmobQuery<BmobUser> query=new BmobQuery<>();
+        BmobQuery<BmobUser> query = new BmobQuery<>();
         query.addWhereEqualTo("mobilePhoneNumber", phoneNumber);
         query.findObjects(new FindListener<BmobUser>() {
             @Override
@@ -216,23 +217,11 @@ public class BackendUtils {
         bmobPushManager.pushMessage(content, new PushListener() {
             @Override
             public void done(BmobException e) {
-                if (e==null){
-                }else {
+                if (e == null) {
+                } else {
                 }
             }
         });
-    }
-
-    public static int dip2px(Context context,float dpValue)
-    {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int)(dpValue * scale +0.5f);
-    }
-
-    public static int px2dip(Context context,float pxValue)
-    {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int)(pxValue / scale + 0.5f);
     }
 
     public static void countForCondition(Map<String, Map<String, String>> conditions, final DoneCallback callback) {

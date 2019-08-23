@@ -6,12 +6,11 @@ import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.datatype.BmobRelation;
 
-public class Product extends BmobObject {
+public class SpeakWord extends BmobObject {
     private User user;
     private BmobFile content;
     private ArrayList<String> likeId;
     private BmobRelation like;
-    private boolean choice;
 
     public User getUser() {
         return user;
@@ -24,6 +23,7 @@ public class Product extends BmobObject {
     public BmobFile getContent() {
         return content;
     }
+
     public void setContent(BmobFile content) {
         this.content = content;
     }
@@ -42,13 +42,5 @@ public class Product extends BmobObject {
 
     public void setLike(BmobRelation like) {
         this.like = like;
-    }
-
-    public boolean getChoice() {
-        return choice;
-    }
-
-    public void setChoice(boolean choice) {
-        this.choice = choice;
     }
 }

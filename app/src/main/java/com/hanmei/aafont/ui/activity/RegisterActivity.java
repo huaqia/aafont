@@ -24,16 +24,14 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class RegisterActivity extends BaseActivity {
+    public static final String FROM_REGISTER_USERNAME = "from_username";
+    public static final String FROM_REGISTER_PWD = "from_login_pwd";
     private static final int GET_CODE_SUCCESS = 0x100;
     private static final int GET_CODE_FAILURE = 0x101;
     private static final int VERIFY_CODE_SUCCESS = 0x200;
     private static final int VERIFY_CODE_FAILURE = 0x201;
     private static final int Is_Mobile_Have = 0x31;
     private static final int Is_Mobile_unHave = 0x32;
-
-    public static final String FROM_REGISTER_USERNAME = "from_username";
-    public static final String FROM_REGISTER_PWD = "from_login_pwd";
-
     @BindView(R.id.edt_register_name)
     EditText mName;
 
@@ -51,10 +49,10 @@ public class RegisterActivity extends BaseActivity {
 
     private MyCountTimer mTimer;
 
-    private Handler mHandler = new Handler(){
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch(msg.what){
+            switch (msg.what) {
                 case GET_CODE_SUCCESS:
                     break;
                 case VERIFY_CODE_SUCCESS:
@@ -65,28 +63,28 @@ public class RegisterActivity extends BaseActivity {
                         @Override
                         public void onDone(boolean success, int code) {
                             if (success) {
-                                Toast.makeText(getApplicationContext(),"注册成功,请登录",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "注册成功,请登录", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                 intent.putExtra(FROM_REGISTER_USERNAME, phone);
                                 intent.putExtra(FROM_REGISTER_PWD, password);
                                 startActivity(intent);
                                 finish();
                             } else {
-                                Toast.makeText(getApplicationContext(),"该手机号已经注册",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "该手机号已经注册", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
                     break;
 
                 case VERIFY_CODE_FAILURE:
-                    Toast.makeText(getApplicationContext(),"验证码错误",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "验证码错误", Toast.LENGTH_SHORT).show();
                     break;
 
                 case Is_Mobile_Have:
-                    Toast.makeText(getApplicationContext(),"手机号已存在,请重新输入",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "手机号已存在,请重新输入", Toast.LENGTH_SHORT).show();
                     break;
                 case Is_Mobile_unHave:
-                    mTimer = new MyCountTimer(60000,1000);
+                    mTimer = new MyCountTimer(60000, 1000);
                     mTimer.start();
                     mGetCode.setEnabled(false);
                     getVerifyCode();
@@ -147,24 +145,23 @@ public class RegisterActivity extends BaseActivity {
     public void nextStepClick(View view) {
         if (checkInput()) {
             String code = mVerifyCode.getText().toString();
-            if(TextUtils.isEmpty(code)){
-                Toast.makeText(getApplicationContext(),"验证码不能为空",Toast.LENGTH_SHORT).show();
-            }else if(NetworkUtils.isPasswordNumber(mPassword.getText().toString())){
+            if (TextUtils.isEmpty(code)) {
+                Toast.makeText(getApplicationContext(), "验证码不能为空", Toast.LENGTH_SHORT).show();
+            } else if (NetworkUtils.isPasswordNumber(mPassword.getText().toString())) {
                 verifyCode(code);
-            }else{
-                Toast.makeText(getApplicationContext(),"密码位数不正确，请重新输入",Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "密码位数不正确，请重新输入", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    //检查输入的注册信息是否正确
-    private boolean checkInput(){
+    private boolean checkInput() {
         Context context = getApplicationContext();
         //网络是否连接
         if (NetworkUtils.isNetworkAvailable(context)) {
             String name = mName.getText().toString();
             if (TextUtils.isEmpty(name)) {
-                Toast.makeText(context,"昵称不能为空",Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "昵称不能为空", Toast.LENGTH_SHORT).show();
             } else {
                 String mobileNumber = mMobileNumber.getText().toString();
                 if (TextUtils.isEmpty(mobileNumber)) {
@@ -177,23 +174,22 @@ public class RegisterActivity extends BaseActivity {
                 }
             }
         } else {
-            Toast.makeText(context,"未连接网络！！",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "未连接网络！！", Toast.LENGTH_SHORT).show();
         }
         return false;
     }
 
-    //获取手机验证码
-    private void getVerifyCode(){
+    private void getVerifyCode() {
         BackendUtils.requestSMSCode(mMobileNumber.getText().toString(), new BackendUtils.DoneCallback() {
             @Override
             public void onDone(boolean success, int code) {
                 if (success) {
-                    Message msg=new Message();
+                    Message msg = new Message();
                     msg.what = GET_CODE_SUCCESS;
                     mHandler.handleMessage(msg);
                 } else {
                     mTimer.cancel();
-                    Toast.makeText(getApplicationContext(),"获取验证码失败",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "获取验证码失败", Toast.LENGTH_SHORT).show();
                     mGetCode.setEnabled(true);
                     mGetCode.setText(R.string.text_get_verify_code);
                 }
@@ -201,17 +197,16 @@ public class RegisterActivity extends BaseActivity {
         });
     }
 
-    //验证输入验证码是否正确
-    private void verifyCode(String code){
+    private void verifyCode(String code) {
         BackendUtils.verifySmsCode(mMobileNumber.getText().toString(), code, new BackendUtils.DoneCallback() {
-               @Override
+            @Override
             public void onDone(boolean success, int code) {
                 if (success) {
-                    Message msg=new Message();
+                    Message msg = new Message();
                     msg.what = VERIFY_CODE_SUCCESS;
                     mHandler.handleMessage(msg);
                 } else {
-                    Message msg=new Message();
+                    Message msg = new Message();
                     msg.what = VERIFY_CODE_FAILURE;
                     mHandler.handleMessage(msg);
                 }
@@ -219,17 +214,16 @@ public class RegisterActivity extends BaseActivity {
         });
     }
 
-    //基于CountDownTimer的60s输入验证码倒计时
     class MyCountTimer extends CountDownTimer {
         public MyCountTimer(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
         }
+
         @Override
         public void onTick(long millisUntilFinished) {
             mGetCode.setText((millisUntilFinished / 1000) + "s后重发");
-            mGetCode.setClickable(false);
-            mGetCode.setEnabled(false);
         }
+
         @Override
         public void onFinish() {
             mGetCode.setText("重新发送");

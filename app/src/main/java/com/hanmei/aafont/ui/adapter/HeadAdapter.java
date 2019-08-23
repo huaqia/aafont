@@ -10,19 +10,19 @@ import java.util.ArrayList;
 
 public class HeadAdapter extends PagerAdapter {
 
-    public ArrayList<AppCompatImageView> viewLists;
+    private ArrayList<AppCompatImageView> mViewList;
 
-    public HeadAdapter(){}
+    public HeadAdapter() {
+    }
 
-    public HeadAdapter(ArrayList<AppCompatImageView> viewLists)
-    {
+    public HeadAdapter(ArrayList<AppCompatImageView> mViewList) {
         super();
-        this.viewLists = viewLists;
+        this.mViewList = mViewList;
     }
 
     @Override
     public int getCount() {
-        return viewLists.size();
+        return mViewList.size();
     }
 
     @Override
@@ -31,15 +31,13 @@ public class HeadAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container , int position)
-    {
-        container.addView(viewLists.get(position));
-        return viewLists.get(position);
+    public Object instantiateItem(ViewGroup container, int position) {
+        container.addView(mViewList.get(position));
+        return mViewList.get(position);
     }
 
     @Override
-    public void destroyItem(ViewGroup container , int position , Object object)
-    {
-        container.removeView(viewLists.get(position));
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        container.removeView(mViewList.get(position));
     }
 }

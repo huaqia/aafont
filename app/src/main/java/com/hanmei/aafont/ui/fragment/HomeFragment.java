@@ -17,15 +17,13 @@ import java.util.List;
 import butterknife.BindView;
 
 public class HomeFragment extends BaseFragment {
+    private static String FONT = "每日字体";
+    private static String FOLLOW = "关注的人";
+    private static String SPEAK = "字说字话";
     @BindView(R.id.tabLayout)
     TabLayout mTabLayout;
     @BindView(R.id.viewpager)
     ViewPager mViewPager;
-
-    private static String FONT = "每日字体";
-    private static String FOLLOW = "关注的人";
-    private static String SPEAK = "字说字话";
-
     private FontFragment mFontFragment;
     private FollowFragment mFollowFragment;
     private SpeakFragment mSpeakFragment;
