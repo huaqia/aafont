@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BrowsePageAdapter<T> extends PagerAdapter {
@@ -16,15 +17,19 @@ public abstract class BrowsePageAdapter<T> extends PagerAdapter {
     private LruCache<Integer, View> mBrowseViews;
     private int mConverId;
     private LayoutInflater mLayoutInflater;
-    private List<T> mDataList;
+    private List<T> mCardDataList;
+    private List<T> mUserNameDataList;
+    private ArrayList<T> mLikeIdList;
 
     public BrowsePageAdapter() {
 
     }
 
-    public BrowsePageAdapter(Context context, int mConverId, List<T> mDataList) {
+    public BrowsePageAdapter(Context context, int mConverId, List<T> mCardDataList,List<T> mUserNameDataList,ArrayList<T> mLikeIdList) {
         super();
-        this.mDataList = mDataList;
+        this.mCardDataList = mCardDataList;
+        this.mUserNameDataList = mUserNameDataList;
+        this.mLikeIdList = mLikeIdList;
         this.mConverId = mConverId;
         mLayoutInflater = LayoutInflater.from(context);
         mBrowseViews = new LruCache<>(MAX_LENGTH);
@@ -32,7 +37,7 @@ public abstract class BrowsePageAdapter<T> extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return mDataList.size();
+        return mCardDataList.size();
     }
 
     @Override
@@ -44,7 +49,7 @@ public abstract class BrowsePageAdapter<T> extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         View view = getView(container, position);
         container.addView(view);
-        bindView(view, mDataList.get(position));
+        bindView(view, mCardDataList.get(position) , mUserNameDataList.get(position) , mLikeIdList.get(position));
         return view;
     }
 
@@ -62,5 +67,5 @@ public abstract class BrowsePageAdapter<T> extends PagerAdapter {
         container.removeView(getView(container, position));
     }
 
-    public abstract void bindView(View view, T data);
+    public abstract void bindView(View view, T data1 , T data2 , T data3);
 }

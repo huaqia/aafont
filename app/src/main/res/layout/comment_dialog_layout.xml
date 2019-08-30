@@ -28,7 +28,7 @@
             android:id="@+id/comment_bt"
             android:layout_width="72dp"
             android:layout_height="32dp"
-            android:background="@color/comment_bt"
+            android:background="@color/comment_bt_not"
             android:layout_marginBottom="14dp"
             android:textColor="@color/white"
             android:textSize="14sp"

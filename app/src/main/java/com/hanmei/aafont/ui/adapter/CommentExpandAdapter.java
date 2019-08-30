@@ -2,10 +2,13 @@ package com.hanmei.aafont.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatTextView;
+import android.text.Layout;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -101,8 +104,25 @@ public class CommentExpandAdapter extends BaseExpandableListAdapter {
 
     //返回评论对应回复的视图
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean b, View converView, ViewGroup viewGroup) {
-        return null;
+    public View getChildView(final int groupPosition, int childPosition, boolean b, View converView, ViewGroup viewGroup) {
+        final ChildHolder childHolder;
+        if (converView == null){
+            converView = LayoutInflater.from(context).inflate(R.layout.item_comment_reply,viewGroup,false);
+            childHolder = new ChildHolder(converView);
+            converView.setTag(childHolder);
+        }else {
+            childHolder = (ChildHolder)converView.getTag();
+        }
+
+        String replyUser = commentList.get(groupPosition).getReplyId().get(childPosition).getUser().getUsername();
+        if (!TextUtils.isEmpty(replyUser)){
+            childHolder.tv_name.setText(replyUser + ":");
+        }else{
+            childHolder.tv_name.setText("无名" + ":");
+        }
+
+        childHolder.tv_content.setText(commentList.get(groupPosition).getReplyId().get(childPosition).getContent());
+        return converView;
     }
 
     @Override
@@ -121,5 +141,15 @@ public class CommentExpandAdapter extends BaseExpandableListAdapter {
             tv_content = (AppCompatTextView) view.findViewById(R.id.comment_content);
 
         }
+    }
+
+    private class ChildHolder{
+        private AppCompatTextView tv_name , tv_content;
+
+        private ChildHolder(View view){
+            tv_name = (AppCompatTextView)view.findViewById(R.id.reply_username);
+            tv_content = (AppCompatTextView)view.findViewById(R.id.reply_content);
+        }
+
     }
 }

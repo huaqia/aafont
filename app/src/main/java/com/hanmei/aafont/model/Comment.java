@@ -9,13 +9,13 @@ public class Comment extends BmobObject {
     private User user;
     private Product product;
     private String content;
-    private ArrayList<String> replyId;
+    private ArrayList<Reply> replyId;
 
-    public ArrayList<String> getReplyId() {
+    public ArrayList<Reply> getReplyId() {
         return replyId;
     }
 
-    public void setReplyId(ArrayList<String> replyId) {
+    public void setReplyId(ArrayList<Reply> replyId) {
         this.replyId = replyId;
     }
 
@@ -42,8 +42,6 @@ public class Comment extends BmobObject {
     public void setUser(User user) {
         this.user = user;
     }
-
-
 
 
 }

@@ -5,7 +5,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageView;
@@ -26,6 +30,9 @@ import com.hanmei.aafont.utils.FileUtils;
 import com.hanmei.aafont.utils.RomUtils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -52,6 +59,8 @@ public class FontFragment extends BaseFragment {
     private List<DailyFont> mList;
 
     private int mCurentIdx;
+
+    public Bitmap bitmap;
 
     @Override
     public View createMyView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -93,19 +102,39 @@ public class FontFragment extends BaseFragment {
                         mSavePic.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
+                                String galleryPath = Environment.getExternalStorageDirectory() + File.separator + Environment.DIRECTORY_DCIM + File.separator + "Camera" + File.separator;
                                 BmobFile file = mList.get(mCurentIdx).getContent();
-                                File saveFile = new File(FileUtils.getFileDir(getContext(), "daily_font"), file.getFilename());
-                                file.download(saveFile, new DownloadFileListener() {
-                                    @Override
-                                    public void done(String s, BmobException e) {
-                                        Toast.makeText(getContext(), R.string.save_success, Toast.LENGTH_SHORT).show();
+                                //File saveFile = new File(FileUtils.getFileDir(getContext(), "daily_font"), file.getFilename());
+                                File saveFile = null;
+                                try{
+                                    saveFile = new File(galleryPath , file.getFilename());
+                                    if (!saveFile.exists()){
+                                        saveFile.mkdir();
                                     }
-
-                                    @Override
-                                    public void onProgress(Integer integer, long l) {
-
+                                    FileOutputStream fos = new FileOutputStream(saveFile.toString());
+                                    if (fos != null){
+                                        bitmap.compress(Bitmap.CompressFormat.PNG , 90 , fos);
+                                        fos.flush();
+                                        fos.close();
                                     }
-                                });
+                                }catch (FileNotFoundException e){
+                                    e.printStackTrace();
+                                }catch (IOException e){
+                                    e.printStackTrace();
+                                }
+                                MediaStore.Images.Media.insertImage(getContext().getContentResolver() , bitmap , saveFile.toString() ,null);
+                                Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                                Uri uri = Uri.fromFile(saveFile);
+                                intent.setData(uri);
+                                getContext().sendBroadcast(intent);
+//                                file.download(saveFile, new DownloadFileListener() {
+//                                    @Override
+//                                    public void done(String s, BmobException e) {
+//                                    }
+//                                    @Override
+//                                    public void onProgress(Integer integer, long l) {
+//                                    }
+//                                });
                             }
                         });
                         mGotoStore.setOnClickListener(new View.OnClickListener() {
