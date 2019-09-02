@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.hanmei.aafont.R;
@@ -22,6 +23,7 @@ public class LoginActivity extends BaseActivity {
 
     @BindView(R.id.edt_login_password)
     EditText mPassword;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,41 +58,59 @@ public class LoginActivity extends BaseActivity {
                 @Override
                 public void onDone(boolean success, int code) {
                     if (success) {
-                        Toast.makeText(context,"登录成功",Toast.LENGTH_SHORT).show();
-                        Intent intent=new Intent(LoginActivity.this, MainActivity.class);
+                        Toast.makeText(context, "登录成功", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                         LoginActivity.this.finish();
                     } else {
-                        Toast.makeText(context,"用户名或密码错误",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "用户名或密码错误", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
-        }else if (!isNetworkAvailable) {
-            Toast.makeText(context,"未连接网络！！",Toast.LENGTH_SHORT).show();
+        } else if (!isNetworkAvailable) {
+            Toast.makeText(context, "未连接网络！！", Toast.LENGTH_SHORT).show();
         }
     }
 
     @OnClick(R.id.text_login_register)
     public void registerClick(View v) {
-        startActivity(new Intent( this, RegisterActivity.class) );
+        startActivity(new Intent(this, RegisterActivity.class));
     }
 
     @OnClick(R.id.text_forget_pwd)
     public void forgetPwdClick(View v) {
-        startActivity(new Intent( this, ForgetPwdActivity.class) );
+        startActivity(new Intent(this, ForgetPwdActivity.class));
+    }
+
+    @OnClick(R.id.img_weibo_login)
+    public void weiboLoginClick(View v) {
+        final Context context = getApplication();
+        boolean isNetWorkAvailable = NetworkUtils.isNetworkAvailable(context);
+    }
+
+    @OnClick(R.id.img_wechat_login)
+    public void weCatLoginClick(View v) {
+        final Context context = getApplication();
+        boolean isNetWorkAvailable = NetworkUtils.isNetworkAvailable(context);
+    }
+
+    @OnClick(R.id.img_qq_login)
+    public void qqLoginClick(View v) {
+        final Context context = getApplication();
+        boolean isNetWorkAvailable = NetworkUtils.isNetworkAvailable(context);
     }
 
     private boolean checkInput() {
         String userName = mUserName.getText().toString();
         String password = mPassword.getText().toString();
 
-        if (userName.length() > 0 && password.length() > 0 ) {
+        if (userName.length() > 0 && password.length() > 0) {
             return true;
         } else if (userName.length() <= 0) {
-            Toast.makeText(getApplicationContext(),"用户名不能为空",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "用户名不能为空", Toast.LENGTH_SHORT).show();
 
         } else {
-            Toast.makeText(getApplicationContext(),"密码不能为空",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "密码不能为空", Toast.LENGTH_SHORT).show();
         }
         return false;
     }

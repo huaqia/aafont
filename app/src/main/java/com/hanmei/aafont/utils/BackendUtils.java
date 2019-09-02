@@ -82,9 +82,9 @@ public class BackendUtils {
 
     public static boolean isLogin() {
         User user = BmobUser.getCurrentUser(User.class);
-        if(user == null){
+        if (user == null) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
@@ -119,11 +119,10 @@ public class BackendUtils {
                 callback.onDone(e == null, 0);
             }
         });
-
     }
 
     public static void checkUserPhoneNumber(String phoneNumber, final DoneCallback callback) {
-        BmobQuery<BmobUser> query=new BmobQuery<>();
+        BmobQuery<BmobUser> query = new BmobQuery<>();
         query.addWhereEqualTo("mobilePhoneNumber", phoneNumber);
         query.findObjects(new FindListener<BmobUser>() {
             @Override
@@ -218,8 +217,8 @@ public class BackendUtils {
         bmobPushManager.pushMessage(content, new PushListener() {
             @Override
             public void done(BmobException e) {
-                if (e==null){
-                }else {
+                if (e == null) {
+                } else {
                 }
             }
         });

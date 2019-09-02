@@ -11,7 +11,7 @@ public class User extends BmobUser {
     private Boolean gender;
     private String birthday;
     private String intro;
-//    private BmobRelation focus;
+    //    private BmobRelation focus;
 //    private BmobRelation follow;
 //    private ArrayList<String> focusIds;
 //    private ArrayList<String> followIds;

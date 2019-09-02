@@ -31,7 +31,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class MainActivity extends BaseActivity {
-    private Dialog mDialog;
     @BindView(R.id.image_home)
     ImageView mHomeImg;
     @BindView(R.id.image_find)
@@ -40,7 +39,7 @@ public class MainActivity extends BaseActivity {
     ImageView mNoticeImg;
     @BindView(R.id.image_me)
     ImageView mMeImg;
-
+    private Dialog mDialog;
     private Fragment mFragmentContent;
     private HomeFragment mHomeFragment;
     private FindFragment mFindFragment;
@@ -177,7 +176,7 @@ public class MainActivity extends BaseActivity {
 ////        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                startActivity(intent);
             }
-                break;
+            break;
             case R.id.image_me:
                 resetComponentState();
                 mMeImg.setImageResource(R.drawable.me_pressed);
@@ -208,12 +207,12 @@ public class MainActivity extends BaseActivity {
         mMeImg.setImageResource(R.drawable.me);
     }
 
-    private void switchFragment(Fragment fragment){
+    private void switchFragment(Fragment fragment) {
         if (mFragmentContent != fragment) {
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction transaction = fm.beginTransaction();
             if (!fragment.isAdded()) {
-                transaction.hide(mFragmentContent).add(R.id.main_frame,fragment).commit();
+                transaction.hide(mFragmentContent).add(R.id.main_frame, fragment).commit();
             } else {
                 transaction.hide(mFragmentContent).show(fragment).commit();
             }
@@ -221,9 +220,9 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void setDefaultFragment(){
+    private void setDefaultFragment() {
         FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction transaction =fm.beginTransaction();
+        FragmentTransaction transaction = fm.beginTransaction();
         mHomeFragment = new HomeFragment();
         transaction.replace(R.id.main_frame, mHomeFragment);
         transaction.commit();

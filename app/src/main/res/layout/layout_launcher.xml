@@ -5,14 +5,24 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-
     <ImageView
         android:id="@+id/splash_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-2dp"
         android:scaleType="centerCrop" />
 
+    <Button
+        android:id="@+id/slip_bt"
+        android:layout_width="42dp"
+        android:layout_height="24dp"
+        android:background="@drawable/btn_slip"
+        android:text="@string/slip"
+        android:textSize="15sp"
+        android:textColor="@color/btn_slip_word"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"/>
 
 </RelativeLayout>
