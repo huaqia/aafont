@@ -57,6 +57,9 @@
         <activity android:name=".ui.activity.CardAreaActivity" />
         <activity android:name=".ui.activity.BgAreaActivity" />
         <activity android:name=".ui.activity.ContactFriendsActivity" />
+        <activity android:name=".ui.activity.SearchShopActivity"/>
+        <activity android:name=".ui.activity.SearchUserActivity"/>
+        <activity android:name=".ui.activity.EditUserMessageActivity"/>
         <service
             android:label="PushService"
             android:name="cn.bmob.push.lib.service.PushService"

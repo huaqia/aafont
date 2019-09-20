@@ -23,6 +23,7 @@ import com.hanmei.aafont.ui.activity.BgAreaActivity;
 import com.hanmei.aafont.ui.activity.CardAreaActivity;
 import com.hanmei.aafont.ui.activity.FilterAreaActivity;
 import com.hanmei.aafont.ui.activity.FontAreaActivity;
+import com.hanmei.aafont.ui.activity.SearchShopActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,8 @@ public class ShopFragment extends BaseFragment {
     LinearLayout mEnterFilterArea;
     @BindView(R.id.enter_bg_area)
     LinearLayout mEnterBgArea;
+    @BindView(R.id.search_bar)
+    LinearLayout mSearchBar;
 
     private FilterAdapter mFilterAdapter;
     private CardAdapter mCardAdapter;
@@ -68,6 +71,15 @@ public class ShopFragment extends BaseFragment {
     @Override
     public void init() {
         super.init();
+        {
+            mSearchBar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void
+                onClick(View view) {
+                    startActivity(new Intent(getActivity(), SearchShopActivity.class));
+                }
+            });
+        }
         {
             mFilterAdapter = new FilterAdapter();
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);

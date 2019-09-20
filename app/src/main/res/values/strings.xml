@@ -29,6 +29,7 @@
     <string name="fans">粉丝</string>
     <string name="product">作品</string>
     <string name="setting_title">设置</string>
+    <string name="setting_user_title">编辑个人信息</string>
     <string name="push_setting_title">推送通知设置</string>
     <string name="keep_camera_setting">保留相机预设</string>
     <string name="keep_water_mark">保留水印</string>
@@ -78,6 +79,7 @@
     <string name="go_to_store">去主题商店下载</string>
     <string name="save_success">保存成功</string>
     <string name="download">下载</string>
+    <string name="search">搜索</string>
     <string name="hot_font">热门字体</string>
     <string name="hot_card">热门字卡</string>
     <string name="hot_filter">热门滤镜</string>
@@ -88,11 +90,14 @@
     <string name="card_area">字卡专区</string>
     <string name="bg_area">模板专区</string>
     <string name="hot_users">热门用户榜</string>
+    <string name="wealcome_user">最受欢迎的用户</string>
+    <string name="best_user">本周优秀创造者</string>
     <string name="known_users">认识的人</string>
     <string name="official_accounts">官方账号</string>
     <string name="check_all">查看全部</string>
     <string name="contact_friends">通讯录好友</string>
     <string name="weibo_friends">微博好友</string>
+    <string name="official_account">Aa Font字体设计师</string>
     <string name="recommend_users">推荐用户</string>
     <string name="contact_name">通讯录名称：%1$s</string>
     <string name="comment_hint">请输入评论内容</string>
@@ -100,4 +105,9 @@
     <string name="speak_browsing">切换浏览模式</string>
     <string name="speak_push">上传我的字体</string>
     <string name="speak_creat">创造专属字体</string>
+    <string name="hint_search_shop">搜索创意商品</string>
+    <string name="hint_search_attention">搜索用户名或者关键字</string>
+    <string name="history_search">历史搜索</string>
+    <string name="clear_history_search">清除历史搜索记录</string>
+    <string name="search_result">搜索发现</string>
 </resources>

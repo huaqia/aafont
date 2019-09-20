@@ -31,4 +31,5 @@
     <color name="comment_reply_line">#f6f6f6</color>
     <color name="comment_reply_username">#626262</color>
     <color name="search_background">#dcd9d9</color>
+    <color name="circle_btn_background">#FFE79A</color>
 </resources>

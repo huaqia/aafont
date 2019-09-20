@@ -1,7 +1,6 @@
 package com.hanmei.aafont.ui.widget;
 
 import android.content.Context;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Checkable;
 import android.widget.FrameLayout;
@@ -15,29 +14,18 @@ public class TagView extends FrameLayout implements Checkable {
         super(context);
     }
 
-    public TagView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public TagView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
-    public TagView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
     public View getTagView()
     {
         return getChildAt(0);
     }
 
-    @Override
+    //为view生成新的Drawable的状态
     public int[] onCreateDrawableState(int extraSpace)
     {
         int[] states = super.onCreateDrawableState(extraSpace + 1);
         if (isChecked())
         {
+            //将存储在additionalState中的状态和baseState中的状态合并到一起
             mergeDrawableStates(states, CHECK_STATE);
         }
         return states;

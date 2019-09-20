@@ -32,6 +32,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hanmei.aafont.R;
 import com.hanmei.aafont.model.Comment;
 import com.hanmei.aafont.model.Product;
+import com.hanmei.aafont.model.Relation;
 import com.hanmei.aafont.model.Reply;
 import com.hanmei.aafont.model.User;
 import com.hanmei.aafont.ui.activity.MainActivity;
@@ -48,6 +49,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -122,57 +124,79 @@ public class FollowFragment extends BaseFragment {
     }
 
     private void fetchData(final int type) {
-        BmobQuery<Product> query = new BmobQuery<>();
-        query.include("user");
-        query.order("-createdAt");
-        query.setLimit(PAGE_LIMIT);
-        if (type == LOAD_MORE && mLastTime != null) {
-            Date date = null;
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            try {
-                date = dateFormat.parse(mLastTime);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            if (date != null) {
-                query.addWhereLessThanOrEqualTo("createdAt", new BmobDate(date));
-            }
-        }
-        query.findObjects(new FindListener<Product>() {
+
+        final User currentUser = BmobUser.getCurrentUser(User.class);
+        BmobQuery<Relation> forcequery = new BmobQuery<>();
+        forcequery.addWhereEqualTo("user", currentUser);
+        forcequery.findObjects(new FindListener<Relation>() {
             @Override
-            public void done(List<Product> list, BmobException e) {
+            public void done(List<Relation> list, BmobException e) {
                 if (e == null) {
-                    if (list.size() > 0) {
-                        if (type == PULL_REFRESH) {
-                            mProducts.clear();
-                        }
-                        mProducts.addAll(list);
-                        if (list.size() < PAGE_LIMIT) {
-                            mHasFooter = true;
-                            mSwipeRefreshLayout.setEnableLoadmore(false);
-                        } else {
-                            mHasFooter = false;
-                            mSwipeRefreshLayout.setEnableLoadmore(true);
-                        }
-                        mAdapter.notifyDataSetChanged();
-                        mLastTime = list.get(list.size() - 1).getCreatedAt();
-                    } else if (type == LOAD_MORE) {
-                        mHasFooter = true;
-                        mSwipeRefreshLayout.setEnableLoadmore(false);
-                        mAdapter.notifyDataSetChanged();
-                    } else {
-                        mSwipeRefreshLayout.setEnableLoadmore(false);
+                    ArrayList<String> forceList = new ArrayList<>();
+                    if (list.size() == 1) {
+                        Relation relation = list.get(0);
+                        forceList = relation.getFocusIds();
+                        fetchToData(type, forceList);
                     }
-                } else {
-                    Log.e(TAG, e.toString());
-                }
-                if (type == PULL_REFRESH) {
-                    mSwipeRefreshLayout.finishRefresh();
-                } else {
-                    mSwipeRefreshLayout.finishLoadmore();
                 }
             }
         });
+    }
+    private void fetchToData(final int type , ArrayList<String> forceList) {
+        BmobQuery<Product> query = new BmobQuery<>();
+        for (String username : forceList) {
+            query.addWhereEqualTo("user", username);
+            query.include("user");
+            query.order("-createdAt");
+            query.setLimit(PAGE_LIMIT);
+            if (type == LOAD_MORE && mLastTime != null) {
+                Date date = null;
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                try {
+                    date = dateFormat.parse(mLastTime);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                if (date != null) {
+                    query.addWhereLessThanOrEqualTo("createdAt", new BmobDate(date));
+                }
+            }
+            query.findObjects(new FindListener<Product>() {
+                @Override
+                public void done(List<Product> list, BmobException e) {
+                    if (e == null) {
+                        if (list.size() > 0) {
+                            if (type == PULL_REFRESH) {
+                                mProducts.clear();
+                            }
+                            mProducts.addAll(list);
+                            if (list.size() < PAGE_LIMIT) {
+                                mHasFooter = true;
+                                mSwipeRefreshLayout.setEnableLoadmore(false);
+                            } else {
+                                mHasFooter = false;
+                                mSwipeRefreshLayout.setEnableLoadmore(true);
+                            }
+                            mAdapter.notifyDataSetChanged();
+                            mLastTime = list.get(list.size() - 1).getCreatedAt();
+                        } else if (type == LOAD_MORE) {
+                            mHasFooter = true;
+                            mSwipeRefreshLayout.setEnableLoadmore(false);
+                            mAdapter.notifyDataSetChanged();
+                        } else {
+                            mSwipeRefreshLayout.setEnableLoadmore(false);
+                        }
+                    } else {
+                        Log.e(TAG, e.toString());
+                    }
+                    if (type == PULL_REFRESH) {
+                        mSwipeRefreshLayout.finishRefresh();
+                    } else {
+                        mSwipeRefreshLayout.finishLoadmore();
+                    }
+                }
+            });
+        }
     }
 
     private void fetchCommentData() {
@@ -185,7 +209,7 @@ public class FollowFragment extends BaseFragment {
             public void done(List<Comment> list, BmobException e) {
                 if (e == null) {
                     Log.e(TAG, "查询到comment数据" + list.size() +"条");
-                    if (list.size() >= 0) {
+                    if (list.size() > 0) {
                         mCommentOver.clear();
                     }
                     mCommentOver.addAll(list);
@@ -257,7 +281,7 @@ public class FollowFragment extends BaseFragment {
                             } else {
                                 likeIdList.remove(currentUser.getObjectId());
                             }
-                            if (product.getUser().getObjectId() != currentUser.getObjectId()) {
+                            if (!product.getUser().getObjectId().equals(currentUser.getObjectId())) {
                                 BackendUtils.pushMessage(product.getUser(), "LIKE", "消息内容");
                             }
                             product.setLikeId(likeIdList);

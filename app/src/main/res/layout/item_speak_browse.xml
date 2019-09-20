@@ -27,12 +27,26 @@
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/browse_btn_force"
         android:layout_width="60dp"
-        android:layout_height="40dp"
+        android:layout_height="35dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="100dp"
         android:background="@drawable/btn_force"
         android:text="@string/follow"
+        app:layout_constraintLeft_toRightOf="@+id/browse_user_name"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/browse_btn_unforce"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="180dp"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/btn_force"
+        android:text="@string/follow_yet"
+        android:textColor="@color/white"
+        app:layout_constraintLeft_toRightOf="@+id/browse_user_name"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/browse_user_name"/>
+        android:visibility="gone"/>
 
     <android.support.v7.widget.CardView
         android:id="@+id/browse_card_view"
