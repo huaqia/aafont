@@ -1,7 +1,6 @@
 package com.hanmei.aafont.ui.activity;
 
 import android.Manifest;
-import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;

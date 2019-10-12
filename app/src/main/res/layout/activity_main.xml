@@ -30,7 +30,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1.0"
             android:scaleType="center"
-            android:src="@drawable/home" />
+            app:srcCompat="@drawable/home" />
 
         <ImageView
             android:id="@+id/image_find"
@@ -39,7 +39,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1.0"
             android:scaleType="center"
-            android:src="@drawable/find" />
+            app:srcCompat="@drawable/find" />
 
         <ImageView
             android:id="@+id/image_create"
@@ -48,7 +48,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1.0"
             android:scaleType="center"
-            android:src="@drawable/create" />
+            app:srcCompat="@drawable/create" />
 
         <ImageView
             android:id="@+id/image_notice"
@@ -57,7 +57,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1.0"
             android:scaleType="center"
-            android:src="@drawable/notice" />
+            app:srcCompat="@drawable/notice" />
 
         <ImageView
             android:id="@+id/image_me"
@@ -66,7 +66,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1.0"
             android:scaleType="center"
-            android:src="@drawable/me" />
+            app:srcCompat="@drawable/me" />
 
     </LinearLayout>
 

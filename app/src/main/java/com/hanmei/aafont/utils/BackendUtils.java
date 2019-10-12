@@ -1,14 +1,12 @@
 package com.hanmei.aafont.utils;
 
 import android.content.Context;
-import android.os.Message;
+import android.util.Log;
 
 import com.hanmei.aafont.model.Feedback;
-import com.hanmei.aafont.model.Installation;
 import com.hanmei.aafont.model.User;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -29,16 +27,19 @@ import cn.bmob.v3.listener.PushListener;
 import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
-import io.reactivex.functions.Consumer;
 
 public class BackendUtils {
+    private static final String TAG = "BackendUtils";
     public static void init(Context context) {
+        Bmob.resetDomain("https://bmobsdk.aafont.com.cn/8/");
         Bmob.initialize(context, Constant.BMOB_KEY);
         BmobInstallationManager.getInstance().initialize(new InstallationListener<BmobInstallation>() {
             @Override
             public void done(BmobInstallation bmobInstallation, BmobException e) {
                 if (e == null) {
+                    Log.e(TAG , bmobInstallation.getObjectId() + "-" + bmobInstallation.getInstallationId());
                 } else {
+                    Log.e(TAG , e.toString());
                 }
             }
         });

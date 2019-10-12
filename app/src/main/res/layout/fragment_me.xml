@@ -18,7 +18,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:scaleType="centerInside"
-            android:src="@drawable/logo_qq_normal" />
+            app:srcCompat="@drawable/logo_qq_normal" />
 
         <TextView
             android:id="@+id/textView"
@@ -35,7 +35,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:scaleType="centerInside"
-            android:src="@drawable/logo_wechat_normal" />
+            app:srcCompat="@drawable/logo_wechat_normal" />
 
     </LinearLayout>
 
@@ -83,7 +83,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:scaleType="centerInside"
-                    android:src="@drawable/profile_edit" />
+                    app:srcCompat="@drawable/profile_edit" />
 
             </LinearLayout>
 

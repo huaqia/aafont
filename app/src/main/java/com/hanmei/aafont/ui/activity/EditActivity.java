@@ -1,21 +1,19 @@
 package com.hanmei.aafont.ui.activity;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,7 +28,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -39,7 +36,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hanmei.aafont.R;
 import com.hanmei.aafont.filter.FilterFactory;
 import com.hanmei.aafont.filter.FilterItem;
-import com.hanmei.aafont.filter.GPUImage;
 import com.hanmei.aafont.filter.GPUImageFilter;
 import com.hanmei.aafont.model.Background;
 import com.hanmei.aafont.model.Card;
@@ -412,11 +408,11 @@ public class EditActivity extends BaseActivity {
             }
         }
         //创建对话框
-        final AlertDialog dialog = new AlertDialog.Builder(this).create();
+        final android.support.v7.app.AlertDialog dialog = new android.support.v7.app.AlertDialog.Builder(this).create();
         dialog.setIcon(R.mipmap.ic_launcher);//设置图标
         dialog.setView(view);//添加布局
         //设置按键
-        dialog.setButton(AlertDialog.BUTTON_POSITIVE, "确定", new DialogInterface.OnClickListener() {
+        dialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (et.getText() != null && !TextUtils.isEmpty(et.getText().toString())) {
@@ -474,7 +470,7 @@ public class EditActivity extends BaseActivity {
         }, 200);
     }
 
-    public static void hideKeyboard(Activity activity) {
+    public static void hideKeyboard(AppCompatActivity activity) {
         try {
             InputMethodManager inputManager = (InputMethodManager) activity
                     .getSystemService(Context.INPUT_METHOD_SERVICE);

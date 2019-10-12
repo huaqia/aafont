@@ -1,20 +1,13 @@
 package com.hanmei.aafont.model;
 
-import java.util.ArrayList;
-
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
-import cn.bmob.v3.datatype.BmobRelation;
 
 public class User extends BmobUser {
     private BmobFile avatar;
-    private Boolean gender;
+    private int sex;
     private String birthday;
     private String intro;
-    //    private BmobRelation focus;
-//    private BmobRelation follow;
-//    private ArrayList<String> focusIds;
-//    private ArrayList<String> followIds;
     private String installationId;
     private boolean official;
 
@@ -26,12 +19,12 @@ public class User extends BmobUser {
         this.avatar = avatar;
     }
 
-    public Boolean getGender() {
-        return gender;
+    public int getSex() {
+        return sex;
     }
 
-    public void setGender(Boolean gender) {
-        this.gender = gender;
+    public void setSex(int sex) {
+        this.sex = sex;
     }
 
     public String getBirthday() {
@@ -49,38 +42,6 @@ public class User extends BmobUser {
     public void setIntro(String intro) {
         this.intro = intro;
     }
-
-//    public BmobRelation getFocus() {
-//        return focus;
-//    }
-//
-//    public void setFocus(BmobRelation focus) {
-//        this.focus = focus;
-//    }
-//
-//    public BmobRelation getFollow() {
-//        return follow;
-//    }
-//
-//    public void setFollow(BmobRelation follow) {
-//        this.follow = follow;
-//    }
-
-//    public ArrayList<String> getFocusIds() {
-//        return focusIds;
-//    }
-//
-//    public void setFocusIds(ArrayList<String> focusIds) {
-//        this.focusIds = focusIds;
-//    }
-//
-//    public ArrayList<String> getFollowIds() {
-//        return followIds;
-//    }
-//
-//    public void setFollowIds(ArrayList<String> followIds) {
-//        this.followIds = followIds;
-//    }
 
     public String getInstallationId() {
         return installationId;
