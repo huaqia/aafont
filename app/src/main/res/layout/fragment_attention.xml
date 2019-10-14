@@ -8,26 +8,28 @@
     <LinearLayout
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/btn_login_selector"
-        android:orientation="horizontal">
-        <android.support.v7.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/liked"
-            android:layout_marginStart="20dp"
-            android:layout_gravity="center_vertical"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/item_search_background"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp">
+
         <android.support.v7.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="20dp"
-            android:textSize="12sp"
-            android:text="@string/sync_to"/>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="@string/hint_search_attention"
+            android:gravity="center"
+            />
     </LinearLayout>
 
     <LinearLayout
@@ -100,7 +102,7 @@
             android:layout_height="match_parent">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -120,7 +122,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:text="@string/hot_users"/>
+                            android:text="@string/wealcome_user"/>
                         <android.support.v7.widget.AppCompatImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -145,11 +147,11 @@
                             android:src="@drawable/notice"/>
                     </LinearLayout>
                 </RelativeLayout>
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/famous_users_recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:orientation="horizontal"/>
+                    android:layout_height="match_parent" />
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -168,7 +170,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:text="@string/hot_users"/>
+                            android:text="@string/best_user"/>
                         <android.support.v7.widget.AppCompatImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -196,8 +198,8 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/outstanding_users_recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:orientation="horizontal"/>
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"/>
             </LinearLayout>
         </ScrollView>
         <ScrollView
@@ -259,8 +261,7 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recommend_users_recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:orientation="horizontal"/>
+                    android:layout_height="wrap_content" />
                 <RelativeLayout
                     android:id="@+id/check_all"
                     android:layout_width="match_parent"
@@ -268,13 +269,9 @@
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toStartOf="@id/check_all_icon"/>
-                    <android.support.v7.widget.AppCompatImageView
-                        android:id="@+id/check_all_icon"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:src="@drawable/to_comment"/>
+                        android:text="@string/check_all"
+                        android:gravity="right"
+                        android:layout_marginRight="20dp"/>
                 </RelativeLayout>
             </LinearLayout>
         </ScrollView>

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.hanmei.aafont.helper.DatabaseHelper;
+import com.hanmei.aafont.helper.PullMessageSQLiteOpenHelper;
 
 import java.util.ArrayList;
 
@@ -14,7 +14,7 @@ public class DatabaseUtils {
 
     public static ArrayList<String> queryAllMsg(Context context) {
         ArrayList<String> messages = new ArrayList<>();
-        DatabaseHelper helper = new DatabaseHelper(context);
+        PullMessageSQLiteOpenHelper helper = new PullMessageSQLiteOpenHelper(context);
         SQLiteDatabase database = helper.getReadableDatabase();
         Cursor cursor = database.rawQuery(QUERY_ALL_MESSAGE, null);
         while (cursor.moveToNext()) {
@@ -26,14 +26,14 @@ public class DatabaseUtils {
 
     public static void deleteMessage(Context context, int id) {
         String mid = String.valueOf(id);
-        DatabaseHelper helper = new DatabaseHelper(context);
+        PullMessageSQLiteOpenHelper helper = new PullMessageSQLiteOpenHelper(context);
         SQLiteDatabase sqLiteDatabase = helper.getWritableDatabase();
         sqLiteDatabase.delete("messages", "id=?", new String[]{mid});
         sqLiteDatabase.close();
     }
 
     public static boolean isHasMsg(Context context) {
-        DatabaseHelper helper = new DatabaseHelper(context);
+        PullMessageSQLiteOpenHelper helper = new PullMessageSQLiteOpenHelper(context);
         SQLiteDatabase sqLiteDatabase = helper.getWritableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery(QUERY_ALL_MESSAGE, null);
         if (cursor.moveToFirst()) {
@@ -44,7 +44,7 @@ public class DatabaseUtils {
     }
 
     public static void insertMsg(Context context, String msg) {
-        DatabaseHelper helper = new DatabaseHelper(context);
+        PullMessageSQLiteOpenHelper helper = new PullMessageSQLiteOpenHelper(context);
         SQLiteDatabase database = helper.getWritableDatabase();
         database.execSQL(INSERT_MESSAGE,new String[]{msg});
     }

@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">aafont</string>
-    <string name="text_aafont">啊啊字库</string>
     <string name="slip">跳  过</string>
-    <string name="text_store">商城</string>
     <string name="hint_username">请输入用户名或手机号</string>
     <string name="hint_password">请输入六位数密码</string>
     <string name="text_rigister">注册账户</string>
@@ -15,7 +13,6 @@
     <string name="hint_set_pwd">请输入6~20位密码</string>
     <string name="text_get_verify_code">发送验证码</string>
     <string name="action_next_step">下一步</string>
-    <string name="hint_reset_pwd_email">请输入登录邮箱</string>
     <string name="hint_set_password">请输入密码</string>
     <string name="hint_again_password">请确认密码</string>
     <string name="hint_old_password">请输入旧密码</string>
@@ -29,6 +26,7 @@
     <string name="fans">粉丝</string>
     <string name="product">作品</string>
     <string name="setting_title">设置</string>
+    <string name="setting_user_title">编辑个人信息</string>
     <string name="push_setting_title">推送通知设置</string>
     <string name="keep_camera_setting">保留相机预设</string>
     <string name="keep_water_mark">保留水印</string>
@@ -41,7 +39,6 @@
     <string name="finish_setting">完成设置</string>
     <string name="logout">退出登录</string>
     <string name="version_info">版本信息：</string>
-    <string name="push_setting">推送通知</string>
     <string name="private_notice">私信通知</string>
     <string name="everyone">所有人</string>
     <string name="my_follow">我关注的人</string>
@@ -52,13 +49,11 @@
     <string name="fans_notice">新粉丝通知</string>
     <string name="hint_feedback">请输入您的意见......</string>
     <string name="commit">确认提交</string>
-    <string name="select_album">选择相册</string>
     <string name="press_next">下一步</string>
     <string name="save_pic">保存图片</string>
     <string name="publish_picture">发布作品</string>
     <string name="label_text">标签</string>
     <string name="sync_to">同步到</string>
-    <string name="only_self">仅自己可见</string>
     <string name="to_bottom">已经到底啦！</string>
     <string name="to_find_new">去发现新鲜内容 》</string>
     <string name="like_count">%d个赞</string>
@@ -76,8 +71,8 @@
     <string name="item_edit_mask_none">无滤镜</string>
     <string name="item_edit_mask_edit">编辑</string>
     <string name="go_to_store">去主题商店下载</string>
-    <string name="save_success">保存成功</string>
     <string name="download">下载</string>
+    <string name="search">搜索</string>
     <string name="hot_font">热门字体</string>
     <string name="hot_card">热门字卡</string>
     <string name="hot_filter">热门滤镜</string>
@@ -88,11 +83,14 @@
     <string name="card_area">字卡专区</string>
     <string name="bg_area">模板专区</string>
     <string name="hot_users">热门用户榜</string>
+    <string name="wealcome_user">最受欢迎的用户</string>
+    <string name="best_user">本周优秀创造者</string>
     <string name="known_users">认识的人</string>
     <string name="official_accounts">官方账号</string>
     <string name="check_all">查看全部</string>
     <string name="contact_friends">通讯录好友</string>
     <string name="weibo_friends">微博好友</string>
+    <string name="official_account">Aa Font字体设计师</string>
     <string name="recommend_users">推荐用户</string>
     <string name="contact_name">通讯录名称：%1$s</string>
     <string name="comment_hint">请输入评论内容</string>
@@ -100,4 +98,8 @@
     <string name="speak_browsing">切换浏览模式</string>
     <string name="speak_push">上传我的字体</string>
     <string name="speak_creat">创造专属字体</string>
+    <string name="hint_search_shop">搜索创意商品</string>
+    <string name="hint_search_attention">搜索用户名或者关键字</string>
+    <string name="history_search">历史搜索</string>
+    <string name="search_result">搜索发现</string>
 </resources>

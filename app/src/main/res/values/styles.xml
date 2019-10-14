@@ -19,46 +19,25 @@
     <style name="AppTheme.Launch"/>
 
     <!-- Application theme. -->
-    <style name="MainAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="vpiTabPageIndicatorStyle">@style/LineCustomTabPageIndicator</item>
-        <item name="android:buttonStyle">@style/XMButtonStyle</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <!-- Support library compatibility -->
-        <item name="actionBarStyle">@style/MyActionBar</item>
-        <item name="windowActionBarOverlay">true</item>
-        <item name="actionBarSize">@dimen/actionBarSize</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-    <style name="XMButtonStyle" parent="@android:style/Widget.Button">
-        <item name="android:minHeight">45dip</item>
-    </style>
 
     <!-- ACTION BAR STYLES -->
-    <style name="MyActionBar" parent="@style/Widget.AppCompat.ActionBar">
-        <!-- Support library compatibility -->
-        <item name="background">@color/whole_main_bg</item>
-        <item name="actionBarSize">@dimen/actionBarSize</item>
+
+    <style name="select_photo_animation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/popshow_anim</item>
+        <item name="android:windowExitAnimation">@anim/pophidden_anim</item>
     </style>
 
-    <style name="LineCustomTabPageIndicator">
-        <item name="android:background">@drawable/line_custom_tab_indicator</item>
-        <item name="android:textAppearance">@style/MyText</item>
-        <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@drawable/tabpageindicator_line_text_selector</item>
-        <item name="android:paddingLeft">30dp</item>
-        <item name="android:gravity">center</item>
-        <item name="android:paddingRight">30dp</item>
-        <item name="android:paddingTop">0dp</item>
-        <item name="android:paddingBottom">0dp</item>
-        <item name="android:fadingEdge">horizontal</item>
-        <item name="android:fadingEdgeLength">8dp</item>
+    <style name="more_animation">
+        <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
+        <item name="android:windowExitAnimation">@anim/dialog_exit</item>
     </style>
-
-    <style name="MyText" parent="android:TextAppearance.Medium">
-        <item name="android:typeface">normal</item>
+    
+    <style name="dialog_bottom_full" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:scrollHorizontally">true</item>
     </style>
 
 </resources>

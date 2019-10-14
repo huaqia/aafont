@@ -17,7 +17,6 @@ import com.hanmei.aafont.R;
 import com.hanmei.aafont.model.SpeakWord;
 import com.hanmei.aafont.model.User;
 import com.hanmei.aafont.ui.adapter.BrowsePageAdapter;
-import com.hanmei.aafont.utils.BackendUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +26,6 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.UpdateListener;
 
 public class BrowseFragment extends BaseFragment {
 
@@ -67,20 +65,9 @@ public class BrowseFragment extends BaseFragment {
             }
         });
     }
-    private Handler mHandler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what){
-                case 1:
-                    setData(msg.obj);
-                    break;
-            }
-        }
-    };
 
-    private void setData(final Object object){
-        mSpeakList = (ArrayList<SpeakWord>) object;
+    private void setData(final List<SpeakWord> speakWords){
+        mSpeakList = (ArrayList<SpeakWord>) speakWords;
         Log.e(TAG , mSpeakList.size() + "");
         for (int i = 0; i < mSpeakList.size(); i++) {
             mCardDataList.add(mSpeakList.get(i).getContent().getUrl());
@@ -129,10 +116,7 @@ public class BrowseFragment extends BaseFragment {
                     if (list.size() > 0) {
                         mSpeakList.clear();
                     }
-                    Message msg = new Message();
-                    msg.what = 1;
-                    msg.obj = list;
-                    mHandler.sendMessage(msg);
+                    setData(list);
                 } else {
                     Log.e(TAG, e.toString());
                 }

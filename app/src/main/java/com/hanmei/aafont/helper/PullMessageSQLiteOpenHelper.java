@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class DatabaseHelper extends SQLiteOpenHelper {
+public class PullMessageSQLiteOpenHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "pushMessage.db";
     public static final int DB_VERSION = 1;
@@ -18,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             +"msg text not null unique"
             +");";
 
-    public DatabaseHelper(Context context) {
+    public PullMessageSQLiteOpenHelper(Context context) {
         super(context, DB_NAME,null, DB_VERSION);
     }
 

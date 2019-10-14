@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <selector xmlns:app="http://schemas.android.com/apk/res-auto">
+            <item android:state_pressed="true">
+                <shape android:shape="oval">
+                    <corners android:radius="10dp" />
+                    <solid android:color="@color/white"/>
+                </shape>
+            </item>
+            <item android:state_pressed="false">
+                <shape android:shape="oval">
+                    <corners android:radius="10dp"/>
+                    <solid android:color="@color/black" />
+                </shape>
+            </item>
+        </selector>
+    </item>
+
+    <item
+        android:right="1dp"
+        android:left="1dp"
+        android:bottom="1dp"
+        android:top="1dp">
+        <shape android:shape="oval">
+            <corners android:radius="10dp" />
+            <solid android:color="@color/circle_btn_background" />
+        </shape>
+    </item>
+</layer-list>

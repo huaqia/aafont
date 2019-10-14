@@ -12,40 +12,41 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class TagAdapter<T> {
-    private final static String TAG = "TagAdapter";
+    private static final String TAG = "TagAdapter";
     private List<T> mTagDatas;
     private OnDataChangedListener mOnDataChangedListener;
-    @Deprecated
+
     private HashSet<Integer> mCheckedPosList = new HashSet<Integer>();
 
-    public TagAdapter(List<T> datas) {
-        mTagDatas = datas;
+    public TagAdapter(List<T> mTagdatas){
+        this.mTagDatas = mTagdatas;
     }
 
-    public void setData(List<T> datas) {
-        mTagDatas = datas;
+    public void setData(List<T> mTagDatas){
+        this.mTagDatas = mTagDatas;
     }
 
-    @Deprecated
-    public TagAdapter(T[] datas) {
+    public TagAdapter(T[] datas){
         mTagDatas = new ArrayList<T>(Arrays.asList(datas));
     }
 
-    interface OnDataChangedListener {
+    public interface OnDataChangedListener{
         void onChanged();
     }
-    
-    @Deprecated
-    public void setSelectedList(int... poses) {
+
+    public void setOnDataChangedListener(OnDataChangedListener listener){
+        this.mOnDataChangedListener = listener ;
+    }
+
+    public void setSelectedList(int... poses){
         Set<Integer> set = new HashSet<>();
-        for (int pos : poses) {
+        for (int pos : poses){
             set.add(pos);
         }
         setSelectedList(set);
     }
 
-    @Deprecated
-    public void setSelectedList(Set<Integer> set) {
+    public void setSelectedList(Set<Integer> set){
         mCheckedPosList.clear();
         if (set != null) {
             mCheckedPosList.addAll(set);
@@ -53,37 +54,37 @@ public abstract class TagAdapter<T> {
         notifyDataChanged();
     }
 
-    @Deprecated
+    //按下状态列表
     public HashSet<Integer> getPreCheckedList() {
         return mCheckedPosList;
     }
 
-
-    public int getCount() {
+    public int getCount(){
         return mTagDatas == null ? 0 : mTagDatas.size();
     }
 
-    public void notifyDataChanged() {
-        if (mOnDataChangedListener != null)
+    public void notifyDataChanged(){
+        if (mOnDataChangedListener != null){
             mOnDataChangedListener.onChanged();
+        }
     }
 
-    public T getItem(int position) {
+    public T getItem(int position){
         return mTagDatas.get(position);
     }
 
-    public abstract View getView(FlowLayout parent, int position, T t);
-
+    public abstract View getView(FlowLayout parent , int position , T t);
 
     public void onSelected(int position, View view) {
-        Log.d(TAG, "onSelected " + position);
+        Log.e(TAG, "onSelected " + position);
     }
 
     public void unSelected(int position, View view) {
-        Log.d(TAG, "unSelected " + position);
+        Log.e(TAG, "unSelected " + position);
     }
 
     public boolean setSelected(int position, T t) {
         return false;
     }
+
 }

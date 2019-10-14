@@ -180,7 +180,7 @@ public class ChoiceFragment extends BaseFragment {
                         } else {
                             likeIdList.remove(currentUser.getObjectId());
                         }
-                        if (product.getUser().getObjectId() != currentUser.getObjectId()) {
+                        if (!product.getUser().getObjectId().equals(currentUser.getObjectId())) {
                             BackendUtils.pushMessage(product.getUser(), "LIKE", "消息内容");
                         }
                         product.setLikeId(likeIdList);

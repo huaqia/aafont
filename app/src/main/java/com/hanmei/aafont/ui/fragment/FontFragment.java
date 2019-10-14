@@ -102,39 +102,16 @@ public class FontFragment extends BaseFragment {
                         mSavePic.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                String galleryPath = Environment.getExternalStorageDirectory() + File.separator + Environment.DIRECTORY_DCIM + File.separator + "Camera" + File.separator;
                                 BmobFile file = mList.get(mCurentIdx).getContent();
-                                //File saveFile = new File(FileUtils.getFileDir(getContext(), "daily_font"), file.getFilename());
-                                File saveFile = null;
-                                try{
-                                    saveFile = new File(galleryPath , file.getFilename());
-                                    if (!saveFile.exists()){
-                                        saveFile.mkdir();
+                                File saveFile = new File(FileUtils.getFileDir(getContext(), "daily_font"), file.getFilename());
+                                file.download(saveFile, new DownloadFileListener() {
+                                    @Override
+                                    public void done(String s, BmobException e) {
                                     }
-                                    FileOutputStream fos = new FileOutputStream(saveFile.toString());
-                                    if (fos != null){
-                                        bitmap.compress(Bitmap.CompressFormat.PNG , 90 , fos);
-                                        fos.flush();
-                                        fos.close();
+                                    @Override
+                                    public void onProgress(Integer integer, long l) {
                                     }
-                                }catch (FileNotFoundException e){
-                                    e.printStackTrace();
-                                }catch (IOException e){
-                                    e.printStackTrace();
-                                }
-                                MediaStore.Images.Media.insertImage(getContext().getContentResolver() , bitmap , saveFile.toString() ,null);
-                                Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                                Uri uri = Uri.fromFile(saveFile);
-                                intent.setData(uri);
-                                getContext().sendBroadcast(intent);
-//                                file.download(saveFile, new DownloadFileListener() {
-//                                    @Override
-//                                    public void done(String s, BmobException e) {
-//                                    }
-//                                    @Override
-//                                    public void onProgress(Integer integer, long l) {
-//                                    }
-//                                });
+                                });
                             }
                         });
                         mGotoStore.setOnClickListener(new View.OnClickListener() {

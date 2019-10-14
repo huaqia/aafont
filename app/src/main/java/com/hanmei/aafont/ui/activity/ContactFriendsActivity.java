@@ -14,6 +14,7 @@ import android.os.Process;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -46,6 +47,7 @@ import butterknife.BindView;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ContactFriendsActivity extends BaseActivity {
     @BindView(R.id.progress_bar)
@@ -209,7 +211,6 @@ public class ContactFriendsActivity extends BaseActivity {
         public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
             if (holder instanceof ContactFriendsViewHolder) {
                 final ContactFriendsViewHolder finalHolder = (ContactFriendsViewHolder)holder;
-//                finalHolder.mName.setText();
                 Pair<User, String> pair = mContactFriends.get(position);
                 User user = pair.first;
                 String name = pair.second;
@@ -232,12 +233,17 @@ public class ContactFriendsActivity extends BaseActivity {
     class ContactFriendsViewHolder extends RecyclerView.ViewHolder {
         public AppCompatTextView mName;
         public AppCompatTextView mContactName;
-        public AppCompatImageView mPreview;
+        public CircleImageView mPreview;
+        public AppCompatImageButton force;
+        public AppCompatImageButton unforce;
         public ContactFriendsViewHolder(View itemView) {
             super(itemView);
             mName = (AppCompatTextView)itemView.findViewById(R.id.name);
-            mContactName = (AppCompatTextView)itemView.findViewById(R.id.contact_name);
-            mPreview = (AppCompatImageView)itemView.findViewById(R.id.preview);
+            mContactName = (AppCompatTextView)itemView.findViewById(R.id.contact_friend_name);
+            mPreview = (CircleImageView) itemView.findViewById(R.id.preview);
+            force = (AppCompatImageButton)itemView.findViewById(R.id.btn_force);
+            unforce = (AppCompatImageButton)itemView.findViewById(R.id.btn_force_yet);
+
         }
     }
 

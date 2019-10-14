@@ -85,6 +85,7 @@ public abstract class BaseSurfaceView extends GLSurfaceView implements GLSurface
         GLES20.glEnable(GL10.GL_DEPTH_TEST);
     }
 
+    //渲染窗口大小发生改变或者屏幕方法发生变化时候回调
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         GLES20.glViewport(0, 0, width, height);
