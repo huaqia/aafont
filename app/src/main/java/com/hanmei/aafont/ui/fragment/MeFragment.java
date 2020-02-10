@@ -88,43 +88,6 @@ public class MeFragment extends BaseFragment {
         initDate();
     }
 
-    Handler mHandler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what){
-                case 1:
-                    Relation relation = (Relation) msg.obj;
-                    if (relation.getFocusIds() == null){
-                        mFocusText.setText("0");
-                    }else {
-                        mFocusText.setText(relation.getFocusIds().size()+"");
-                    }
-                    if (relation.getFollowIds()==null){
-                        mFollowText.setText("0");
-                    }
-                    else{
-                        mFollowText.setText(relation.getFollowIds().size()+"");
-                    }
-                    break;
-                case 2:
-                    int integer = (int)msg.obj;
-                    mWorkText.setText(integer > 0 ? integer + "" : "0");
-                    break;
-                case 3:
-                    User user = (User)msg.obj;
-                    mDescription.setText(user.getIntro());
-                    mName.setText(user.getUsername());
-
-                    Glide.with(getApplicationContext())
-                            .load(user.getAvatar().getUrl())
-                            .fitCenter()
-                            .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                            .into(mUserIcon);
-                    break;
-            }
-        }
-    };
-
     private void initDate(){
         final User currentUser = BmobUser.getCurrentUser(User.class);
         BmobQuery<Relation> query = new BmobQuery<>();
@@ -136,10 +99,17 @@ public class MeFragment extends BaseFragment {
                 if (e == null){
                     if (list.size() == 1){
                         Relation relation = list.get(0);
-                        Message msg =  mHandler.obtainMessage();
-                        msg.what = 1;
-                        msg.obj = relation;
-                        mHandler.sendMessage(msg);
+                        if (relation.getFocusIds() == null){
+                            mFocusText.setText("0");
+                        }else {
+                            mFocusText.setText(relation.getFocusIds().size()+"");
+                        }
+                        if (relation.getFollowIds()==null){
+                            mFollowText.setText("0");
+                        }
+                        else{
+                            mFollowText.setText(relation.getFollowIds().size()+"");
+                        }
                     }
                 }
             }
@@ -152,10 +122,7 @@ public class MeFragment extends BaseFragment {
             @Override
             public void done(Integer integer, BmobException e) {
                 if (e == null){
-                    Message msg =  mHandler.obtainMessage();
-                    msg.what = 2;
-                    msg.obj = integer;
-                    mHandler.sendMessage(msg);
+                    mWorkText.setText(integer > 0 ? integer + "" : "0");
                 }
             }
         });
@@ -168,10 +135,14 @@ public class MeFragment extends BaseFragment {
             public void done(List<User> list, BmobException e) {
                 if (e == null){
                     User user = list.get(0);
-                    Message msg = mHandler.obtainMessage();
-                    msg.what = 3;
-                    msg.obj = user;
-                    mHandler.sendMessage(msg);
+                    mDescription.setText(user.getIntro());
+                    mName.setText(user.getUsername());
+
+                    Glide.with(getApplicationContext())
+                            .load(user.getAvatar().getUrl())
+                            .fitCenter()
+                            .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                            .into(mUserIcon);
                 }
             }
         });

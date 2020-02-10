@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -80,6 +81,12 @@ public class EditUserMessageActivity extends BaseActivity {
     AppCompatRadioButton mSexMan;
     @BindView(R.id.sex_woman)
     AppCompatRadioButton mSexWoman;
+
+    //调用相机返回图片文件
+    private File tempFile;
+    //最后显示的图片
+    private String mFile;
+
     RequestListener mRequestListener = new RequestListener() {
         @Override
         public boolean onException(Exception e, Object model, Target target, boolean isFirstResource) {
@@ -93,26 +100,7 @@ public class EditUserMessageActivity extends BaseActivity {
             return false;
         }
     };
-    Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 1:
-                    User user = (User) msg.obj;
-                    mUserIntroduction.setHint(user.getIntro());
-                    mBirthday.setText(user.getBirthday());
-                    int sex = user.getSex();
-                    if (sex == 0) {
-                        mSexMan.setChecked(true);
-                        mSexWoman.setChecked(false);
-                    } else if (sex == 1) {
-                        mSexMan.setChecked(false);
-                        mSexWoman.setChecked(true);
-                    }
-                    break;
-            }
-        }
-    };
+
     private int mSex;
     private Context mContext;
     private View mContentView;
@@ -140,9 +128,7 @@ public class EditUserMessageActivity extends BaseActivity {
                     mDay = dayOfMonth;
                     day = String.valueOf(mDay);
                 }
-                mMonth = monthOfYear;
-
-                String mBirthDayText = String.format(mYear + "年" + month + "月" + day + "日");
+                String mBirthDayText = mYear + "年" + month + "月" + day + "日";
                 User newu = new User();
                 newu.setBirthday(mBirthDayText);
                 final User currentUser = BmobUser.getCurrentUser(User.class);
@@ -297,10 +283,16 @@ public class EditUserMessageActivity extends BaseActivity {
             public void done(List<User> list, BmobException e) {
                 if (e == null) {
                     User user = list.get(0);
-                    Message msg = mHandler.obtainMessage();
-                    msg.what = 1;
-                    msg.obj = user;
-                    mHandler.sendMessage(msg);
+                    mUserIntroduction.setHint(user.getIntro());
+                    mBirthday.setText(user.getBirthday());
+                    int sex = user.getSex();
+                    if (sex == 0) {
+                        mSexMan.setChecked(true);
+                        mSexWoman.setChecked(false);
+                    } else if (sex == 1) {
+                        mSexMan.setChecked(false);
+                        mSexWoman.setChecked(true);
+                    }
                 }
             }
         });
@@ -323,7 +315,7 @@ public class EditUserMessageActivity extends BaseActivity {
         } else {
             if (ContextCompat.checkSelfPermission(EditUserMessageActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 Log.e(TAG, "拥有读写权限");
-                initmPopupWindowView();
+                initPopupWindowView();
             } else {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(EditUserMessageActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     ActivityCompat.requestPermissions(EditUserMessageActivity.this, new String[]{
@@ -336,7 +328,7 @@ public class EditUserMessageActivity extends BaseActivity {
         }
     }
 
-    public void initmPopupWindowView() {
+    public void initPopupWindowView() {
         mContentView = LayoutInflater.from(EditUserMessageActivity.this).inflate(R.layout.dialog_select_photo, null);
         mPopupWindow = new PopupWindow(mContentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setFocusable(true);
@@ -355,27 +347,21 @@ public class EditUserMessageActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                        Toast.makeText(EditUserMessageActivity.this, "请开启相机权限后重试", Toast.LENGTH_SHORT).show();
-                    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        String CAMERA_PERMISSION = Manifest.permission.CAMERA;
-                        if (ContextCompat.checkSelfPermission(EditUserMessageActivity.this, CAMERA_PERMISSION) == PackageManager.PERMISSION_GRANTED) {
-                            try {
-                                startActionCapture(EditUserMessageActivity.this, new File(Environment.getExternalStorageDirectory(), "icon.jpg"), 2);
-                                mPopupWindow.dismiss();
-                            } catch (Exception e) {
-                                Log.e(TAG, e.toString());
-                                Toast.makeText(EditUserMessageActivity.this, "相机无法启动，请先开启相机权限" + e.toString(), Toast.LENGTH_LONG).show();
-                            }
-                        } else {
-                            if (ActivityCompat.shouldShowRequestPermissionRationale(EditUserMessageActivity.this, CAMERA_PERMISSION)) {
-                                ActivityCompat.requestPermissions(EditUserMessageActivity.this, new String[]{CAMERA_PERMISSION}, 110);
-                            } else {
-                                showPermissionDialog();
-                            }
+                    Uri contentUri = null;
+                    tempFile = new File(Environment.getExternalStorageDirectory().getPath() , "icon.jpg");
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        contentUri = FileProvider.getUriForFile(EditUserMessageActivity.this , getPackageName() + ".provider" , tempFile);
+                        Log.e("getPicFromCamera" , contentUri.toString());
                         }
-                    }
-                } catch (Exception e) {
+                    else {
+                        contentUri = Uri.fromFile(tempFile);
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT , contentUri);
+                        }
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT , contentUri);
+                    startActivityForResult(intent , 2);
+                    } catch (Exception e) {
                     Log.e(TAG, e.toString());
                 }
                 if (mPopupWindow != null) {
@@ -388,9 +374,7 @@ public class EditUserMessageActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                        Toast.makeText(EditUserMessageActivity.this, "请开启相机权限后重试", Toast.LENGTH_SHORT).show();
-                    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         String CAMERA_PERMISSION = Manifest.permission.CAMERA;
                         if (ContextCompat.checkSelfPermission(EditUserMessageActivity.this, CAMERA_PERMISSION) == PackageManager.PERMISSION_GRANTED) {
                             Intent intent = new Intent(Intent.ACTION_PICK, null);
@@ -423,7 +407,7 @@ public class EditUserMessageActivity extends BaseActivity {
     }
 
     private void showPermissionDialog() {
-        android.app.AlertDialog.Builder builder = new AlertDialog.Builder(EditUserMessageActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(EditUserMessageActivity.this);
         builder.setTitle("帮助");
         builder.setMessage(Permisson);
         //拒绝
@@ -482,7 +466,7 @@ public class EditUserMessageActivity extends BaseActivity {
                 break;
             case 140:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    initmPopupWindowView();;
+                    initPopupWindowView();;
                     //点击空白区域
                     if(mPopupWindow!=null){
                         mPopupWindow.dismiss();
@@ -501,49 +485,57 @@ public class EditUserMessageActivity extends BaseActivity {
         switch (requestCode) {
             case 1:
                 if (resultCode == RESULT_OK) {
-                    Log.e(TAG, "第一步");
                     cropPhoto(data.getData());
                 }
                 break;
             case 2:
-                Uri uri;
-                File temp = new File(Environment.getExternalStorageDirectory() + "/icon.jpg");
                 if (resultCode == RESULT_OK) {
-                    if (Build.VERSION.SDK_INT >= 24) {
-                        uri = FileProvider.getUriForFile(getApplicationContext(), "com.hanmei.aafont.fileProvider", temp);
-                    } else {
-                        uri = Uri.fromFile(temp);
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N){
+                        Uri contentUri = FileProvider.getUriForFile(EditUserMessageActivity.this , getPackageName() + ".provider" , tempFile);
+                        cropPhoto(contentUri);
+                    }else {
+                        cropPhoto(Uri.fromFile(tempFile));
                     }
-                    cropPhoto(uri);
                 }
+                break;
             case 3:
-                Log.e(TAG, "到这里了" + data);
                 if (data != null) {
-                    Log.e(TAG, "第三步");
-                    Bundle extras = data.getExtras();
-                    mIcon = extras.getParcelable("data'");
-                    Log.e(TAG, extras.toString());
-                    if (mIcon != null) {
-                        setPicToView(mIcon);
-                        Log.e(TAG, "第四步");
-                        mUserIcon.setImageBitmap(mIcon);
-                    }
+                    Bitmap photo = BitmapFactory.decodeFile(mFile);
+                    mUserIcon.setImageBitmap(photo);
                 }
         }
     }
 
     public void cropPhoto(Uri uri) {
-        Log.e(TAG, "第二步" + uri.toString());
+        if (uri == null){
+            Log.e("tag" , "uri is null");
+        }
         Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         intent.setDataAndType(uri, "image/*");
         intent.putExtra("crop", true);
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
         intent.putExtra("outputX", 250);
         intent.putExtra("outputY", 250);
-        intent.putExtra("return-data", true);
-        Log.e(TAG , intent.toString());
+        intent.putExtra("scale" , true);
+        intent.putExtra("return-data", false);
+        intent.putExtra("outputFormat" , Bitmap.CompressFormat.JPEG.toString());
+        intent.putExtra("noFaceDetection" ,true);
+        File out = new File(getPath());
+        if (!out.getParentFile().exists()){
+            out.getParentFile().mkdir();
+        }
+        intent.putExtra(MediaStore.EXTRA_OUTPUT , Uri.fromFile(out));
         startActivityForResult(intent, 3);
+    }
+
+    public String getPath(){
+        if (mFile == null){
+            mFile = Environment.getExternalStorageDirectory() + "/" + "head.png";
+        }
+        return mFile;
     }
 
     public void setPicToView(Bitmap bitmap) {

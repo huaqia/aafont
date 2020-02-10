@@ -68,7 +68,6 @@ public class BrowseFragment extends BaseFragment {
 
     private void setData(final List<SpeakWord> speakWords){
         mSpeakList = (ArrayList<SpeakWord>) speakWords;
-        Log.e(TAG , mSpeakList.size() + "");
         for (int i = 0; i < mSpeakList.size(); i++) {
             mCardDataList.add(mSpeakList.get(i).getContent().getUrl());
             mUsernameDataList.add(mSpeakList.get(i).getUser().getUsername());

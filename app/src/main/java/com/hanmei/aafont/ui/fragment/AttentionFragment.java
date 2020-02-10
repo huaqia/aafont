@@ -516,7 +516,7 @@ public class AttentionFragment extends BaseFragment {
                             if (list.size() == 1) {
                                 Relation relation = list.get(0);
                                 final ArrayList<String> followList = relation.getFollowIds();
-                                if (followList.size() > 0 && followList.size() <= 1) {
+                                if (followList.size() == 1) {
                                     BmobQuery<User> bmobUser = new BmobQuery<>();
                                     bmobUser.getObject(followList.get(0), new QueryListener<User>() {
                                         @Override

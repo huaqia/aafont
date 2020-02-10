@@ -44,6 +44,7 @@ public class BackendUtils {
             }
         });
         BmobPush.startWork(context);
+        Log.e("Application" , "初始化完成");
     }
 
     public static User getCurrentUser() {

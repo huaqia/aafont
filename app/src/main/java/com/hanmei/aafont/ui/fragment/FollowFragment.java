@@ -54,11 +54,13 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import cn.bmob.v3.BmobPushManager;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobDate;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.PushListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
@@ -142,61 +144,63 @@ public class FollowFragment extends BaseFragment {
             }
         });
     }
-    private void fetchToData(final int type , ArrayList<String> forceList) {
+
+    private void fetchToData(final int type, final ArrayList<String> forceList) {
         BmobQuery<Product> query = new BmobQuery<>();
-        for (String username : forceList) {
-            query.addWhereEqualTo("user", username);
-            query.include("user");
-            query.order("-createdAt");
-            query.setLimit(PAGE_LIMIT);
-            if (type == LOAD_MORE && mLastTime != null) {
-                Date date = null;
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                try {
-                    date = dateFormat.parse(mLastTime);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                if (date != null) {
-                    query.addWhereLessThanOrEqualTo("createdAt", new BmobDate(date));
-                }
+        query.include("user");
+        query.order("-createdAt");
+        if (type == LOAD_MORE && mLastTime != null) {
+            Date date = null;
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                date = dateFormat.parse(mLastTime);
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-            query.findObjects(new FindListener<Product>() {
-                @Override
-                public void done(List<Product> list, BmobException e) {
-                    if (e == null) {
-                        if (list.size() > 0) {
-                            if (type == PULL_REFRESH) {
-                                mProducts.clear();
+            if (date != null) {
+                query.addWhereLessThanOrEqualTo("createdAt", new BmobDate(date));
+            }
+        }
+        query.findObjects(new FindListener<Product>() {
+            @Override
+            public void done(List<Product> list, BmobException e) {
+                if (e == null) {
+                    if (list.size() > 0) {
+                        if (type == PULL_REFRESH) {
+                            mProducts.clear();
+                        }
+                        for (int i = 0 ; i < list.size() ; i++){
+                            Product product  = list.get(i);
+                            if (forceList.contains(product.getUser().getObjectId())){
+                                mProducts.add(list.get(i));
                             }
-                            mProducts.addAll(list);
-                            if (list.size() < PAGE_LIMIT) {
-                                mHasFooter = true;
-                                mSwipeRefreshLayout.setEnableLoadmore(false);
-                            } else {
-                                mHasFooter = false;
-                                mSwipeRefreshLayout.setEnableLoadmore(true);
-                            }
-                            mAdapter.notifyDataSetChanged();
-                            mLastTime = list.get(list.size() - 1).getCreatedAt();
-                        } else if (type == LOAD_MORE) {
+                        }
+                        if (list.size() < PAGE_LIMIT) {
                             mHasFooter = true;
                             mSwipeRefreshLayout.setEnableLoadmore(false);
-                            mAdapter.notifyDataSetChanged();
                         } else {
-                            mSwipeRefreshLayout.setEnableLoadmore(false);
+                            mHasFooter = false;
+                            mSwipeRefreshLayout.setEnableLoadmore(true);
                         }
+                        mAdapter.notifyDataSetChanged();
+                        mLastTime = list.get(list.size() - 1).getCreatedAt();
+                    } else if (type == LOAD_MORE) {
+                        mHasFooter = true;
+                        mSwipeRefreshLayout.setEnableLoadmore(false);
+                        mAdapter.notifyDataSetChanged();
                     } else {
-                        Log.e(TAG, e.toString());
+                        mSwipeRefreshLayout.setEnableLoadmore(false);
                     }
-                    if (type == PULL_REFRESH) {
-                        mSwipeRefreshLayout.finishRefresh();
-                    } else {
-                        mSwipeRefreshLayout.finishLoadmore();
-                    }
+                } else {
+                    Log.e(TAG, e.toString());
                 }
-            });
-        }
+                if (type == PULL_REFRESH) {
+                    mSwipeRefreshLayout.finishRefresh();
+                } else {
+                    mSwipeRefreshLayout.finishLoadmore();
+                }
+            }
+        });
     }
 
     private void fetchCommentData() {
@@ -208,7 +212,6 @@ public class FollowFragment extends BaseFragment {
             @Override
             public void done(List<Comment> list, BmobException e) {
                 if (e == null) {
-                    Log.e(TAG, "查询到comment数据" + list.size() +"条");
                     if (list.size() > 0) {
                         mCommentOver.clear();
                     }
@@ -282,7 +285,7 @@ public class FollowFragment extends BaseFragment {
                                 likeIdList.remove(currentUser.getObjectId());
                             }
                             if (!product.getUser().getObjectId().equals(currentUser.getObjectId())) {
-                                BackendUtils.pushMessage(product.getUser(), "LIKE", "消息内容");
+                                BackendUtils.pushMessage(product.getUser(), "LIKE", currentUser.getUsername());
                             }
                             product.setLikeId(likeIdList);
                             mProducts.set(finalPosition, product);
@@ -306,7 +309,7 @@ public class FollowFragment extends BaseFragment {
                     Log.e(TAG, "mComments的数量在" + position + "位置上是" + mComments.size());
 
                     mCommentAdapter = new CommentExpandAdapter(mContext, mComments);
-                    mCommentAdapter.notifyDataSetChanged();
+                    mCommentAdapter.refresh();
                     followViewHolder.mCommentListView.setAdapter(mCommentAdapter);
                     for (int i = 0; i < mComments.size(); i++) {
                         followViewHolder.mCommentListView.expandGroup(i);
@@ -439,6 +442,19 @@ public class FollowFragment extends BaseFragment {
                     } else {
                         Toast.makeText(mContext, "评论内容不能为空", Toast.LENGTH_SHORT).show();
                     }
+                    if (!product.getUser().getObjectId().equals(BmobUser.getCurrentUser(User.class).getObjectId())){
+                        BmobPushManager bmobPushManager = new BmobPushManager();
+                        bmobPushManager.pushMessageAll("你好呀", new PushListener() {
+                            @Override
+                            public void done(BmobException e) {
+                                if (e == null){
+                                    Log.e("BmobPush" , "推送成功!");
+                                }else {
+
+                                }
+                            }
+                        });
+                    }
                 }
             });
             dialog.show();
@@ -505,9 +521,9 @@ public class FollowFragment extends BaseFragment {
         @Override
         public int getItemCount() {
             if (mHasFooter) {
-                return mProducts.size();
+                return mProducts.size() + 1;
             } else {
-                return mProducts.size() - 1;
+                return mProducts.size();
             }
         }
 
@@ -516,7 +532,7 @@ public class FollowFragment extends BaseFragment {
             if (position == 0) {
                 return TYPE_HEAD;
             } else {
-                if (position < mProducts.size() - 1) {
+                if (position < mProducts.size()) {
                     return TYPE_CHILD;
                 } else {
                     return TYPE_FOOTER;
