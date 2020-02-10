@@ -76,7 +76,7 @@ public class RecordUser {
             if (mNotifyDataChanged != null){
                 mNotifyDataChanged.notifyDataChanged();
             }
-        }catch (Exception e){
+        }catch (SQLException e){
             e.printStackTrace();
         }
     }
@@ -90,9 +90,10 @@ public class RecordUser {
             while (cursor.moveToNext()) {
                 if (record.equals(cursor.getString(cursor.getColumnIndexOrThrow("keyword")))) {
                     isHasRecord = true;
+                    break;
                 }
             }
-        } catch (IllegalArgumentException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             if (cursor != null) {
@@ -104,24 +105,25 @@ public class RecordUser {
     }
 
     private int getRecordId(String record) {
-        int isHasRecord = -1;
+        int recordId = -1;
         Cursor cursor =null;
         try {
             mRecordsDb = getReadableDatabase();
             cursor = mRecordsDb.query(TABLE_NAME , null , "username = ?" , new String[]{mUsername} , null , null ,null);
             while (cursor.moveToNext()){
                 if (record.equals(cursor.getString(cursor.getColumnIndexOrThrow("keyword")))){
-                    isHasRecord = cursor.getInt(cursor.getColumnIndexOrThrow("_id"));
+                    recordId = cursor.getInt(cursor.getColumnIndexOrThrow("_id"));
+                    break;
                 }
             }
-        }catch (IllegalArgumentException e){
+        }catch (SQLException e){
             e.printStackTrace();
         }finally {
             if (cursor != null){
                 cursor.close();
             }
         }
-        return isHasRecord;
+        return recordId;
     }
 
     public List<String> getRecordsByNumber(int recordNumber) {
@@ -139,7 +141,7 @@ public class RecordUser {
                     String name = cursor.getString(cursor.getColumnIndexOrThrow("keyword"));
                     recordsList.add(name);
                 }
-            } catch (IllegalArgumentException e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
                 if (cursor != null) {
@@ -165,7 +167,7 @@ public class RecordUser {
                 String name = cursor.getString(cursor.getColumnIndexOrThrow("keyword"));
                 simlarRecords.add(name);
             }
-        }catch (IllegalArgumentException e){
+        }catch (SQLException e){
             e.printStackTrace();
         }finally {
             if (cursor != null){
@@ -223,7 +225,7 @@ public class RecordUser {
             if (mNotifyDataChanged != null) {
                 mNotifyDataChanged.notifyDataChanged();
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             Log.e(TABLE_NAME, "删除_id：" + id + "历史记录失败");
         }

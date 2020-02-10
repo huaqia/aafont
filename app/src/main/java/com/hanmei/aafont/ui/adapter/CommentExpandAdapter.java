@@ -1,14 +1,14 @@
 package com.hanmei.aafont.ui.adapter;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.AppCompatTextView;
-import android.text.Layout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -16,7 +16,6 @@ import com.hanmei.aafont.R;
 import com.hanmei.aafont.model.Comment;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -25,12 +24,24 @@ public class CommentExpandAdapter extends BaseExpandableListAdapter {
     private static final String TAG = "CommentExpandAdapter";
     private ArrayList<Comment> commentList;
     private Context context;
+    private Handler handler;
 
     public CommentExpandAdapter(Context context, ArrayList<Comment> commentList) {
         this.commentList = commentList;
         this.context = context;
+        handler = new Handler(){
+
+            @Override
+            public void handleMessage(Message msg){
+                notifyDataSetChanged();
+                super.handleMessage(msg);
+            }
+        };
     }
 
+    public void refresh(){
+        handler.sendMessage(new Message());
+    }
     //评论数量
     @Override
     public int getGroupCount() {
@@ -126,7 +137,7 @@ public class CommentExpandAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public boolean isChildSelectable(int i, int i1) {
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
 
