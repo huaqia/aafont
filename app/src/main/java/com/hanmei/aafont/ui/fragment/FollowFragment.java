@@ -161,6 +161,31 @@ public class FollowFragment extends BaseFragment {
                 query.addWhereLessThanOrEqualTo("createdAt", new BmobDate(date));
             }
         }
+//        if (forceList == null) {
+//            if (type == PULL_REFRESH) {
+//                mSwipeRefreshLayout.finishRefresh();
+//            } else {
+//                mSwipeRefreshLayout.finishLoadmore();
+//            }
+//            return;
+//        }
+//        for (String username : forceList) {
+//            query.addWhereEqualTo("user", username);
+//            query.include("user");
+//            query.order("-createdAt");
+//            query.setLimit(PAGE_LIMIT);
+//            if (type == LOAD_MORE && mLastTime != null) {
+//                Date date = null;
+//                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                try {
+//                    date = dateFormat.parse(mLastTime);
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
+//                if (date != null) {
+//                    query.addWhereLessThanOrEqualTo("createdAt", new BmobDate(date));
+//                }
+//            }
         query.findObjects(new FindListener<Product>() {
             @Override
             public void done(List<Product> list, BmobException e) {

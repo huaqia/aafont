@@ -392,6 +392,12 @@ public class EditActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mHandler.removeCallbacksAndMessages(null);
+    }
+
     private void showTextInputDialog(final Boolean isNew) {
         //实例化布局
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_custom_content, null);

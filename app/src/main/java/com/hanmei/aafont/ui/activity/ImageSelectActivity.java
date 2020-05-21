@@ -226,6 +226,7 @@ public class ImageSelectActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mHandler.removeCallbacksAndMessages(null);
         FinishActivityManager.getManager().finishActivity();
     }
 

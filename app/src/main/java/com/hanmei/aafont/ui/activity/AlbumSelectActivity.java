@@ -214,6 +214,7 @@ public class AlbumSelectActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mHandler.removeCallbacksAndMessages(null);
         FinishActivityManager.getManager().finishActivity();
     }
 

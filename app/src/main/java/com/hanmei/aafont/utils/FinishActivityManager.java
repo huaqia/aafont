@@ -9,22 +9,15 @@ import java.util.Stack;
 public class FinishActivityManager {
     private FinishActivityManager() {
     }
-    private static FinishActivityManager sManager;
+    private static FinishActivityManager sManager = new FinishActivityManager();
     private Stack<WeakReference<Activity>> mActivityStack;
     public static FinishActivityManager getManager() {
-        if (sManager == null) {
-            synchronized (FinishActivityManager.class) {
-                if (sManager == null) {
-                    sManager = new FinishActivityManager();
-                }
-            }
-        }
         return sManager;
     }
-            /**
-             * 添加Activity到栈
-             * @param activity
-             */
+    /**
+     * 添加Activity到栈
+     * @param activity
+     */
     public void addActivity(Activity activity) {
         if (mActivityStack == null) {
             mActivityStack = new Stack<>();
@@ -50,9 +43,9 @@ public class FinishActivityManager {
         }
         return null;
     }
-            /**
-             * 关闭当前Activity(栈中最后一个压入的)
-             */
+    /**
+     * 关闭当前Activity(栈中最后一个压入的)
+     */
     public void finishActivity() {
         Activity activity = currentActivity();
         if (activity != null) {

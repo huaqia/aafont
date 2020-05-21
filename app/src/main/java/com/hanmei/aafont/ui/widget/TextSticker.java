@@ -87,12 +87,13 @@ public class TextSticker extends Sticker {
         this.text = text;
         this.maxWidth = maxWidth;
         curTextSize = convertSpToPx(25);
-        textPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+        textPaint = new TextPaint();
         minTextSizePixels = convertSpToPx(12);
         maxTextSizePixels = convertSpToPx(50);
         alignment = Layout.Alignment.ALIGN_NORMAL;
         textPaint.setTextSize(curTextSize);
-        textPaint.setStyle(Paint.Style.FILL);
+        textPaint.setStrokeWidth(4);
+        textPaint.setStyle(Paint.Style.STROKE);
 //        realBounds = new Rect(0, 0, getWidth(), getHeight());
         textRect = new Rect(0, 0, getWidth(), getHeight());
         staticLayout =

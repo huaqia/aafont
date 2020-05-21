@@ -229,7 +229,7 @@ public class AttentionFragment extends BaseFragment {
                             if (relation.getFocusIds() != null) {
                                 focusIdList.addAll(relation.getFocusIds());
                             }
-                            if (!relation.getFocusIds().contains(user.getObjectId())) {
+                            if (relation.getFocusIds() == null || !relation.getFocusIds().contains(user.getObjectId())) {
                                 focusIdList.add(user.getObjectId());
                             }
                             relation.setFocusIds(focusIdList);
@@ -266,7 +266,7 @@ public class AttentionFragment extends BaseFragment {
                             if (relation.getFollowIds() != null) {
                                 followIdList.addAll(relation.getFollowIds());
                             }
-                            if (!relation.getFollowIds().contains(currentUser.getObjectId())) {
+                            if (relation.getFollowIds() == null || !relation.getFollowIds().contains(currentUser.getObjectId())) {
                                 followIdList.add(currentUser.getObjectId());
                             }
                             relation.setFollowIds(followIdList);

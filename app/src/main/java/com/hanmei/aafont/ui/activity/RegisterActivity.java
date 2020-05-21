@@ -109,6 +109,13 @@ public class RegisterActivity extends BaseActivity {
         });
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mHandler.removeCallbacksAndMessages(null);
+    }
+
     @Override
     protected void setMyContentView() {
         setContentView(R.layout.activity_register);
