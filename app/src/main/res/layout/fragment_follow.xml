@@ -3,29 +3,187 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:id="@+id/frame_search"
+            android:layout_width="match_parent"
+            android:layout_height="26.67dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/search_bg"
+            android:gravity="center_vertical">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/imageView"
+                android:layout_width="13.33dp"
+                android:layout_height="13.33dp"
+                android:layout_marginStart="8.67dp"
+                app:srcCompat="@drawable/ic_search" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/search_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7.67dp"
+                android:text="搜索你感兴趣的内容吧"
+                android:textColor="#CCCCCC"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/swipeLayout_follow"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        app:srlPrimaryColor="@color/colorPrimary">
+        app:srlPrimaryColor="@color/white">
 
-        <com.scwang.smartrefresh.header.WaveSwipeHeader
+        <com.scwang.smartrefresh.header.MaterialHeader
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        <com.scwang.smartrefresh.layout.footer.BallPulseFooter
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:id="@+id/create_new"
+                    android:layout_width="54dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2.33dp"
+                    android:layout_marginStart="9.67dp"
+                    android:orientation="vertical">
+                    <FrameLayout
+                        android:layout_width="49.67dp"
+                        android:layout_height="48.33dp"
+                        android:layout_gravity="center_horizontal">
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/profile_image"
+                            android:layout_width="46.67dp"
+                            android:layout_height="46.67dp"
+                            android:scaleType="centerCrop"
+                            android:layout_gravity="start|top"
+                            android:src="@drawable/avatar" />
+                        <android.support.v7.widget.AppCompatImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="end|bottom"
+                            android:src="@drawable/ic_create"/>
+                    </FrameLayout>
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:layout_marginTop="5.67dp"
+                        android:text="分享这一刻"
+                        android:textColor="#ff666666"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="9dp"
+                    android:background="#CCCCCC" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="6.67dp"
+                        android:layout_marginEnd="6.67dp"
+                        android:layout_marginTop="3dp"/>
+
+                    <LinearLayout
+                        android:id="@+id/empty_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+                        <android.support.constraint.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="66.67dp"
+                            android:background="#FAFAFA"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <android.support.v7.widget.AppCompatImageView
+                                android:id="@+id/empty_icon"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_marginStart="60.67dp"
+                                android:layout_marginTop="8.67dp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"/>
+
+                            <android.support.v7.widget.AppCompatTextView
+                                android:id="@+id/empty_title"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginStart="8dp"
+                                android:textColor="#666666"
+                                android:textSize="12sp"
+                                app:layout_constraintStart_toEndOf="@+id/empty_icon"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <android.support.v7.widget.AppCompatTextView
+                                android:id="@+id/empty_info"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:layout_marginTop="8.67dp"
+                                android:layout_marginStart="8dp"
+                                android:textColor="#999999"
+                                android:textSize="8sp"
+                                app:layout_constraintStart_toEndOf="@+id/empty_icon"
+                                app:layout_constraintTop_toBottomOf="@+id/empty_title" />
+                        </android.support.constraint.ConstraintLayout>
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/recommend_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="8.33dp"
+                            android:layout_marginBottom="8.33dp"
+                            android:textColor="#666666"
+                            android:textSize="10sp"
+                            android:text="为你推荐"
+                            android:visibility="gone"/>
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recommend_recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="6.67dp"
+                            android:layout_marginEnd="6.67dp"
+                            android:layout_marginTop="3dp"
+                            android:visibility="gone"/>
+                    </LinearLayout>
+                </FrameLayout>
+
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </LinearLayout>

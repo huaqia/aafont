@@ -4,26 +4,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
     android:orientation="horizontal">
 
-    <com.hanmei.aafont.ui.widget.RatioImageView
-        android:id="@+id/image_thumbnail"
-        android:layout_width="80dp"
+    <com.xinmei365.font.ui.widget.RatioCardView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:image_ratio="1.0"
-        android:scaleType="centerCrop" />
+        app:cardCornerRadius="4dp">
+        <com.xinmei365.font.ui.widget.RatioImageView
+            android:id="@+id/image_thumbnail"
+            android:layout_width="66.66dp"
+            android:layout_height="66.66dp"
+            app:image_ratio="1.0"
+            android:scaleType="centerCrop" />
+    </com.xinmei365.font.ui.widget.RatioCardView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="26.66dp"
         android:orientation="vertical">
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/album_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="#333333"
+            android:layout_marginTop="27.33dp"/>
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/image_count"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:textColor="#999999"
+            android:layout_marginTop="8.66dp"/>
     </LinearLayout>
 </LinearLayout>

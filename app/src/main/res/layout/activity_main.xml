@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -18,55 +17,82 @@
     <LinearLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="50.0dip"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:background="#ff76a5c5"
+        android:background="@color/white"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/image_home"
-            android:layout_width="0.0dip"
+        <LinearLayout
+            android:id="@+id/main_follow"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
             android:layout_weight="1.0"
-            android:scaleType="center"
-            app:srcCompat="@drawable/home" />
+            android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/image_find"
-            android:layout_width="0.0dip"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1.0"
-            android:scaleType="center"
-            app:srcCompat="@drawable/find" />
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/icon_follow"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_tab_follow"/>
 
-        <ImageView
-            android:id="@+id/image_create"
-            android:layout_width="0.0dip"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1.0"
-            android:scaleType="center"
-            app:srcCompat="@drawable/create" />
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/text_follow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/main_focus"
+                android:textSize="8sp"/>
 
-        <ImageView
-            android:id="@+id/image_notice"
-            android:layout_width="0.0dip"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1.0"
-            android:scaleType="center"
-            app:srcCompat="@drawable/notice" />
+        </LinearLayout>
 
-        <ImageView
-            android:id="@+id/image_me"
-            android:layout_width="0.0dip"
+        <LinearLayout
+            android:id="@+id/main_home"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
             android:layout_weight="1.0"
-            android:scaleType="center"
-            app:srcCompat="@drawable/me" />
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/icon_home"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_tab_home"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/text_home"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/main_home"
+                android:textSize="8sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/main_me"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.0"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/icon_me"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_tab_me"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/text_me"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/main_me"
+                android:textSize="8sp"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -4,17 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.hanmei.aafont.ui.widget.RatioImageView
+    <com.xinmei365.font.ui.widget.RatioImageView
         android:id="@+id/image_thumbnail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:image_ratio="1.0"
         android:scaleType="centerCrop" />
 
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/image_select_bg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        android:src="@drawable/ic_select_bg"/>
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/image_select_index"
+        android:layout_width="16.66dp"
+        android:layout_height="16.66dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_gravity="end"
+        android:gravity="center"
+        android:textSize="10sp"
+        android:textColor="@color/white"
+        android:background="@drawable/ic_album_unselected" />
 </FrameLayout>

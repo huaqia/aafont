@@ -2,41 +2,89 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:orientation="horizontal">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="32dp"
-        android:background="@color/comment_reply_line" />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/reply_logo"
+        android:layout_width="17dp"
+        android:layout_height="17dp"
+        android:src="@drawable/user_logo"
+        android:layout_marginStart="44dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="32dp"
-        android:background="@color/comment_reply_line"
-        android:orientation="horizontal"
-        android:padding="10dp">
+        android:layout_marginStart="6dp"
+        android:orientation="vertical">
 
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/reply_username"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/comment_reply_username"
-            android:textSize="14sp" />
+            android:orientation="horizontal">
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/reply_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#9A9A9A"
+                android:textSize="10sp" />
+            <LinearLayout
+                android:id="@+id/replied_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="回复"
+                    android:textColor="#666666"
+                    android:textSize="10sp" />
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/replied_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#9A9A9A"
+                    android:textSize="10sp" />
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#666666"
+                    android:text=":"
+                    android:textSize="10sp"/>
+            </LinearLayout>
+        </LinearLayout>
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/reply_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:maxLines="10"
-            android:textColor="@color/comment_reply_content"
-            android:textSize="14sp" />
-
+            android:textColor="#666666"
+            android:textSize="12sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/reply_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="8sp"
+                android:textColor="#9A9A9A"/>
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/remove"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textSize="8sp"
+                android:textColor="#666666"
+                android:text="删除"
+                android:visibility="gone"/>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

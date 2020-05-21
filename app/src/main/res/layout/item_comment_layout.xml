@@ -3,55 +3,70 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
-    
+    android:orientation="vertical"
+    android:paddingBottom="5dp"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp">
+
+    <View
+        android:id="@+id/gang"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="12dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
-        
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal" >
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/comment_logo"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:src="@drawable/user_logo"
-            android:layout_marginLeft="14dp"
-            android:layout_marginRight="6dp"/>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="6dp"
-            android:orientation="vertical">
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:src="@drawable/avatar"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="13dp"
+            android:orientation="vertical">
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/comment_username"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/comment_item_username"
-                android:textSize="14sp"/>
+                android:textColor="#9A9A9A"
+                android:textSize="10sp"/>
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/comment_time"
+                android:id="@+id/comment_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:maxLines="10"
                 android:textSize="12sp"
-                android:textColor="@color/comment_item_time"/>
-
+                android:textColor="#666666"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/comment_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="8sp"
+                    android:textColor="#9A9A9A"/>
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/remove"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textSize="8sp"
+                    android:textColor="#666666"
+                    android:text="删除"
+                    android:visibility="gone"/>
+            </LinearLayout>
         </LinearLayout>
-
     </LinearLayout>
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/comment_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="6dp"
-        android:textSize="14sp"
-        android:layout_marginLeft="52dp"
-        android:layout_marginRight="24dp"
-        android:textColor="@color/comment_content"/>
 
 </LinearLayout>

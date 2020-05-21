@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="46.67dp"
+    android:background="@color/white">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image"
+        android:layout_width="33.33dp"
+        android:layout_height="33.33dp"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="6.67dp"
+        android:src="@drawable/avatar"
+        android:layout_marginStart="14.33dp" />
+
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10.33dp"
+        android:layout_marginEnd="10.33dp"
+        android:layout_marginTop="5dp"
+        android:textColor="#333333"
+        android:textSize="12sp"
+        android:layout_toEndOf="@id/profile_image"
+        android:layout_toStartOf="@id/focus_action"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/user_intro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10.33dp"
+        android:layout_marginEnd="10.33dp"
+        android:layout_marginTop="5dp"
+        android:textColor="#666666"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:layout_below="@id/user_name"
+        android:layout_toEndOf="@id/profile_image"
+        android:layout_toStartOf="@id/focus_action"
+        android:text="暂无个人简介"
+        android:textSize="10sp" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/focus_action"
+        android:layout_width="50dp"
+        android:layout_height="23.33dp"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/ic_follow"
+        android:layout_marginTop="11.67dp"
+        android:layout_marginEnd="10dp"
+        android:textColor="@color/colorActiveState"
+        android:textSize="10dp"
+        android:gravity="center" />
+
+</RelativeLayout>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="183dp"
+    android:orientation="vertical">
+    <View
+        android:id="@+id/gang"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="8.67dp"
+            android:layout_marginTop="6dp"
+            android:src="@drawable/avatar"
+            android:scaleType="centerCrop" />
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10.67dp"
+            android:layout_marginTop="15dp"
+            android:textColor="#666666"
+            android:layout_toEndOf="@+id/user_icon"
+            android:layout_toStartOf="@+id/focus_action"
+            android:textSize="10sp" />
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/focus_action"
+            android:layout_width="50dp"
+            android:layout_height="23.33dp"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/ic_follow"
+            android:layout_marginTop="9.33dp"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/colorActiveState"
+            android:text="@string/follow"
+            android:textSize="10dp"
+            android:gravity="center" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="110dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/note_left_image"
+                android:layout_width="match_parent"
+                android:layout_height="110dp" />
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/note_left_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="#666666"
+                android:textSize="8sp"
+                android:gravity="center_vertical" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="110dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/note_middle_image"
+                android:layout_width="match_parent"
+                android:layout_height="110dp" />
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/note_middle_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="#666666"
+                android:textSize="8sp"
+                android:gravity="center_vertical" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/note_right"
+            android:layout_width="110dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/note_right_image"
+                android:layout_width="match_parent"
+                android:layout_height="110dp" />
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/note_right_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="#666666"
+                android:textSize="8sp"
+                android:gravity="center_vertical" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

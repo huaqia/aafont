@@ -1,98 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/toolbar"
+    <RelativeLayout
+        android:id="@+id/tool_bar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_alignParentTop="true">
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_set"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary" />
+        android:background="@color/white"
+        android:layout_height="40dp">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/image_select_close"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_back"/>
+
         <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/save_pic"
+            android:id="@+id/page_idx"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:layout_gravity="right"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:text="@string/save_pic" />
-    </FrameLayout>
+            android:layout_marginStart="13.66dp"
+            android:textSize="14.66sp"
+            android:textColor="#656565"
+            android:layout_toEndOf="@+id/image_select_close" />
 
-    <RelativeLayout
-        android:id="@+id/pic_area"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
-        android:layout_above="@id/recycler_view" >
-
-        <com.hanmei.aafont.ui.widget.GPUImageView
-            android:id="@+id/image_area"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/frame_pic"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"/>
-
-        <com.hanmei.aafont.ui.widget.StickerView
-            android:id="@+id/sticker_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:showIcons="true"
-            android:layout_centerInParent="true"/>
-
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/press_next"
+            android:layout_alignParentEnd="true"
+            android:layout_width="50dp"
+            android:layout_height="23.33dp"
+            android:layout_marginTop="9.66dp"
+            android:layout_marginEnd="7.33dp"
+            android:text="下一步"
+            android:textColor="#FFFFFF"
+            android:textSize="10dp"
+            android:background="@drawable/ic_publish_action" />
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_above="@id/label_area"
-        android:orientation="horizontal"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/tool_bar"
+        android:layout_above="@id/label_area">
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top" />
+
+        <RelativeLayout
+            android:id="@+id/content_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/white"
+            android:layout_marginBottom="1dp"
+            android:gravity="center_vertical"
+            android:paddingBottom="3dip"
+            android:paddingTop="3dip"
+            android:visibility="gone">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/filter_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:paddingStart="6dp"
+                android:visibility="gone"/>
+
+            <LinearLayout
+                android:id="@+id/sticker_area"
+                android:layout_width="match_parent"
+                android:layout_height="106.67dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/sticker_text_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="29.34dp" />
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/sticker_image_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </RelativeLayout>
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/label_area"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
+        android:background="@color/white"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/filter_icon"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:srcCompat="@drawable/notice" />
+            android:orientation="vertical">
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/filter_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14.66dp"
+                android:gravity="center"
+                android:textSize="12sp"
+                android:textColor="#999999"
+                android:text="@string/filter" />
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/filter_text_highlight"
+                android:layout_width="22dp"
+                android:layout_height="4.66dp"
+                android:layout_marginTop="6dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_edit_effect_highlight"
+                android:visibility="gone"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/label_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14.66dp"
+                android:gravity="center"
+                android:textSize="12sp"
+                android:textColor="#999999"
+                android:text="@string/label_text" />
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/label_text_highlight"
+                android:layout_width="22dp"
+                android:layout_height="4.66dp"
+                android:layout_marginTop="6dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_edit_effect_highlight"
+                android:visibility="gone"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/sticker_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14.66dp"
+                android:gravity="center"
+                android:textSize="12sp"
+                android:textColor="#999999"
+                android:text="@string/sticker"/>
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/sticker_text_highlight"
+                android:layout_width="22dp"
+                android:layout_height="4.66dp"
+                android:layout_marginTop="6dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_edit_effect_highlight"
+                android:visibility="gone"/>
+        </LinearLayout>
 
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/card_icon"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/notice" />
-
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/font_icon"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/notice"/>
-
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/bg_icon"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/notice" />
     </LinearLayout>
 </RelativeLayout>

@@ -1,143 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Aa Font"
-            android:textColor="@color/black"
-            android:textSize="40sp"
-            android:textStyle="bold" />
-    </RelativeLayout>
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/logo_icon"
+        android:layout_width="133.34dp"
+        android:layout_height="133.34dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="53.34dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_splash_icon" />
 
     <LinearLayout
         android:id="@+id/linear_login_center"
-        android:layout_width="match_parent"
+        android:layout_below="@+id/logo_icon"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:padding="5dp">
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical">
 
-        <EditText
+        <android.support.v7.widget.AppCompatEditText
             android:id="@+id/edt_login_username"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:hint="@string/hint_username"
-            android:maxLines="1"
-
-            android:padding="5dp"
+            android:layout_width="234dp"
+            android:layout_height="34dp"
+            android:hint="@string/hint_mobile"
             android:singleLine="true"
-            android:textColor="@color/black"
-            android:textColorHint="@color/hint_edt_text" />
+            android:background="@drawable/bg_search"
+            android:paddingStart="18dp"
+            android:textColor="#666666"
+            android:textSize="10sp"
+            android:textColorHint="#CCCCCC" />
 
-        <EditText
+        <android.support.v7.widget.AppCompatEditText
             android:id="@+id/edt_login_password"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="234dp"
+            android:layout_height="34dp"
+            android:layout_marginTop="9.67dp"
             android:hint="@string/hint_password"
             android:inputType="textPassword"
-            android:maxLines="1"
-            android:padding="5dp"
             android:singleLine="true"
-            android:textColor="@color/black"
-            android:textColorHint="@color/hint_edt_text" />
+            android:background="@drawable/bg_search"
+            android:paddingStart="18dp"
+            android:textColor="#666666"
+            android:textSize="10sp"
+            android:textColorHint="#CCCCCC" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/text_login_register"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_marginTop="15dp"
-                android:text="@string/text_rigister"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/text_forget_pwd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="15dp"
-                android:text="@string/text_get_pwd_back"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-        </RelativeLayout>
-
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/btn_login_selector"
+            android:layout_width="234dp"
+            android:layout_height="34dp"
+            android:layout_marginTop="23.34dp"
+            android:background="@drawable/ic_login_btn"
             android:padding="10dp"
             android:text="@string/btn_login"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="10sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9.34dp">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/text_login_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="@string/text_rigister"
+                android:textColor="#7ECEF4"
+                android:textSize="10sp" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/text_forget_pwd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="@string/text_get_pwd_back"
+                android:textColor="#7ECEF4"
+                android:textSize="10sp" />
+        </RelativeLayout>
+
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:orientation="vertical"
-        android:padding="5dp">
-
-        <TextView
+        android:layout_above="@+id/image_area"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal">
+        <View
+            android:layout_width="22dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center_vertical"
+            android:background="#9A9A9A" />
+        <android.support.v7.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginStart="4.34dp"
+            android:layout_marginEnd="4.34dp"
             android:text="@string/text_other_account"
-            android:textSize="16sp" />
+            android:textColor="#9A9A9A"
+            android:textSize="8sp" />
+        <View
+            android:layout_width="22dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center_vertical"
+            android:background="#9A9A9A" />
+    </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="20dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+    <LinearLayout
+        android:id="@+id/image_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18.34dp"
+        android:layout_marginBottom="42.67dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/img_wechat_login"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/wechat_logo_selector" />
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/img_wechat_login"
+            android:layout_width="37dp"
+            android:layout_height="37dp"
+            android:background="@drawable/ic_login_wechat" />
 
-            <ImageButton
-                android:id="@+id/img_weibo_login"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/weibo_logo_selector" />
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/img_qq_login"
+            android:layout_width="37dp"
+            android:layout_height="37dp"
+            android:layout_marginStart="41.67dp"
+            android:layout_marginEnd="41.67dp"
+            android:background="@drawable/ic_login_qq" />
 
-            <ImageButton
-                android:id="@+id/img_qq_login"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@drawable/qq_logo_selector" />
-        </LinearLayout>
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/img_weibo_login"
+            android:layout_width="37dp"
+            android:layout_height="37dp"
+            android:background="@drawable/ic_login_weibo" />
+
     </LinearLayout>
 
 </RelativeLayout>

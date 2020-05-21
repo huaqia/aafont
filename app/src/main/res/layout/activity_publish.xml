@@ -1,16 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_set"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary" />
+        android:background="@color/white"
+        android:layout_height="40dp">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/image_select_close"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_back"/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textSize="14.66sp"
+            android:textColor="#656565"
+            android:layout_marginStart="13.33dp"
+            android:layout_toEndOf="@+id/image_select_close"
+            android:text="笔记" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/save_draft"
+            android:layout_width="50dp"
+            android:layout_height="23.33dp"
+            android:layout_marginTop="9.66dp"
+            android:layout_marginEnd="6.66dp"
+            android:layout_toStartOf="@+id/btn_publish_note"
+            android:text="存草稿"
+            android:textColor="#7DCDF3"
+            android:textSize="10dp"
+            android:background="@drawable/ic_publish_save_draft" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_publish_note"
+            android:layout_alignParentEnd="true"
+            android:layout_width="50dp"
+            android:layout_height="23.33dp"
+            android:layout_marginTop="9.66dp"
+            android:layout_marginEnd="7.33dp"
+            android:text="发布"
+            android:textColor="#FFFFFF"
+            android:textSize="10dp"
+            android:background="@drawable/ic_publish_action" />
+    </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,112 +64,113 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/last_pic"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/pics"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="fitCenter" />
+                android:layout_height="105.33dp"
+                android:paddingStart="8.33dp"
+                android:paddingTop="10.66dp"
+                android:background="@color/white"
+                android:scaleType="centerInside" />
 
-            <LinearLayout
-                android:id="@+id/label_area"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_alignParentBottom="true"
-                android:orientation="horizontal">
-
-                <android.support.v7.widget.AppCompatImageView
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    app:srcCompat="@drawable/notice" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/label_ind"
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:text="@string/label_text"/>
-
-                <EditText
-                    android:id="@+id/label_string"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="top"
-                    android:hint="@string/hint_feedback"
-                    android:padding="5dp"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/sync_to_area"
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/title_string"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_alignParentBottom="true"
-                android:orientation="horizontal">
-                <android.support.v7.widget.AppCompatImageView
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    app:srcCompat="@drawable/notice" />
+                android:layout_marginTop="6.33dp"
+                android:gravity="center_vertical"
+                android:background="@color/white"
+                android:hint="@string/hint_publish_title"
+                android:paddingStart="10.33dp"
+                android:textColorHint="#CBCBCB"
+                android:textColor="#333333"
+                android:textSize="12sp" />
 
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/sync_to_ind"
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:text="@string/sync_to"/>
-
-                <android.support.v7.widget.AppCompatImageView
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    app:srcCompat="@drawable/notice" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/sync_to_wechat"
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:text="@string/sync_to"/>
-
-                <android.support.v7.widget.AppCompatImageView
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    app:srcCompat="@drawable/notice" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/sync_to_weibo"
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:text="@string/sync_to"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/only_self_area"
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/intro_string"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:orientation="horizontal">
+                android:layout_height="141.33dp"
+                android:gravity="top"
+                android:background="@color/white"
+                android:hint="@string/hint_publish_content"
+                android:paddingStart="9.33dp"
+                android:paddingEnd="9.33dp"
+                android:paddingTop="10.33dp"
+                android:textColorHint="#CBCBCB"
+                android:textColor="#333333"
+                android:textSize="12sp" />
 
-                <RadioButton
-                    android:id="@+id/only_self_switch"
+            <RelativeLayout
+                android:id="@+id/function_area"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/add_tag"
+                    android:layout_width="19dp"
+                    android:layout_height="18.66dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginStart="11.33dp"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/ic_publish_add_tag" />
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/save_album_btn"
+                    android:layout_width="23.33dp"
+                    android:layout_height="23.33dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_toStartOf="@+id/save_album_text"
+                    android:src="@drawable/ic_publish_save_album_unselected" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/save_album_text"
                     android:layout_width="wrap_content"
-                    android:layout_height="44dp"
-                    android:layout_marginLeft="8dp"
-                    android:checked="true"
-                    android:text="@string/everyone"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:text="保存至相册"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="12.33dp"
+                    android:textColor="@color/colorNormalState"
+                    android:textSize="12sp"/>
+            </RelativeLayout>
 
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/btn_publish_picture"
+            <RelativeLayout
+                android:id="@+id/select_type"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="30dp"
-                android:layout_marginStart="50dp"
-                android:layout_marginEnd="50dp"
-                android:background="@drawable/btn_login_selector"
-                android:text="@string/publish_picture"
-                android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:layout_height="40dp"
+                android:layout_marginTop="6.33dp"
+                android:background="@color/white">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/select_type_leading"
+                    android:layout_width="23.33dp"
+                    android:layout_height="23.33dp"
+                    android:layout_marginTop="8.33dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/ic_publish_type_leading" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/note_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toEndOf="@+id/select_type_leading"
+                    android:layout_marginStart="7.66dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/colorActiveState"
+                    android:textSize="12sp"/>
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="23.33dp"
+                    android:layout_height="23.33dp"
+                    android:layout_marginTop="8.33dp"
+                    android:layout_marginEnd="2dp"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/ic_publish_type_go" />
+            </RelativeLayout>
+
         </LinearLayout>
     </ScrollView>
 

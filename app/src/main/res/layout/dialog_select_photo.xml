@@ -9,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_above="@+id/line"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:background="@color/white"
         android:gravity="center"
         android:text="@string/take_pic"
@@ -22,8 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="0.1dp"
         android:layout_above="@+id/albums"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:background="#D9D8D3" />
 
     <TextView
@@ -31,8 +31,8 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_above="@+id/cancel"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:background="@color/white"
         android:gravity="center"
         android:text="从相册选择"

@@ -4,159 +4,180 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/colorPrimary">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_set"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:orientation="vertical">
-
+            android:layout_height="40dp"
+            android:background="@color/white">
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/close"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="6.33dp"
+                    android:layout_marginTop="4.33dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_back"/>
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="头像"
-                    android:textSize="14sp">
-                </android.support.v7.widget.AppCompatTextView>
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="12.67dp"
+                    android:textColor="#666666"
+                    android:text="@string/setting_user_title"
+                    android:textSize="14.67sp"
+                    android:layout_toEndOf="@+id/close"/>
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/save_action"
+                    android:layout_width="60dp"
+                    android:layout_height="23.33dp"
+                    android:layout_marginTop="7.33dp"
+                    android:layout_marginEnd="7.33dp"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:text="确认修改"
+                    android:textSize="10sp"
+                    android:background="@drawable/ic_publish_action"
+                    android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="46.66dp"
+            android:orientation="horizontal"
+            android:background="@color/white">
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="13.33dp"
+                    android:gravity="center_vertical"
+                    android:textColor="#333333"
+                    android:textSize="12sp"
+                    android:text="头像" />
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/image_user_icon"
-                    android:layout_width="68dp"
-                    android:layout_height="68dp"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="10dp"/>
-        </LinearLayout>
+                    android:layout_width="33.33dp"
+                    android:layout_height="33.33dp"
+                    android:layout_marginTop="6.66dp"
+                    android:src="@drawable/avatar"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="10dp" />
+        </RelativeLayout>
 
-        <LinearLayout
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:orientation="vertical">
+            android:layout_height="0.5dp" />
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="46.66dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/white">
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/user_name_label"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="昵称"
-                    android:textSize="14sp">
-                </android.support.v7.widget.AppCompatTextView>
-
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="13.33dp"
+                    android:textColor="#333333"
+                    android:textSize="12sp"
+                    android:gravity="center_vertical"
+                    android:layout_alignParentStart="true"
+                    android:text="昵称" />
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/edit_user_name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="10dp"
-                    android:gravity="center"
-                    android:hint="Luna"
-                    android:layout_marginTop="10dp"/>
-        </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:textAlignment="textEnd"
+                    android:textColor="#999999"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center_vertical|end"
+                    android:layout_toEndOf="@id/user_name_label"
+                    android:background="@null"
+                    android:maxLength="20"
+                    android:hint="请输入昵称"
+                    android:textSize="10sp" />
+        </RelativeLayout>
 
-        <LinearLayout
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:orientation="vertical">
+            android:layout_height="0.5dp" />
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="46.66dp"
+            android:background="@color/white">
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="性别"
-                    android:textSize="14sp">
-                </android.support.v7.widget.AppCompatTextView>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
-
-                        <RadioGroup
-                            android:id="@+id/group_sex"
-                            android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="13.33dp"
+                    android:gravity="center_vertical"
+                    android:textColor="#333333"
+                    android:textSize="12sp"
+                    android:text="性别" />
+                <RadioGroup
+                    android:id="@+id/group_gender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_marginEnd="10dp"
+                    android:layout_alignParentEnd="true"
+                    android:orientation="horizontal">
+                        <android.support.v7.widget.AppCompatRadioButton
+                            android:id="@+id/gender_man"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_weight="1"
+                            android:checked="true"
+                            android:textColor="#999999"
+                            android:textSize="10sp"
+                            android:text="男"/>
+                        <android.support.v7.widget.AppCompatRadioButton
+                            android:id="@+id/gender_woman"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="#999999"
+                            android:textSize="10sp"
+                            android:text="女"/>
+                </RadioGroup>
+        </RelativeLayout>
 
-                                <android.support.v7.widget.AppCompatRadioButton
-                                    android:id="@+id/sex_man"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:checked="true"
-                                    android:text="男"/>
-
-                                <android.support.v7.widget.AppCompatRadioButton
-                                    android:id="@+id/sex_woman"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="女"/>
-                        </RadioGroup>
-                </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:orientation="vertical">
+            android:layout_height="0.5dp" />
 
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="生日"
-                    android:textSize="14sp">
-                </android.support.v7.widget.AppCompatTextView>
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/birthday"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="1988年11月5日"
-                    android:gravity="center"/>
-        </LinearLayout>
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:orientation="vertical">
-
+            android:layout_height="46.66dp"
+            android:background="@color/white">
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/brief_introduction_label"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="简介"
-                    android:textSize="14sp">
-                </android.support.v7.widget.AppCompatTextView>
-
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="13.33dp"
+                    android:textColor="#333333"
+                    android:textSize="12sp"
+                    android:gravity="center_vertical"
+                    android:layout_alignParentStart="true"
+                    android:text="简介" />
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/edit_brief_introduction"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="10dp"
-                    android:gravity="center"
-                    android:hint="Luna"
-                    android:layout_marginTop="10dp"/>
-        </LinearLayout>
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/setting_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"
-            android:background="@drawable/btn_login_selector"
-            android:text="确认修改"/>
+                    android:layout_height="match_parent"
+                    android:textColor="#999999"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center_vertical|end"
+                    android:layout_toEndOf="@id/brief_introduction_label"
+                    android:textAlignment="textEnd"
+                    android:maxLength="50"
+                    android:hint="请输入你的简介"
+                    android:background="@null"
+                    android:textSize="10sp" />
+        </RelativeLayout>
 </LinearLayout>

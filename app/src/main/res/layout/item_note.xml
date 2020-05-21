@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xinmei365.font.ui.widget.RatioCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="3.33dp"
+    android:layout_marginTop="3.33dp"
+    android:layout_marginStart="3.33dp"
+    android:layout_marginEnd="3.33dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="4dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/note_pic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_marginStart="6.67dp"
+            android:layout_marginEnd="7.33dp">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/note_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6.67dp"
+                android:gravity="start"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textAlignment="viewStart"
+                android:textColor="#333333"
+                android:textSize="10sp" />
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9.33dp"
+                android:layout_marginBottom="7dp"
+                android:clipChildren="false"
+                android:clipToPadding="false">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="17.33dp"
+                    android:layout_height="17.33dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/avatar"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/user_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:gravity="start|center_vertical"
+                    android:textSize="8sp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="111"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/profile_image"
+                    app:layout_constraintEnd_toStartOf="@+id/btn_heart"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:id="@+id/btn_heart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/to_like"
+                        android:layout_width="13.33dp"
+                        android:layout_height="13.33dp"
+                        android:layout_marginEnd="5dp"
+                        app:srcCompat="@drawable/ic_to_like" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/like_count"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="11"
+                        android:gravity="center_vertical"
+                        android:textSize="8sp" />
+
+                </LinearLayout>
+            </android.support.constraint.ConstraintLayout>
+        </LinearLayout>
+    </LinearLayout>
+</com.xinmei365.font.ui.widget.RatioCardView>

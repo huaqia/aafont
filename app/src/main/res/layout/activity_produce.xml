@@ -2,189 +2,114 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/black">
 
     <FrameLayout
-        android:id="@+id/tool_bar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_alignParentTop="true">
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_set"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary" />
-        <ImageView
-            android:id="@+id/change_size"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:layout_gravity="center"
-            android:layout_marginEnd="10dp"
-            android:scaleType="center"
-            app:srcCompat="@drawable/home" />
-
-        <ImageView
-            android:id="@+id/set_mask"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:layout_gravity="end"
-            android:layout_marginEnd="10dp"
-            android:scaleType="center"
-            app:srcCompat="@drawable/find" />
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/surface_area"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black"
-        android:layout_above="@id/action_bar"
-        android:layout_below="@id/tool_bar">
-        <com.hanmei.aafont.ui.widget.CameraSurfaceView
-            android:id="@+id/surface_view"
+        android:layout_above="@+id/to_capture"
+        android:layout_alignParentTop="true">
+        <FrameLayout
+            android:id="@+id/surface_area"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"/>
+            android:layout_height="wrap_content">
+            <com.xinmei365.font.ui.widget.CameraSurfaceView
+                android:id="@+id/surface_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"/>
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/close"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="start"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="15dp"
+                android:src="@drawable/ic_close" />
+
+            <LinearLayout
+                android:id="@+id/action_area"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="13.34dp"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/change_size"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/size_icon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_camera_size_34" />
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:layout_marginTop="6dp"
+                        android:textSize="8sp"
+                        android:text="画幅" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/set_filter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="vertical">
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_camera_filter" />
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:layout_marginTop="6dp"
+                        android:textSize="8sp"
+                        android:text="滤镜" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/to_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="vertical">
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_camera_switch" />
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:layout_marginTop="6dp"
+                        android:textSize="8sp"
+                        android:text="翻转" />
+                </LinearLayout>
+            </LinearLayout>
+        </FrameLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/filter_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:visibility="gone">
-        </android.support.v7.widget.RecyclerView>
-
-        <LinearLayout
-            android:id="@+id/change_size_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:visibility="gone"
-            android:orientation="vertical">
-            <LinearLayout
-                android:id="@+id/size_9_16"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:text="@string/size_ratio_9_16"/>
-                <android.support.v7.widget.AppCompatImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/liked"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/size_1_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:text="@string/size_ratio_1_1"/>
-                <android.support.v7.widget.AppCompatImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/liked"/>
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/take_script_notice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone">
-            <android.support.v7.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/liked"/>
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/divider_color"
-                android:layout_centerInParent="true"
-                android:textSize="12sp"
-                android:padding="5dp"
-                android:text="@string/take_script_notice"/>
-        </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/controller"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom">
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/take_pic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:layout_centerInParent="true"
-                android:textSize="12sp"
-                android:padding="5dp"
-                android:text="@string/take_pic"/>
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/take_video"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/divider_color"
-                android:layout_toEndOf="@id/take_pic"
-                android:textSize="12sp"
-                android:padding="5dp"
-                android:text="@string/take_video"/>
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/take_script"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/divider_color"
-                android:layout_toEndOf="@id/take_video"
-                android:textSize="12sp"
-                android:padding="5dp"
-                android:text="@string/take_script"/>
-        </RelativeLayout>
+            android:layout_height="100dp"
+            android:paddingStart="6dp"
+            android:layout_gravity="bottom"
+            android:visibility="gone" />
     </FrameLayout>
 
-    <LinearLayout
-        android:id="@+id/action_bar"
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/to_capture"
         android:layout_width="match_parent"
-        android:layout_height="50.0dip"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:background="#ff76a5c5"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/to_album"
-            android:layout_width="0.0dip"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1.0"
-            android:scaleType="center"
-            app:srcCompat="@drawable/home" />
-
-        <ImageView
-            android:id="@+id/to_capture"
-            android:layout_width="0.0dip"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1.0"
-            android:scaleType="center"
-            app:srcCompat="@drawable/find" />
-
-        <ImageView
-            android:id="@+id/to_change_camera"
-            android:layout_width="0.0dip"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1.0"
-            android:scaleType="center"
-            app:srcCompat="@drawable/create" />
-    </LinearLayout>
+        android:layout_marginBottom="50dp"
+        android:layout_gravity="center_horizontal"
+        app:srcCompat="@drawable/ic_camera_capture" />
 
 </RelativeLayout>

@@ -22,7 +22,7 @@
             <corners
                 android:radius="25dp"/>
             <solid
-                android:color="@color/colorPrimary"/>
+                android:color="@color/colorPrimaryDark"/>
             <stroke
                 android:width="0.5dp"
                 android:color="@color/btn_login_normal"/>

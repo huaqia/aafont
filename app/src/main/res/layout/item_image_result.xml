@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="57.33dp"
+    android:layout_height="66.66dp"
+    android:layout_marginStart="1.33dp"
+    android:layout_marginEnd="1.33dp">
+
+    <com.xinmei365.font.ui.widget.RatioImageView
+        android:id="@+id/image_thumbnail"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="13.33dp"
+        app:image_ratio="1.0"
+        android:scaleType="centerCrop" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/image_result_delete"
+        android:layout_width="16.66dp"
+        android:layout_height="16.66dp"
+        android:layout_marginTop="6.33dp"
+        android:layout_gravity="end"
+        android:gravity="center"
+        android:background="@drawable/ic_album_small_delete" />
+</FrameLayout>
