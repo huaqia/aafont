@@ -225,7 +225,7 @@ public class SearchActivity extends BaseActivity {
                         });
                     }
                 } else {
-                    BackendUtils.handleException(e, getApplicationContext());
+                    BackendUtils.handleException(e, SearchActivity.this);
                 }
             }
         });
@@ -260,7 +260,7 @@ public class SearchActivity extends BaseActivity {
                         search.update(new UpdateListener() {
                             @Override
                             public void done(BmobException e) {
-                                BackendUtils.handleException(e, getApplicationContext());
+                                BackendUtils.handleException(e, SearchActivity.this);
                             }
                         });
                     } else {
@@ -270,12 +270,12 @@ public class SearchActivity extends BaseActivity {
                         search.save(new SaveListener<String>() {
                             @Override
                             public void done(String s, BmobException e) {
-                                BackendUtils.handleException(e, getApplicationContext());
+                                BackendUtils.handleException(e, SearchActivity.this);
                             }
                         });
                     }
                 } else {
-                    BackendUtils.handleException(e, getApplicationContext());
+                    BackendUtils.handleException(e, SearchActivity.this);
                 }
             }
         });

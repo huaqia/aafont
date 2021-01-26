@@ -52,6 +52,7 @@ import com.xinmei365.font.ui.fragment.MeFragment;
 import com.xinmei365.font.utils.Constant;
 import com.xinmei365.font.utils.FastBlurUtility;
 import com.xinmei365.font.utils.FileUtils;
+import com.xinmei365.font.utils.MiscUtils;
 import com.xinmei365.font.utils.PermissionUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -107,7 +108,7 @@ public class MainActivity extends BaseActivity {
                                         user.getNickName(), user.getAvatar()));
                         EventBus.getDefault().post(new RefreshEvent());
                     } else {
-                        Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        MiscUtils.makeToast(MainActivity.this, e.getMessage(), false);
                     }
                 }
             });
@@ -359,7 +360,7 @@ public class MainActivity extends BaseActivity {
                     intent.putExtra("draftIndex", 0);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(getApplicationContext(), "目前没有草稿可以编辑", Toast.LENGTH_SHORT).show();
+                    MiscUtils.makeToast(MainActivity.this, "目前没有草稿可以编辑", false);
                 }
             }
         });

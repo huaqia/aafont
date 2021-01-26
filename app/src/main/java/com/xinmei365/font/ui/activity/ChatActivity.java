@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.xinmei365.font.R;
 import com.xinmei365.font.ui.adapter.ChatAdapter;
+import com.xinmei365.font.utils.MiscUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,7 +88,7 @@ public class ChatActivity extends BaseActivity implements MessageListHandler {
             //java.lang.NullPointerException: Attempt to invoke virtual method 'void android.widget.TextView.setText(java.lang.CharSequence)' on a null object reference
             scrollToBottom();
             if (e != null) {
-                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                MiscUtils.makeToast(ChatActivity.this, e.getMessage(), false);
             }
         }
     };
@@ -170,7 +171,7 @@ public class ChatActivity extends BaseActivity implements MessageListHandler {
             @Override
             public void onClick(View view) {
                 if (BmobIM.getInstance().getCurrentStatus().getCode() != ConnectionStatus.CONNECTED.getCode()) {
-                    Toast.makeText(getApplicationContext(), "尚未连接IM服务器", Toast.LENGTH_SHORT).show();
+                    MiscUtils.makeToast(ChatActivity.this, "尚未连接IM服务器", false);
                     return;
                 }
                 sendMessage();
@@ -261,7 +262,7 @@ public class ChatActivity extends BaseActivity implements MessageListHandler {
                         mLayoutManager.scrollToPositionWithOffset(list.size() - 1, 0);
                     }
                 } else {
-                    Toast.makeText(getApplicationContext(), e.getMessage() + "(" + e.getErrorCode() + ")", Toast.LENGTH_SHORT).show();
+                    MiscUtils.makeToast(ChatActivity.this, e.getMessage() + "(" + e.getErrorCode() + ")", false);
                 }
             }
         });
@@ -286,7 +287,7 @@ public class ChatActivity extends BaseActivity implements MessageListHandler {
     private void sendMessage() {
         String text = mEditMsg.getText().toString();
         if (TextUtils.isEmpty(text.trim())) {
-            Toast.makeText(getApplicationContext(), "请输入内容", Toast.LENGTH_SHORT).show();
+            MiscUtils.makeToast(this, "请输入内容", false);
             return;
         }
         BmobIMTextMessage msg = new BmobIMTextMessage();

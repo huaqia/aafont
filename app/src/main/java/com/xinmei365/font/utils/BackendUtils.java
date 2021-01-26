@@ -1,8 +1,10 @@
 package com.xinmei365.font.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -132,9 +134,7 @@ public class BackendUtils {
                     callback.onDone(e == null, list.size());
                 } else {
                     if (e.getErrorCode() == 9016) {
-                        Toast toast = Toast.makeText(context, "网络被外星人劫持了，请稍后再试…",Toast.LENGTH_SHORT);
-                        toast.setGravity(Gravity.CENTER, 0, 0);
-                        toast.show();
+                        MiscUtils.makeToast(context, "网络被外星人劫持了，请稍后再试…", true);
                     } else {
                         Log.e(TAG, e.toString());
                     }
@@ -209,9 +209,7 @@ public class BackendUtils {
                     }
                 } else {
                     if (e.getErrorCode() == 9016) {
-                        Toast toast = Toast.makeText(context, "网络被外星人劫持了，请稍后再试…",Toast.LENGTH_SHORT);
-                        toast.setGravity(Gravity.CENTER, 0, 0);
-                        toast.show();
+                        MiscUtils.makeToast(context, "网络被外星人劫持了，请稍后再试…", true);
                     } else {
                         Log.e(TAG, e.toString());
                     }
@@ -243,6 +241,14 @@ public class BackendUtils {
     }
 
     public static void handleException(BmobException e, final Context context) {
+        if (context == null) {
+            return;
+        }
+        if (context instanceof Activity) {
+            if (((Activity) context).isDestroyed() || ((Activity) context).isDestroyed()) {
+                return;
+            }
+        }
         if (e != null) {
             if (e.getErrorCode() == 211) {
                 MiscUtils.showAlertDialog(context, "登录已经超时，请重新登录。", new DialogInterface.OnClickListener() {
@@ -255,9 +261,7 @@ public class BackendUtils {
                     }
                 });
             } else if (e.getErrorCode() == 9016) {
-                Toast toast = Toast.makeText(context, "网络被外星人劫持了，请稍后再试…",Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
+                MiscUtils.makeToast(context, "网络被外星人劫持了，请稍后再试…", true);
             }
         }
     }

@@ -55,6 +55,7 @@ import com.xinmei365.font.filter.MagicEngine;
 import com.xinmei365.font.ui.adapter.EffectFilterAdapter;
 import com.xinmei365.font.ui.widget.CameraSurfaceView;
 import com.xinmei365.font.utils.BitmapUtils;
+import com.xinmei365.font.utils.MiscUtils;
 import com.xinmei365.font.utils.PermissionUtils;
 
 import java.io.File;
@@ -466,7 +467,7 @@ public class ProduceActivity extends BaseActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+                MiscUtils.makeToast(ProduceActivity.this, text, false);
             }
         });
     }

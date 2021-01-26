@@ -168,7 +168,7 @@ public class UserActivity extends BaseActivity {
                         mFocusArea.setOnClickListener(null);
                     }
                 } else {
-                    BackendUtils.handleException(e, getApplicationContext());
+                    BackendUtils.handleException(e, UserActivity.this);
                     mFocusText.setText("0");
                     mFocusArea.setOnClickListener(null);
                 }
@@ -194,7 +194,7 @@ public class UserActivity extends BaseActivity {
                         }
                     });
                 } else {
-                    BackendUtils.handleException(e, getApplicationContext());
+                    BackendUtils.handleException(e, UserActivity.this);
                     mFollowText.setText("0");
                     mFocusArea.setOnClickListener(null);
                 }
@@ -218,7 +218,7 @@ public class UserActivity extends BaseActivity {
                     }
                     mWorkText.setText(count + "");
                 } else {
-                    BackendUtils.handleException(e, getApplicationContext());
+                    BackendUtils.handleException(e, UserActivity.this);
                     mWorkText.setText("0");
                 }
             }
@@ -247,7 +247,7 @@ public class UserActivity extends BaseActivity {
                             mFocusAction.setBackgroundResource(R.drawable.ic_nok);
                         }
                     } else {
-                        BackendUtils.handleException(e, getApplicationContext());
+                        BackendUtils.handleException(e, UserActivity.this);
                     }
                 }
             });
@@ -272,7 +272,7 @@ public class UserActivity extends BaseActivity {
                                     focusIdList.add(mUserId);
                                     mFocusAction.setText(R.string.unfollow);
                                     mFocusAction.setBackgroundResource(R.drawable.ic_nok);
-                                    BackendUtils.pushMessage(getApplicationContext(), user, "FOLLOW", null);
+                                    BackendUtils.pushMessage(UserActivity.this, user, "FOLLOW", null);
                                 } else {
                                     focusIdList.remove(mUserId);
                                     mFocusAction.setText(R.string.follow);
@@ -282,12 +282,12 @@ public class UserActivity extends BaseActivity {
                                 user.update(new UpdateListener() {
                                     @Override
                                     public void done(BmobException e) {
-                                        BackendUtils.handleException(e, getApplicationContext());
+                                        BackendUtils.handleException(e, UserActivity.this);
                                     }
                                 });
                             }
                         } else {
-                            BackendUtils.handleException(e, getApplicationContext());
+                            BackendUtils.handleException(e, UserActivity.this);
                         }
                     }
                 });

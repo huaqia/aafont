@@ -19,6 +19,7 @@ import com.xinmei365.font.model.DraftData;
 import com.xinmei365.font.model.User;
 import com.xinmei365.font.utils.BackendUtils;
 import com.xinmei365.font.utils.FileUtils;
+import com.xinmei365.font.utils.MiscUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -94,7 +95,7 @@ public class SettingActivity extends BaseActivity {
                 if (noteDatas != null && noteDatas.size() > 0) {
                     startActivity(new Intent(getApplicationContext(), DraftsActivity.class));
                 } else {
-                    Toast.makeText(getApplicationContext(),"没有草稿",Toast.LENGTH_SHORT).show();
+                    MiscUtils.makeToast(SettingActivity.this, "没有草稿", false);
                 }
             }
         });

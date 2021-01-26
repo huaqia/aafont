@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.xinmei365.font.R;
 import com.xinmei365.font.utils.BackendUtils;
+import com.xinmei365.font.utils.MiscUtils;
 import com.xinmei365.font.utils.NetworkUtils;
 
 import butterknife.BindView;
@@ -94,29 +95,29 @@ public class ForgetPwdActivity extends BaseActivity {
         if(NetworkUtils.isNetworkAvailable(context)) {
             final String mobile = mMobileNumber.getText().toString();
             if (TextUtils.isEmpty(mobile)) {
-                Toast.makeText(context,"手机号不能为空，请输入",Toast.LENGTH_SHORT).show();
+                MiscUtils.makeToast(this, "手机号不能为空，请输入", false);
             } else if(!NetworkUtils.isNumber(mobile)){
-                Toast.makeText(context,"手机号格式不正确",Toast.LENGTH_SHORT).show();
+                MiscUtils.makeToast(this, "手机号格式不正确", false);
             } else {
-                BackendUtils.checkUserPhoneNumber(context, mobile, new BackendUtils.DoneCallback() {
+                BackendUtils.checkUserPhoneNumber(this, mobile, new BackendUtils.DoneCallback() {
                     @Override
                     public void onDone(boolean success, int code) {
                         if (success) {
                             if (code <= 0) {
-                                Toast.makeText(context, "该手机号码未注册或绑定账户", Toast.LENGTH_SHORT).show();
+                                MiscUtils.makeToast(ForgetPwdActivity.this, "该手机号码未注册或绑定账户", false);
                             } else {
                                 Message msg = new Message();
                                 msg.what = CHECK_MOBILE_EXIST;
                                 mHandler.handleMessage(msg);
                             }
                         } else {
-                            Toast.makeText(context,"服务器错误，请稍后重试！！",Toast.LENGTH_SHORT).show();
+                            MiscUtils.makeToast(ForgetPwdActivity.this, "服务器错误，请稍后重试！！", false);
                         }
                     }
                 });
             }
         } else {
-            Toast.makeText(context,"未检测到网络！！",Toast.LENGTH_SHORT).show();
+            MiscUtils.makeToast(this, "未检测到网络！！", false);
         }
     }
 
@@ -128,9 +129,9 @@ public class ForgetPwdActivity extends BaseActivity {
             String setPwd = mSetPwd.getText().toString();
             String againPwd = mAgainPwd.getText().toString();
             if(TextUtils.isEmpty(setPwd)||TextUtils.isEmpty(againPwd)){
-                Toast.makeText(context,"密码不能为空",Toast.LENGTH_SHORT).show();
+                MiscUtils.makeToast(this, "密码不能为空", false);
             } else if(TextUtils.isEmpty(code)){
-                Toast.makeText(context,"验证码不能为空",Toast.LENGTH_SHORT).show();
+                MiscUtils.makeToast(this, "验证码不能为空", false);
             } if(setPwd.equals(againPwd)) {
                 BackendUtils.resetPasswordBySMSCode(code, setPwd, new BackendUtils.DoneCallback() {
                     @Override
@@ -140,15 +141,15 @@ public class ForgetPwdActivity extends BaseActivity {
                             msg.what = RESET_PASSWORD_SUCCESS;
                             mHandler.handleMessage(msg);
                         } else {
-                            Toast.makeText(context, "密码重置失败，请稍后尝试！", Toast.LENGTH_SHORT).show();
+                            MiscUtils.makeToast(ForgetPwdActivity.this, "密码重置失败，请稍后尝试！", false);
                         }
                     }
                 });
             } else {
-                Toast.makeText(context,"两次输入的密码不一致",Toast.LENGTH_SHORT).show();
+                MiscUtils.makeToast(this, "两次输入的密码不一致", false);
             }
         } else {
-            Toast.makeText(getApplicationContext(),"未检测到网络",Toast.LENGTH_SHORT).show();
+            MiscUtils.makeToast(this, "未检测到网络", false);
         }
     }
 
@@ -158,7 +159,7 @@ public class ForgetPwdActivity extends BaseActivity {
             public void onDone(boolean success, int code) {
                 if (!success) {
                     mTimer.cancel();
-                    Toast.makeText(getApplicationContext(), "获取验证码失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                    MiscUtils.makeToast(ForgetPwdActivity.this, "获取验证码失败，请稍后重试", false);
                 }
             }
         });

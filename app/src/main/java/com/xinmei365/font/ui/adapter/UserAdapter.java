@@ -169,13 +169,13 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(mContext, "是你自己啦",Toast.LENGTH_SHORT).show();
+                        MiscUtils.makeToast(mContext, "是你自己啦", false);
                     }
                 });
                 viewHolder.mFocusAction.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(mContext, "自己不能关注自己哦",Toast.LENGTH_SHORT).show();
+                        MiscUtils.makeToast(mContext, "自己不能关注自己哦", false);
                     }
                 });
             }

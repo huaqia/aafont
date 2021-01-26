@@ -88,7 +88,7 @@ public class PushSettingActivity extends BaseActivity {
                     mFollowNotice.setChecked(followNotice);
                     mCommentNotice.setChecked(commentNotice);
                 } else {
-                    BackendUtils.handleException(e, getApplicationContext());
+                    BackendUtils.handleException(e, PushSettingActivity.this);
                 }
             }
         });
@@ -118,12 +118,12 @@ public class PushSettingActivity extends BaseActivity {
                         user.update(new UpdateListener() {
                             @Override
                             public void done(BmobException e) {
-                                BackendUtils.handleException(e, getApplicationContext());
+                                BackendUtils.handleException(e, PushSettingActivity.this);
                             }
                         });
                     }
                 } else {
-                    BackendUtils.handleException(e, getApplicationContext());
+                    BackendUtils.handleException(e, PushSettingActivity.this);
                 }
             }
         });

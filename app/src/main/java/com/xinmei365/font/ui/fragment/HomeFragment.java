@@ -141,7 +141,7 @@ public class HomeFragment extends BaseFragment {
                                                                           getContext().startActivity(intent);
                                                                       }
                                                                   } else {
-                                                                      BackendUtils.handleException(e, getContext());
+                                                                      BackendUtils.handleException(e, getActivity());
                                                                   }
                                                               }
                                                           });
@@ -154,7 +154,7 @@ public class HomeFragment extends BaseFragment {
                                           mSliderLayout.addSlider(view);
                                       }
                                   } else {
-                                      BackendUtils.handleException(e, getContext());
+                                      BackendUtils.handleException(e, getActivity());
                                   }
                               }
                           });

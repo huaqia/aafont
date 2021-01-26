@@ -35,6 +35,7 @@ import com.xinmei365.font.R;
 import com.xinmei365.font.ui.widget.RatioImageView;
 import com.xinmei365.font.utils.Constant;
 import com.xinmei365.font.utils.FinishActivityManager;
+import com.xinmei365.font.utils.MiscUtils;
 import com.xinmei365.font.utils.PermissionUtils;
 
 import java.io.File;
@@ -124,7 +125,7 @@ public class ImageSelectActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if (mSelectUrls.size() == 0) {
-                    Toast.makeText(getApplicationContext(), "请选择图片", Toast.LENGTH_SHORT).show();
+                    MiscUtils.makeToast(ImageSelectActivity.this, "请选择图片", false);
                     return;
                 }
                 if (mIsChat || mStartIndex != 0) {
@@ -320,7 +321,7 @@ public class ImageSelectActivity extends BaseActivity {
                             mSelectUrls.remove(url);
                         } else {
                             if (mStartIndex + mSelectUrls.size() >= mMaxPictures) {
-                                Toast.makeText(getApplicationContext(), "最多选择" + mMaxPictures + "张图片", Toast.LENGTH_SHORT).show();
+                                MiscUtils.makeToast(ImageSelectActivity.this, "最多选择" + mMaxPictures + "张图片", false);
                                 return;
                             }
                             mSelectUrls.add(url);

@@ -124,7 +124,7 @@ public class TypeSelectActivity extends BaseActivity {
                         mAdapter.notifyDataSetChanged();
                     }
                 } else {
-                    BackendUtils.handleException(e, getApplicationContext());
+                    BackendUtils.handleException(e, TypeSelectActivity.this);
                 }
                 if (type == PULL_REFRESH) {
                     mSwipeRefreshLayout.finishRefresh();
@@ -175,7 +175,7 @@ public class TypeSelectActivity extends BaseActivity {
                     type.update(new UpdateListener() {
                         @Override
                         public void done(BmobException e) {
-                            BackendUtils.handleException(e, getApplicationContext());
+                            BackendUtils.handleException(e, TypeSelectActivity.this);
                         }
                     });
                 }

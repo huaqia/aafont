@@ -148,7 +148,7 @@ public class MeFragment extends BaseFragment {
                                 .into(mUserIcon);
                     }
                 } else {
-                    BackendUtils.handleException(e, getContext());
+                    BackendUtils.handleException(e, getActivity());
                 }
             }
         });
@@ -183,7 +183,7 @@ public class MeFragment extends BaseFragment {
                         }
                     });
                 } else {
-                    BackendUtils.handleException(e, getContext());
+                    BackendUtils.handleException(e, getActivity());
                     mFocusText.setText("0");
                     mFocusArea.setOnClickListener(null);
                 }
@@ -208,7 +208,7 @@ public class MeFragment extends BaseFragment {
                         }
                     });
                 } else {
-                    BackendUtils.handleException(e, getContext());
+                    BackendUtils.handleException(e, getActivity());
                     mFollowText.setText("0");
                     mFocusArea.setOnClickListener(null);
                 }
@@ -232,7 +232,7 @@ public class MeFragment extends BaseFragment {
                     }
                     mWorkText.setText(count + "");
                 } else {
-                    BackendUtils.handleException(e, getContext());
+                    BackendUtils.handleException(e, getActivity());
                     mWorkText.setText("0");
                 }
             }

@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.xinmei365.font.R;
 import com.xinmei365.font.utils.BackendUtils;
+import com.xinmei365.font.utils.MiscUtils;
 import com.xinmei365.font.utils.NetworkUtils;
 
 import java.util.HashMap;
@@ -67,25 +68,25 @@ public class RegisterActivity extends BaseActivity {
                         @Override
                         public void onDone(boolean success, int code) {
                             if (success) {
-                                Toast.makeText(getApplicationContext(), "注册成功,请登录", Toast.LENGTH_SHORT).show();
+                                MiscUtils.makeToast(RegisterActivity.this, "注册成功,请登录", false);
                                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                 intent.putExtra(FROM_REGISTER_USERNAME, phone);
                                 intent.putExtra(FROM_REGISTER_PWD, password);
                                 startActivity(intent);
                                 finish();
                             } else {
-                                Toast.makeText(getApplicationContext(), "该手机号已经注册", Toast.LENGTH_SHORT).show();
+                                MiscUtils.makeToast(RegisterActivity.this, "该手机号已经注册", false);
                             }
                         }
                     });
                     break;
 
                 case VERIFY_CODE_FAILURE:
-                    Toast.makeText(getApplicationContext(), "验证码错误", Toast.LENGTH_SHORT).show();
+                    MiscUtils.makeToast(RegisterActivity.this, "验证码错误", false);
                     break;
 
                 case Is_Mobile_Have:
-                    Toast.makeText(getApplicationContext(), "手机号已存在,请重新输入", Toast.LENGTH_SHORT).show();
+                    MiscUtils.makeToast(RegisterActivity.this, "手机号已存在,请重新输入", false);
                     break;
                 case Is_Mobile_unHave:
                     mTimer = new MyCountTimer(60000, 1000);
@@ -153,11 +154,11 @@ public class RegisterActivity extends BaseActivity {
         if (checkInput()) {
             String code = mVerifyCode.getText().toString();
             if (TextUtils.isEmpty(code)) {
-                Toast.makeText(getApplicationContext(), "验证码不能为空", Toast.LENGTH_SHORT).show();
+                MiscUtils.makeToast(this, "验证码不能为空", false);
             } else if (NetworkUtils.isPasswordNumber(mPassword.getText().toString())) {
                 verifyCode(code);
             } else {
-                Toast.makeText(getApplicationContext(), "密码位数不正确，请重新输入", Toast.LENGTH_SHORT).show();
+                MiscUtils.makeToast(this, "密码位数不正确，请重新输入", false);
             }
         }
     }
@@ -168,20 +169,20 @@ public class RegisterActivity extends BaseActivity {
         if (NetworkUtils.isNetworkAvailable(context)) {
             String name = mName.getText().toString();
             if (TextUtils.isEmpty(name)) {
-                Toast.makeText(context, "昵称不能为空", Toast.LENGTH_SHORT).show();
+                MiscUtils.makeToast(this, "昵称不能为空", false);
             } else {
                 String mobileNumber = mMobileNumber.getText().toString();
                 if (TextUtils.isEmpty(mobileNumber)) {
-                    Toast.makeText(context, "手机号不能为空", Toast.LENGTH_SHORT).show();
+                    MiscUtils.makeToast(this, "手机号不能为空", false);
                     //检查手机号是否为空
                 } else if (NetworkUtils.isMobileNumber(mobileNumber)) {
                     return true;
                 } else {
-                    Toast.makeText(context, "手机号格式不正确", Toast.LENGTH_SHORT).show();
+                    MiscUtils.makeToast(this, "手机号格式不正确", false);
                 }
             }
         } else {
-            Toast.makeText(context, "未连接网络！！", Toast.LENGTH_SHORT).show();
+            MiscUtils.makeToast(this, "未连接网络！！", false);
         }
         return false;
     }
@@ -196,7 +197,7 @@ public class RegisterActivity extends BaseActivity {
                     mHandler.handleMessage(msg);
                 } else {
                     mTimer.cancel();
-                    Toast.makeText(getApplicationContext(), "获取验证码失败", Toast.LENGTH_SHORT).show();
+                    MiscUtils.makeToast(RegisterActivity.this, "获取验证码失败", false);
                     mGetCode.setEnabled(true);
                     mGetCode.setText(R.string.text_get_verify_code);
                 }

@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.xinmei365.font.R;
 import com.xinmei365.font.utils.BackendUtils;
+import com.xinmei365.font.utils.MiscUtils;
 import com.xinmei365.font.utils.TrackerUtils;
 
 import java.io.IOException;
@@ -46,7 +47,7 @@ public class SplashActivity extends BaseActivity {
         int flag = WindowManager.LayoutParams.FLAG_FULLSCREEN;
         getWindow().setFlags(flag , flag);
         new FetchDataTask().execute(sUrl);
-//        Toast.makeText(this, TrackerUtils.getChannel(this),Toast.LENGTH_SHORT).show();
+//        MiscUtils.makeToast(this, TrackerUtils.getChannel(this), false);
         mHandler.postDelayed(mGotoMainRunnable, 3000);
     }
 

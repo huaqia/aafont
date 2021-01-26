@@ -345,7 +345,7 @@ public class NoteDetailActivity extends BaseActivity {
                             }
                         });
                     } else {
-                        BackendUtils.handleException(e, getApplicationContext());
+                        BackendUtils.handleException(e, NoteDetailActivity.this);
                     }
                 }
             });
@@ -395,10 +395,10 @@ public class NoteDetailActivity extends BaseActivity {
                             if (isToAdd) {
                                 Map<String, Object> map = new HashMap<>();
                                 map.put("noteId", mNote.getObjectId());
-                                BackendUtils.pushMessage(getApplicationContext(), mNote.getUser(), "LIKE", map);
+                                BackendUtils.pushMessage(NoteDetailActivity.this, mNote.getUser(), "LIKE", map);
                             }
                         } else {
-                            BackendUtils.handleException(e, getApplicationContext());
+                            BackendUtils.handleException(e, NoteDetailActivity.this);
                         }
                     }
                 });
@@ -446,10 +446,10 @@ public class NoteDetailActivity extends BaseActivity {
                             if (isToAdd) {
                                 Map<String, Object> map = new HashMap<>();
                                 map.put("noteId", mNote.getObjectId());
-                                BackendUtils.pushMessage(getApplicationContext(), mNote.getUser(), "FAVORITE", map);
+                                BackendUtils.pushMessage(NoteDetailActivity.this, mNote.getUser(), "FAVORITE", map);
                             }
                         } else {
-                            BackendUtils.handleException(e, getApplicationContext());
+                            BackendUtils.handleException(e, NoteDetailActivity.this);
                         }
                     }
                 });
@@ -526,7 +526,7 @@ public class NoteDetailActivity extends BaseActivity {
                         mMsgCount.setText("评论");
                     }
                 } else {
-                    BackendUtils.handleException(e, getApplicationContext());
+                    BackendUtils.handleException(e, NoteDetailActivity.this);
                 }
             }
         });
@@ -591,18 +591,18 @@ public class NoteDetailActivity extends BaseActivity {
                         public void done(String s, BmobException e) {
                             if (e == null) {
                                 refreshCommentData();
-                                Toast.makeText(getApplicationContext(), "评论成功", Toast.LENGTH_SHORT).show();
+                                MiscUtils.makeToast(NoteDetailActivity.this, "评论成功", false);
                                 Map<String, Object> map = new HashMap<>();
                                 map.put("noteId", mNote.getObjectId());
                                 map.put("content", commentContent);
-                                BackendUtils.pushMessage(getApplicationContext(), mNote.getUser(), "COMMENT", map);
+                                BackendUtils.pushMessage(NoteDetailActivity.this, mNote.getUser(), "COMMENT", map);
                             } else {
-                                BackendUtils.handleException(e, getApplicationContext());
+                                BackendUtils.handleException(e, NoteDetailActivity.this);
                             }
                         }
                     });
                 } else {
-                    Toast.makeText(getApplicationContext(), "评论内容不能为空", Toast.LENGTH_SHORT).show();
+                    MiscUtils.makeToast(NoteDetailActivity.this, "评论内容不能为空", false);
                 }
             }
         });
@@ -684,23 +684,23 @@ public class NoteDetailActivity extends BaseActivity {
                                     public void done(BmobException e) {
                                         if (e == null) {
                                             refreshCommentData();
-                                            Toast.makeText(getApplicationContext(), "评论成功", Toast.LENGTH_SHORT).show();
+                                            MiscUtils.makeToast(NoteDetailActivity.this, "评论成功", false);
                                             Map<String, Object> map = new HashMap<>();
                                             map.put("noteId", mNote.getObjectId());
                                             map.put("content", replyContent);
-                                            BackendUtils.pushMessage(getApplicationContext(), mNote.getUser(), "COMMENT", map);
+                                            BackendUtils.pushMessage(NoteDetailActivity.this, mNote.getUser(), "COMMENT", map);
                                         } else {
-                                            BackendUtils.handleException(e, getApplicationContext());
+                                            BackendUtils.handleException(e, NoteDetailActivity.this);
                                         }
                                     }
                                 });
                             } else {
-                                BackendUtils.handleException(e, getApplicationContext());
+                                BackendUtils.handleException(e, NoteDetailActivity.this);
                             }
                         }
                     });
                 } else {
-                    Toast.makeText(getApplicationContext(), "回复内容不能为空", Toast.LENGTH_SHORT).show();
+                    MiscUtils.makeToast(NoteDetailActivity.this, "回复内容不能为空", false);
                 }
             }
         });
@@ -774,10 +774,10 @@ public class NoteDetailActivity extends BaseActivity {
                             public void done(BmobException e) {
                                 if (e == null) {
                                     LocalBroadcastManager.getInstance(NoteDetailActivity.this).sendBroadcast(new Intent("android.intent.action.NOTE_LIST_CHANGE"));
-                                    Toast.makeText(getApplicationContext(), "删除成功", Toast.LENGTH_SHORT).show();
+                                    MiscUtils.makeToast(NoteDetailActivity.this, "删除成功", false);
                                     finish();
                                 } else {
-                                    BackendUtils.handleException(e, getApplicationContext());
+                                    BackendUtils.handleException(e, NoteDetailActivity.this);
                                 }
                             }
                         });
@@ -798,7 +798,7 @@ public class NoteDetailActivity extends BaseActivity {
             mFocusAction.setText(R.string.unfollow);
             mFocusAction.setTextColor(mFollowColor);
             mFocusAction.setBackgroundResource(R.drawable.ic_followed);
-            BackendUtils.pushMessage(getApplicationContext(), mNote.getUser(), "FOLLOW", null);
+            BackendUtils.pushMessage(NoteDetailActivity.this, mNote.getUser(), "FOLLOW", null);
         }
     }
 
@@ -845,7 +845,7 @@ public class NoteDetailActivity extends BaseActivity {
                         });
                     }
                 } else {
-                    BackendUtils.handleException(e, getApplicationContext());
+                    BackendUtils.handleException(e, NoteDetailActivity.this);
                 }
             }
         });

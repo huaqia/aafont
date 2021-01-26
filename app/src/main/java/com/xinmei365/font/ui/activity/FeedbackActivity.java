@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.xinmei365.font.R;
 import com.xinmei365.font.utils.BackendUtils;
+import com.xinmei365.font.utils.MiscUtils;
 
 import butterknife.BindView;
 
@@ -39,13 +40,13 @@ public class FeedbackActivity extends BaseActivity {
                 String commit = mContent.getText().toString();
                 String contactInfo = mContactInfo.getText().toString();
                 if (TextUtils.isEmpty(commit)) {
-                    Toast.makeText(getApplicationContext(),"不能提交空反馈!",Toast.LENGTH_SHORT).show();
+                    MiscUtils.makeToast(FeedbackActivity.this, "不能提交空反馈!", false);
                 } else {
                     BackendUtils.saveFeedback(commit, contactInfo, new BackendUtils.DoneCallback() {
                         @Override
                         public void onDone(boolean success, int code) {
                             if (success) {
-                                Toast.makeText(getApplicationContext(),"成功提交反馈!",Toast.LENGTH_SHORT).show();
+                                MiscUtils.makeToast(FeedbackActivity.this, "成功提交反馈!", false);
                                 finish();
                             }
                         }

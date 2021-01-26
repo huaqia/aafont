@@ -292,9 +292,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                         }
                     } else {
                         if (e.getErrorCode() == 9016) {
-                            Toast toast = Toast.makeText(mContext, "网络被外星人劫持了，请稍后再试…",Toast.LENGTH_SHORT);
-                            toast.setGravity(Gravity.CENTER, 0, 0);
-                            toast.show();
+                            MiscUtils.makeToast(mContext, "网络被外星人劫持了，请稍后再试…", true);
                         } else {
                             Log.e(TAG, e.toString());
                         }

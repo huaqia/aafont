@@ -125,7 +125,7 @@ public class ContactFriendsActivity extends BaseActivity {
                     }
                     fetchToData(type, focusList, name);
                 } else {
-                    BackendUtils.handleException(e, getApplicationContext());
+                    BackendUtils.handleException(e, ContactFriendsActivity.this);
                     if (type == PULL_REFRESH) {
                         mSwipeRefreshLayout.finishRefresh();
                     } else {
@@ -176,7 +176,7 @@ public class ContactFriendsActivity extends BaseActivity {
                     }
                     mAdapter.notifyDataSetChanged();
                 } else {
-                    BackendUtils.handleException(e, getApplicationContext());
+                    BackendUtils.handleException(e, ContactFriendsActivity.this);
                 }
                 if (type == PULL_REFRESH) {
                     mSwipeRefreshLayout.finishRefresh();

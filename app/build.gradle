@@ -15,8 +15,8 @@ android {
         applicationId "com.xinmei365.font"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 701
-        versionName "7.0.0.1"
+        versionCode 702
+        versionName "7.0.0.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [UMENG_CHANNEL_VALUE: "official"]
         ndk {

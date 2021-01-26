@@ -23,6 +23,7 @@ import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.AppCompatTextView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -42,6 +43,7 @@ import com.xinmei365.font.MyApplication;
 import com.xinmei365.font.R;
 import com.xinmei365.font.model.User;
 import com.xinmei365.font.utils.BackendUtils;
+import com.xinmei365.font.utils.MiscUtils;
 
 import java.io.File;
 import java.util.List;
@@ -216,10 +218,8 @@ public class EditUserMessageActivity extends BaseActivity {
             public void onClick(View v) {
                 String intro = mUserIntroduction.getText().toString();
                 String username = mUserName.getText().toString();
-                if (intro == null) {
-                    Toast.makeText(mContext, "简介不能为空", Toast.LENGTH_SHORT).show();
-                } else if (username == null) {
-                    Toast.makeText(mContext, "姓名不能为空", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(username)) {
+                    MiscUtils.makeToast(EditUserMessageActivity.this, "姓名不能为空", false);
                 } else {
                     currentUser.setIntro(mUserIntroduction.getText().toString());
                     currentUser.setNickName(mUserName.getText().toString());
@@ -235,19 +235,19 @@ public class EditUserMessageActivity extends BaseActivity {
                                         @Override
                                         public void done(BmobException e) {
                                             if (e == null) {
-                                                Toast.makeText(mContext, "修改个人信息成功", Toast.LENGTH_SHORT).show();
+                                                MiscUtils.makeToast(EditUserMessageActivity.this, "修改个人信息成功", false);
                                             } else {
                                                 if (e.getErrorCode() == 211 || e.getErrorCode() == 9016) {
-                                                    BackendUtils.handleException(e, mContext);
+                                                    BackendUtils.handleException(e, EditUserMessageActivity.this);
                                                 } else {
-                                                    Toast.makeText(mContext, "修改个人信息失败", Toast.LENGTH_SHORT).show();
+                                                    MiscUtils.makeToast(EditUserMessageActivity.this, "修改个人信息失败", false);
                                                 }
                                             }
                                             finish();
                                         }
                                     });
                                 } else {
-                                    BackendUtils.handleException(e, mContext);
+                                    BackendUtils.handleException(e, EditUserMessageActivity.this);
                                 }
                             }
                         });
@@ -256,12 +256,12 @@ public class EditUserMessageActivity extends BaseActivity {
                             @Override
                             public void done(BmobException e) {
                                 if (e == null) {
-                                    Toast.makeText(mContext, "修改个人信息成功", Toast.LENGTH_SHORT).show();
+                                    MiscUtils.makeToast(EditUserMessageActivity.this, "修改个人信息成功", false);
                                 } else {
                                     if (e.getErrorCode() == 211 || e.getErrorCode() == 9016) {
-                                        BackendUtils.handleException(e, mContext);
+                                        BackendUtils.handleException(e, EditUserMessageActivity.this);
                                     } else {
-                                        Toast.makeText(mContext, "修改个人信息失败", Toast.LENGTH_SHORT).show();
+                                        MiscUtils.makeToast(EditUserMessageActivity.this, "修改个人信息失败", false);
                                     }
                                 }
                                 finish();
@@ -305,7 +305,7 @@ public class EditUserMessageActivity extends BaseActivity {
                         mGenderWoman.setChecked(true);
                     }
                 } else {
-                    BackendUtils.handleException(e, getApplicationContext());
+                    BackendUtils.handleException(e, EditUserMessageActivity.this);
                 }
             }
         });
@@ -453,7 +453,7 @@ public class EditUserMessageActivity extends BaseActivity {
                         mPopupWindow.dismiss();
                     } catch (Exception e) {
                         Log.e(TAG, e.toString());
-                        Toast.makeText(EditUserMessageActivity.this, "相机无法启动，请先开启相机权限" + e.toString(), Toast.LENGTH_LONG).show();
+                        MiscUtils.makeToast(EditUserMessageActivity.this, "相机无法启动，请先开启相机权限" + e.toString(), false);
                     }
                     //点击空白区域
                     if(mPopupWindow!=null){

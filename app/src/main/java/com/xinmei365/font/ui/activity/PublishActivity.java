@@ -153,10 +153,10 @@ public class PublishActivity extends BaseActivity {
                                         if (e == null) {
                                             showProgressBar(false);
                                             LocalBroadcastManager.getInstance(PublishActivity.this).sendBroadcast(new Intent("android.intent.action.NOTE_LIST_CHANGE"));
-                                            Toast.makeText(getApplicationContext(), "发布成功！", Toast.LENGTH_SHORT).show();
+                                            MiscUtils.makeToast(PublishActivity.this, "发布成功！", false);
                                             finish();
                                         } else {
-                                            BackendUtils.handleException(e, getApplicationContext());
+                                            BackendUtils.handleException(e, PublishActivity.this);
                                         }
                                     }
                                 });
@@ -176,16 +176,16 @@ public class PublishActivity extends BaseActivity {
                                                         if (e == null) {
                                                             showProgressBar(false);
                                                             LocalBroadcastManager.getInstance(PublishActivity.this).sendBroadcast(new Intent("android.intent.action.NOTE_LIST_CHANGE"));
-                                                            Toast.makeText(getApplicationContext(), "发布成功！", Toast.LENGTH_SHORT).show();
+                                                            MiscUtils.makeToast(PublishActivity.this, "发布成功！", false);
                                                             finish();
                                                         } else {
-                                                            BackendUtils.handleException(e, getApplicationContext());
+                                                            BackendUtils.handleException(e, PublishActivity.this);
                                                         }
                                                     }
                                                 });
                                             }
                                         } else {
-                                            BackendUtils.handleException(e, getApplicationContext());
+                                            BackendUtils.handleException(e, PublishActivity.this);
                                         }
                                     }
                                 });
@@ -252,7 +252,7 @@ public class PublishActivity extends BaseActivity {
                         String json = gson.toJson(noteDatas);
                         FileUtils.saveStringToFile(json, jsonFile);
                         finish();
-                        Toast.makeText(getApplicationContext(),"保存草稿成功！",Toast.LENGTH_SHORT).show();
+                        MiscUtils.makeToast(PublishActivity.this, "保存草稿成功！", false);
                     }
                 });
             }
@@ -450,7 +450,7 @@ public class PublishActivity extends BaseActivity {
                             mSavedUrls.remove(position);
                             mAdapter.notifyDataSetChanged();
                         } else {
-                            Toast.makeText(getApplicationContext(), "至少要有一张图片哟", Toast.LENGTH_SHORT).show();
+                            MiscUtils.makeToast(PublishActivity.this, "至少要有一张图片哟", false);
                         }
                     }
                 });
@@ -480,7 +480,7 @@ public class PublishActivity extends BaseActivity {
                     @Override
                     public void onClick(View view) {
                         if (mSavedUrls.size() >= 9) {
-                            Toast.makeText(getApplicationContext(), "最多只能选择9张图片", Toast.LENGTH_SHORT).show();
+                            MiscUtils.makeToast(PublishActivity.this, "最多只能选择9张图片", false);
                         } else {
                             Intent intent = new Intent(getApplicationContext(), ImageSelectActivity.class);
                             intent.putExtra("album", "Camera");//Environment.DIRECTORY_DCIM);

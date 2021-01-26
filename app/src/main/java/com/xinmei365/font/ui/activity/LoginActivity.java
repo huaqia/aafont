@@ -18,6 +18,7 @@ import com.xinmei365.font.R;
 import com.xinmei365.font.social.BindHelper;
 import com.xinmei365.font.utils.BackendUtils;
 import com.xinmei365.font.utils.ErrorCode;
+import com.xinmei365.font.utils.MiscUtils;
 import com.xinmei365.font.utils.NetworkUtils;
 
 import org.json.JSONObject;
@@ -78,17 +79,17 @@ public class LoginActivity extends BaseActivity {
                 @Override
                 public void onDone(boolean success, int code) {
                     if (success) {
-                        Toast.makeText(context, "登录成功", Toast.LENGTH_SHORT).show();
+                        MiscUtils.makeToast(LoginActivity.this, "登录成功", false);
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                         LoginActivity.this.finish();
                     } else {
-                        Toast.makeText(context, "用户名或密码错误", Toast.LENGTH_SHORT).show();
+                        MiscUtils.makeToast(LoginActivity.this, "用户名或密码错误", false);
                     }
                 }
             });
         } else if (!isNetworkAvailable) {
-            Toast.makeText(context, "未连接网络！！", Toast.LENGTH_SHORT).show();
+            MiscUtils.makeToast(this, "未连接网络！！", false);
         }
     }
 
@@ -109,7 +110,7 @@ public class LoginActivity extends BaseActivity {
         if (isNetworkAvailable) {
             BindHelper.getInstance(this).bindWeibo(new BindStatus(0));
         } else {
-            Toast.makeText(context, "未连接网络！！", Toast.LENGTH_SHORT).show();
+            MiscUtils.makeToast(this, "未连接网络！！", false);
         }
     }
 
@@ -149,7 +150,7 @@ public class LoginActivity extends BaseActivity {
                         .show();
             }
         } else {
-            Toast.makeText(context, "未连接网络！！", Toast.LENGTH_SHORT).show();
+            MiscUtils.makeToast(this, "未连接网络！！", false);
         }
     }
 
@@ -160,7 +161,7 @@ public class LoginActivity extends BaseActivity {
         if (isNetworkAvailable) {
             BindHelper.getInstance(this).bindQQ(new BindStatus(2));
         } else {
-            Toast.makeText(context, "未连接网络！！", Toast.LENGTH_SHORT).show();
+            MiscUtils.makeToast(this, "未连接网络！！", false);
         }
     }
 
@@ -171,10 +172,9 @@ public class LoginActivity extends BaseActivity {
         if (userName.length() > 0 && password.length() > 0) {
             return true;
         } else if (userName.length() <= 0) {
-            Toast.makeText(getApplicationContext(), "用户名不能为空", Toast.LENGTH_SHORT).show();
-
+            MiscUtils.makeToast(this, "用户名不能为空", false);
         } else {
-            Toast.makeText(getApplicationContext(), "密码不能为空", Toast.LENGTH_SHORT).show();
+            MiscUtils.makeToast(this, "密码不能为空", false);
         }
         return false;
     }

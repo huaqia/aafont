@@ -154,7 +154,7 @@ public class RelatedUsersActivity extends BaseActivity {
                             mEmptyView.setVisibility(View.VISIBLE);
                         }
                     } else {
-                        BackendUtils.handleException(e, getApplicationContext());
+                        BackendUtils.handleException(e, RelatedUsersActivity.this);
                         if (type == PULL_REFRESH) {
                             mSwipeRefreshLayout.finishRefresh();
                         } else {
@@ -220,7 +220,7 @@ public class RelatedUsersActivity extends BaseActivity {
                         mEmptyView.setVisibility(View.VISIBLE);
                     }
                 } else {
-                    BackendUtils.handleException(e, getApplicationContext());
+                    BackendUtils.handleException(e, RelatedUsersActivity.this);
                 }
                 if (type == PULL_REFRESH) {
                     mSwipeRefreshLayout.finishRefresh();
