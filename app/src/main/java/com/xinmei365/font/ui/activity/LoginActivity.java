@@ -42,6 +42,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         if (getIntent() != null) {
             Intent intent = getIntent();
@@ -58,7 +59,6 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void setMyContentView() {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_login);
     }
 

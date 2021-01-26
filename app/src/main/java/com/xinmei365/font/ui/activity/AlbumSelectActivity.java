@@ -27,6 +27,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.xinmei365.font.MyApplication;
 import com.xinmei365.font.R;
 import com.xinmei365.font.ui.widget.RatioImageView;
 import com.xinmei365.font.utils.Constant;
@@ -255,7 +256,7 @@ public class AlbumSelectActivity extends BaseActivity {
             if (holder instanceof AlbumSelectViewHolder) {
                 final AlbumSelectViewHolder finalHolder = (AlbumSelectViewHolder)holder;
                 String url = mAlbums.get(position).coverPath;
-                Glide.with(holder.itemView.getContext())
+                Glide.with(MyApplication.getInstance())
                         .load(url)
                         .fitCenter()
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)

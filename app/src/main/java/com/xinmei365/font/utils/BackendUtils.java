@@ -233,7 +233,11 @@ public class BackendUtils {
         query.count(User.class, new CountListener() {
             @Override
             public void done(Integer integer, BmobException e) {
-                callback.onDone(e == null, integer);
+                if (integer != null) {
+                    callback.onDone(e == null, integer);
+                } else {
+                    callback.onDone(e == null, 0);
+                }
             }
         });
     }

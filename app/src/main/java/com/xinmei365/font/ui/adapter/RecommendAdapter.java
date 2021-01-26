@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.xinmei365.font.MyApplication;
 import com.xinmei365.font.R;
 import com.xinmei365.font.model.Note;
 import com.xinmei365.font.model.User;
@@ -65,7 +66,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             final User user = mUsers.get(position);
             final String userId = user.getObjectId();
             if (user.getAvatar() != null) {
-                Glide.with(mContext)
+                Glide.with(MyApplication.getInstance())
                         .load(user.getAvatar())
                         .fitCenter()
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)
@@ -162,7 +163,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     if (list.size() > 0) {
                         final Note note = list.get(0);
                         final String url = note.getPics().get(0);
-                        Glide.with(mContext)
+                        Glide.with(MyApplication.getInstance())
                                 .load(url)
                                 .centerCrop()
                                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
@@ -196,7 +197,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     if (list.size() > 1) {
                         final Note note = list.get(1);
                         final String url = note.getPics().get(0);
-                        Glide.with(mContext)
+                        Glide.with(MyApplication.getInstance())
                                 .load(url)
                                 .centerCrop()
                                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
@@ -230,7 +231,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     if (list.size() > 2) {
                         final Note note = list.get(2);
                         final String url = note.getPics().get(0);
-                        Glide.with(mContext)
+                        Glide.with(MyApplication.getInstance())
                                 .load(url)
                                 .centerCrop()
                                 .diskCacheStrategy(DiskCacheStrategy.RESULT)

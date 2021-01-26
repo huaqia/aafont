@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.xinmei365.font.MyApplication;
 import com.xinmei365.font.R;
 import com.xinmei365.font.ui.activity.ChatActivity;
 import com.xinmei365.font.utils.MiscUtils;
@@ -51,7 +52,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             final BmobIMConversation conversation = mConversations.get(position);
             String icon = conversation.getConversationIcon();
             if (icon != null) {
-                Glide.with(mContext)
+                Glide.with(MyApplication.getInstance())
                         .load(icon)
                         .fitCenter()
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)

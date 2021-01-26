@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.xinmei365.font.ActivityCollector;
+import com.xinmei365.font.MyApplication;
 import com.xinmei365.font.R;
 import com.xinmei365.font.model.User;
 import com.xinmei365.font.ui.activity.LoginActivity;
@@ -66,7 +67,7 @@ public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if (user.getAvatar() == null) {
                 viewHolder.mUserIcon.setImageResource(R.drawable.avatar);
             } else {
-                Glide.with(holder.itemView.getContext())
+                Glide.with(MyApplication.getInstance())
                         .load(user.getAvatar())
                         .fitCenter()
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)

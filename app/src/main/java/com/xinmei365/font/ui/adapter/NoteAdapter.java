@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.xinmei365.font.MyApplication;
 import com.xinmei365.font.R;
 import com.xinmei365.font.model.Note;
 import com.xinmei365.font.model.User;
@@ -77,7 +78,7 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
             viewHolder.mNoteImage.setLayoutParams(params);
             final String url = note.getPics().get(0);
-            Glide.with(mContext)
+            Glide.with(MyApplication.getInstance())
                     .load(url)
                     .asBitmap()
                     .into(new SimpleTarget<Bitmap>() {
@@ -88,7 +89,7 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     });
             User noteUser = note.getUser();
             if (noteUser.getAvatar() != null) {
-                Glide.with(holder.itemView.getContext())
+                Glide.with(MyApplication.getInstance())
                         .load(noteUser.getAvatar())
                         .fitCenter()
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)

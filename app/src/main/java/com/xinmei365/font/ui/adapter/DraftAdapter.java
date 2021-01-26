@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
+import com.xinmei365.font.MyApplication;
 import com.xinmei365.font.R;
 import com.xinmei365.font.model.DraftData;
 import com.xinmei365.font.model.EffectData;
@@ -67,7 +68,7 @@ public class DraftAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     params.height = (int)(params.width * firstRatio);
                 }
                 viewHolder.draft_pic.setLayoutParams(params);
-                Glide.with(mContext)
+                Glide.with(MyApplication.getInstance())
                         .load(url)
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)

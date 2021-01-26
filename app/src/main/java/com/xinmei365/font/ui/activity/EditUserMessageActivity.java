@@ -38,6 +38,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.xinmei365.font.MyApplication;
 import com.xinmei365.font.R;
 import com.xinmei365.font.model.User;
 import com.xinmei365.font.utils.BackendUtils;
@@ -181,7 +182,7 @@ public class EditUserMessageActivity extends BaseActivity {
         mContext = getApplicationContext();
 
         if (currentUser.getAvatar() != null) {
-            Glide.with(mContext)
+            Glide.with(MyApplication.getInstance())
                     .load(currentUser.getAvatar())
                     .fitCenter()
                     .diskCacheStrategy(DiskCacheStrategy.RESULT)

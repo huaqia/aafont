@@ -22,6 +22,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.xinmei365.font.MyApplication;
 import com.xinmei365.font.R;
 import com.xinmei365.font.model.User;
 import com.xinmei365.font.utils.BackendUtils;
@@ -210,7 +211,7 @@ public class ContactFriendsActivity extends BaseActivity {
                 ContactFriendsViewHolder viewHolder = (ContactFriendsViewHolder)holder;
                 final User user = mUsers.get(position);
                 if (user.getAvatar() != null) {
-                    Glide.with(holder.itemView.getContext())
+                    Glide.with(MyApplication.getInstance())
                             .load(user.getAvatar())
                             .fitCenter()
                             .diskCacheStrategy(DiskCacheStrategy.RESULT)
@@ -222,9 +223,11 @@ public class ContactFriendsActivity extends BaseActivity {
                     public void onClick(View view) {
                         BmobIMUserInfo info = new BmobIMUserInfo(user.getObjectId(), user.getNickName(), user.getAvatar());
                         BmobIMConversation conversationEntrance = BmobIM.getInstance().startPrivateConversation(info, null);
-                        Intent intent = new Intent(ContactFriendsActivity.this, ChatActivity.class);
-                        intent.putExtra("conversation", conversationEntrance);
-                        startActivity(intent);
+                        if (conversationEntrance != null) {
+                            Intent intent = new Intent(ContactFriendsActivity.this, ChatActivity.class);
+                            intent.putExtra("conversation", conversationEntrance);
+                            startActivity(intent);
+                        }
                     }
                 });
             }

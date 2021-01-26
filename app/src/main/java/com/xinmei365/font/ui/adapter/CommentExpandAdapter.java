@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.xinmei365.font.MyApplication;
 import com.xinmei365.font.R;
 import com.xinmei365.font.model.Comment;
 import com.xinmei365.font.model.Reply;
@@ -150,7 +151,7 @@ public class CommentExpandAdapter extends BaseExpandableListAdapter {
             }
         });
         if (user.getAvatar() != null) {
-            Glide.with(context)
+            Glide.with(MyApplication.getInstance())
                     .load(user.getAvatar())
                     .fitCenter()
                     .diskCacheStrategy(DiskCacheStrategy.RESULT)
@@ -181,7 +182,7 @@ public class CommentExpandAdapter extends BaseExpandableListAdapter {
 
         final Reply reply = commentList.get(groupPosition).getReplyIds().get(childPosition);
         final User user = reply.getUser();
-        Glide.with(context).load(user.getAvatar())
+        Glide.with(MyApplication.getInstance()).load(user.getAvatar())
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .error(R.mipmap.ic_launcher)
                 .centerCrop()

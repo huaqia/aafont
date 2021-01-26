@@ -18,6 +18,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
+import com.xinmei365.font.MyApplication;
 import com.xinmei365.font.R;
 import com.xinmei365.font.model.EffectData;
 import com.xinmei365.font.ui.widget.TagImageView;
@@ -68,7 +69,7 @@ public class DetailPicFragment extends BaseFragment {
     @Override
     public void init() {
         super.init();
-        Glide.with(mContext)
+        Glide.with(MyApplication.getInstance())
                 .load(mPath)
                 .asBitmap()
                 .into(new SimpleTarget<Bitmap>() {
@@ -90,7 +91,7 @@ public class DetailPicFragment extends BaseFragment {
                         }
                         mPicMain.setLayoutParams(params);
                         if (params.topMargin > 0) {
-                            Glide.with(mContext)
+                            Glide.with(MyApplication.getInstance())
                                     .load(mPath)
                                     .fitCenter()
                                     .diskCacheStrategy(DiskCacheStrategy.RESULT)
@@ -112,7 +113,7 @@ public class DetailPicFragment extends BaseFragment {
                                     })
                                     .into(mImage);
                         } else {
-                            Glide.with(mContext)
+                            Glide.with(MyApplication.getInstance())
                                     .load(mPath)
                                     .centerCrop()
                                     .diskCacheStrategy(DiskCacheStrategy.RESULT)

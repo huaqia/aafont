@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.xinmei365.font.MyApplication;
 import com.xinmei365.font.R;
 import com.xinmei365.font.model.Comment;
 import com.xinmei365.font.model.EffectData;
@@ -177,7 +178,7 @@ public class NoteDetailActivity extends BaseActivity {
             if (tagDatas != null && tagDatas.size() > i) {
                 fragment.setTagDatas(tagDatas.get(i));
             }
-            fragment.setContext(getApplicationContext());
+            fragment.setContext(this);
             mFragments.add(fragment);
         }
         mFragmentAdapter = new FragmentViewPagerAdapter(getSupportFragmentManager(), mBanner, mFragments);
@@ -221,8 +222,12 @@ public class NoteDetailActivity extends BaseActivity {
                     map.put("type", "oppo");
                     map.put("name", mNote.getOppoFontId());
                     TrackerUtils.onEvent(mContext, "jump_theme_store", map);
-                    Intent new_intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("oaps://theme/detail?rtp=%s&id=%s", typeStr, mNote.getOppoFontId()))); //oaps://theme/detail?rtp=font&id=2246947&openinsystem=true&from=h5
-                    startActivity(new_intent);
+                    try {
+                        Intent new_intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("oaps://theme/detail?rtp=%s&id=%s", typeStr, mNote.getOppoFontId()))); //oaps://theme/detail?rtp=font&id=2246947&openinsystem=true&from=h5
+                        startActivity(new_intent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         } else if (RomUtils.isVivo() && !TextUtils.isEmpty(mNote.getVivoFontId())) {
@@ -238,8 +243,12 @@ public class NoteDetailActivity extends BaseActivity {
                     map.put("type", "vivo");
                     map.put("name", mNote.getVivoFontId());
                     TrackerUtils.onEvent(mContext, "jump_theme_store", map);
-                    Intent new_intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("newthemedetail://newthemehost?pkg=com.bbk.theme&restype=%s&id=%s", typeStr, mNote.getVivoFontId())));
-                    startActivity(new_intent);
+                    try {
+                        Intent new_intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("newthemedetail://newthemehost?pkg=com.bbk.theme&restype=%s&id=%s", typeStr, mNote.getVivoFontId())));
+                        startActivity(new_intent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         } else if (RomUtils.isEmui() && !TextUtils.isEmpty(mNote.getHuaweiFontId())) {
@@ -251,8 +260,12 @@ public class NoteDetailActivity extends BaseActivity {
                     map.put("type", "huawei");
                     map.put("name", mNote.getHuaweiFontId());
                     TrackerUtils.onEvent(mContext, "jump_theme_store", map);
-                    Intent new_intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("https://url.cloud.huawei.com/%s", mNote.getHuaweiFontId())));
-                    startActivity(new_intent);
+                    try {
+                        Intent new_intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("https://url.cloud.huawei.com/%s", mNote.getHuaweiFontId())));
+                        startActivity(new_intent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         } else if (RomUtils.isMiui() && !TextUtils.isEmpty(mNote.getXiaomiFontId())) {
@@ -264,8 +277,12 @@ public class NoteDetailActivity extends BaseActivity {
                     map.put("type", "xiaomi");
                     map.put("name", mNote.getXiaomiFontId());
                     TrackerUtils.onEvent(mContext, "jump_theme_store", map);
-                    Intent new_intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("http://zhuti.xiaomi.com/detail/%s", mNote.getXiaomiFontId())));
-                    startActivity(new_intent);
+                    try {
+                        Intent new_intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("http://zhuti.xiaomi.com/detail/%s", mNote.getXiaomiFontId())));
+                        startActivity(new_intent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         }
@@ -277,7 +294,7 @@ public class NoteDetailActivity extends BaseActivity {
         }
         mTime.setText(mNote.getUpdatedAt());
         if (noteUser.getAvatar() != null) {
-            Glide.with(getApplicationContext())
+            Glide.with(MyApplication.getInstance())
                     .load(noteUser.getAvatar())
                     .fitCenter()
                     .diskCacheStrategy(DiskCacheStrategy.RESULT)
@@ -297,7 +314,7 @@ public class NoteDetailActivity extends BaseActivity {
             }
         });
         if (currentUser.getAvatar() != null) {
-            Glide.with(getApplicationContext())
+            Glide.with(MyApplication.getInstance())
                     .load(currentUser.getAvatar())
                     .fitCenter()
                     .diskCacheStrategy(DiskCacheStrategy.RESULT)

@@ -28,6 +28,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.xinmei365.font.MyApplication;
 import com.xinmei365.font.R;
 import com.xinmei365.font.model.DraftData;
 import com.xinmei365.font.model.EffectData;
@@ -434,7 +435,7 @@ public class PublishActivity extends BaseActivity {
 //                    }
 //                });
 //                holder.image.setImage(mUrls.get(position));
-                Glide.with(getApplicationContext())
+                Glide.with(MyApplication.getInstance())
                         .load(mSavedUrls.get(position))
                         .fitCenter()
                         .skipMemoryCache(true)

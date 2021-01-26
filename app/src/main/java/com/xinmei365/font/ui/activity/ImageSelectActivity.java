@@ -30,6 +30,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.xinmei365.font.MyApplication;
 import com.xinmei365.font.R;
 import com.xinmei365.font.ui.widget.RatioImageView;
 import com.xinmei365.font.utils.Constant;
@@ -299,7 +300,7 @@ public class ImageSelectActivity extends BaseActivity {
             if (holder instanceof ImageSelectViewHolder) {
                 final ImageSelectViewHolder finalHolder = (ImageSelectViewHolder)holder;
                 final String url = mImageUrls.get(position);
-                Glide.with(holder.itemView.getContext())
+                Glide.with(MyApplication.getInstance())
                         .load(url)
                         .fitCenter()
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)
@@ -368,7 +369,7 @@ public class ImageSelectActivity extends BaseActivity {
             if (holder instanceof ImageResultViewHolder) {
                 final ImageResultViewHolder finalHolder = (ImageResultViewHolder)holder;
                 final String url = mSelectUrls.get(position);
-                Glide.with(holder.itemView.getContext())
+                Glide.with(MyApplication.getInstance())
                         .load(url)
                         .fitCenter()
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)

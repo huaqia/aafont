@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.xinmei365.font.MyApplication;
 import com.xinmei365.font.R;
 import com.xinmei365.font.model.Note;
 import com.xinmei365.font.model.User;
@@ -117,7 +118,7 @@ public class FollowFragment extends BaseFragment {
                 if (e == null){
                     User user = list.get(0);
                     if (user.getAvatar() != null) {
-                        Glide.with(getContext())
+                        Glide.with(MyApplication.getInstance())
                                 .load(user.getAvatar())
                                 .fitCenter()
                                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
