@@ -18,9 +18,8 @@ public class DatabaseUtils {
         PullMessageSQLiteOpenHelper helper = new PullMessageSQLiteOpenHelper(context);
         SQLiteDatabase database = helper.getReadableDatabase();
         StringBuilder sb = new StringBuilder();
-        final User currentUser = BmobUser.getCurrentUser(User.class);
         sb.append("select * from messages where fromUserId=\"");
-        sb.append(currentUser.getObjectId());
+        sb.append(BackendUtils.getObjectId());
         sb.append("\" and ( ");
         for (int i = 0; i < types.length; i++) {
             if (i > 0) {
@@ -58,17 +57,17 @@ public class DatabaseUtils {
     }
 
     public static void insertMsg(Context context, String type, String time, String userId, String extra) {
-        final User currentUser = BmobUser.getCurrentUser(User.class);
+        String objectId = BackendUtils.getObjectId();
         boolean needUpdate = false;
         boolean isHave = false;
         PullMessageSQLiteOpenHelper helper = new PullMessageSQLiteOpenHelper(context);
         SQLiteDatabase readDatabase = helper.getReadableDatabase();
-        Cursor cursor = readDatabase.rawQuery("select * from messages where fromUserId=? and type=? and userId=? and extra=?", new String[]{currentUser.getObjectId(), type, userId, extra});
+        Cursor cursor = readDatabase.rawQuery("select * from messages where fromUserId=? and type=? and userId=? and extra=?", new String[]{objectId, type, userId, extra});
         if (cursor.getCount() > 0) {
             if (!type.equals("COMMENT")) {
                 needUpdate = true;
             }
-            cursor = readDatabase.rawQuery("select * from messages where fromUserId=? and type=? and time=? and userId=? and extra=?", new String[]{currentUser.getObjectId(), type, time, userId, extra});
+            cursor = readDatabase.rawQuery("select * from messages where fromUserId=? and type=? and time=? and userId=? and extra=?", new String[]{objectId, type, time, userId, extra});
             if (cursor.getCount() > 0) {
                 isHave = true;
             }
@@ -76,9 +75,9 @@ public class DatabaseUtils {
         if (!isHave) {
             SQLiteDatabase writeDatabase = helper.getWritableDatabase();
             if (needUpdate) {
-                writeDatabase.execSQL("update messages set time=? where fromUserId=? and type=? and userId=? and extra=?;", new String[]{time, currentUser.getObjectId(), type, userId, extra});
+                writeDatabase.execSQL("update messages set time=? where fromUserId=? and type=? and userId=? and extra=?;", new String[]{time, objectId, type, userId, extra});
             } else {
-                writeDatabase.execSQL("insert or ignore into messages(fromUserId, type, time, userId, extra) values(?, ?,?,?,?);", new String[]{currentUser.getObjectId(), type, time, userId, extra});
+                writeDatabase.execSQL("insert or ignore into messages(fromUserId, type, time, userId, extra) values(?, ?,?,?,?);", new String[]{objectId, type, time, userId, extra});
             }
         }
     }

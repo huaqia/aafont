@@ -23,6 +23,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.bmob.v3.exception.BmobException;
 
 public class RegisterActivity extends BaseActivity {
     public static final String FROM_REGISTER_USERNAME = "from_username";
@@ -66,16 +67,18 @@ public class RegisterActivity extends BaseActivity {
                     final String password = mPassword.getText().toString();
                     BackendUtils.signUp(name, phone, phone, password, new BackendUtils.DoneCallback() {
                         @Override
-                        public void onDone(boolean success, int code) {
-                            if (success) {
+                        public void onDone(BmobException e) {
+                            if (e == null) {
                                 MiscUtils.makeToast(RegisterActivity.this, "注册成功,请登录", false);
                                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                 intent.putExtra(FROM_REGISTER_USERNAME, phone);
                                 intent.putExtra(FROM_REGISTER_PWD, password);
                                 startActivity(intent);
                                 finish();
-                            } else {
+                            } else if (e.getErrorCode() == 202) {
                                 MiscUtils.makeToast(RegisterActivity.this, "该手机号已经注册", false);
+                            } else {
+                                BackendUtils.handleException(e, RegisterActivity.this);
                             }
                         }
                     });
@@ -130,10 +133,10 @@ public class RegisterActivity extends BaseActivity {
             equalConditions.put("mobilePhoneNumber", mMobileNumber.getText().toString());
             Map<String, Map<String, String>> conditions = new HashMap<>();
             conditions.put("equal", equalConditions);
-            BackendUtils.countForCondition(conditions, new BackendUtils.DoneCallback() {
+            BackendUtils.countForCondition(conditions, new BackendUtils.CountCallback() {
                 @Override
-                public void onDone(boolean success, int code) {
-                    if (success) {
+                public void onDone(BmobException e, int code) {
+                    if (e == null) {
                         if (code <= 0) {
                             Message msg = new Message();
                             msg.what = Is_Mobile_unHave;
@@ -143,6 +146,8 @@ public class RegisterActivity extends BaseActivity {
                             msg.what = Is_Mobile_Have;
                             mHandler.sendMessage(msg);
                         }
+                    } else {
+                        BackendUtils.handleException(e, RegisterActivity.this);
                     }
                 }
             });
@@ -190,8 +195,8 @@ public class RegisterActivity extends BaseActivity {
     private void getVerifyCode() {
         BackendUtils.requestSMSCode(mMobileNumber.getText().toString(), new BackendUtils.DoneCallback() {
             @Override
-            public void onDone(boolean success, int code) {
-                if (success) {
+            public void onDone(BmobException e) {
+                if (e == null) {
                     Message msg = new Message();
                     msg.what = GET_CODE_SUCCESS;
                     mHandler.handleMessage(msg);
@@ -208,8 +213,8 @@ public class RegisterActivity extends BaseActivity {
     private void verifyCode(String code) {
         BackendUtils.verifySmsCode(mMobileNumber.getText().toString(), code, new BackendUtils.DoneCallback() {
             @Override
-            public void onDone(boolean success, int code) {
-                if (success) {
+            public void onDone(BmobException e) {
+                if (e == null) {
                     Message msg = new Message();
                     msg.what = VERIFY_CODE_SUCCESS;
                     mHandler.handleMessage(msg);

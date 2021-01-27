@@ -29,20 +29,16 @@ import javax.microedition.khronos.opengles.GL10;
 @SuppressLint({"WrongCall"})
 @TargetApi(11)
 public class GPUImageRenderer implements GLSurfaceView.Renderer {
-    public static final int NO_IMAGE = -1;
     static final float[] CUBE = new float[]{-1.0F, -1.0F, 1.0F, -1.0F, -1.0F, 1.0F, 1.0F, 1.0F};
     private GPUImageFilter mFilter;
     public final Object mSurfaceChangedWaiter = new Object();
     private int mGLTextureId = -1;
-    private SurfaceTexture mSurfaceTexture = null;
     private final FloatBuffer mGLCubeBuffer;
     private final FloatBuffer mGLTextureBuffer;
-    private IntBuffer mGLRgbBuffer;
     private int mOutputWidth;
     private int mOutputHeight;
     private int mImageWidth;
     private int mImageHeight;
-    private int mAddedPadding;
     private final Queue<Runnable> mRunOnDraw;
     private final Queue<Runnable> mRunOnDrawEnd;
     private Rotation mRotation;
@@ -84,10 +80,6 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
         this.runAll(this.mRunOnDraw);
         this.mFilter.onDrawFrame(this.mGLTextureId, this.mGLCubeBuffer, this.mGLTextureBuffer);
         this.runAll(this.mRunOnDrawEnd);
-        if (this.mSurfaceTexture != null) {
-            this.mSurfaceTexture.updateTexImage();
-        }
-
     }
 
     private void runAll(Queue<Runnable> queue) {
@@ -138,9 +130,6 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
                         Canvas can = new Canvas(resizedBitmap);
                         can.drawARGB(0, 0, 0, 0);
                         can.drawBitmap(bitmap, 0.0F, 0.0F, (Paint)null);
-                        GPUImageRenderer.this.mAddedPadding = 1;
-                    } else {
-                        GPUImageRenderer.this.mAddedPadding = 0;
                     }
 
                     GPUImageRenderer.this.mGLTextureId = OpenGlUtils.loadTexture(resizedBitmap != null ? resizedBitmap : bitmap, GPUImageRenderer.this.mGLTextureId, recycle);

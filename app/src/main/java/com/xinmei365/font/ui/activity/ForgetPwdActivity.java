@@ -26,6 +26,7 @@ import com.xinmei365.font.utils.NetworkUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.bmob.v3.exception.BmobException;
 
 public class ForgetPwdActivity extends BaseActivity {
     private static final int CHECK_MOBILE_EXIST = 0X11;
@@ -99,10 +100,10 @@ public class ForgetPwdActivity extends BaseActivity {
             } else if(!NetworkUtils.isNumber(mobile)){
                 MiscUtils.makeToast(this, "手机号格式不正确", false);
             } else {
-                BackendUtils.checkUserPhoneNumber(this, mobile, new BackendUtils.DoneCallback() {
+                BackendUtils.checkUserPhoneNumber(this, mobile, new BackendUtils.CountCallback() {
                     @Override
-                    public void onDone(boolean success, int code) {
-                        if (success) {
+                    public void onDone(BmobException e, int code) {
+                        if (e == null) {
                             if (code <= 0) {
                                 MiscUtils.makeToast(ForgetPwdActivity.this, "该手机号码未注册或绑定账户", false);
                             } else {
@@ -111,7 +112,7 @@ public class ForgetPwdActivity extends BaseActivity {
                                 mHandler.handleMessage(msg);
                             }
                         } else {
-                            MiscUtils.makeToast(ForgetPwdActivity.this, "服务器错误，请稍后重试！！", false);
+                            BackendUtils.handleException(e, ForgetPwdActivity.this);
                         }
                     }
                 });
@@ -135,8 +136,8 @@ public class ForgetPwdActivity extends BaseActivity {
             } if(setPwd.equals(againPwd)) {
                 BackendUtils.resetPasswordBySMSCode(code, setPwd, new BackendUtils.DoneCallback() {
                     @Override
-                    public void onDone(boolean success, int code) {
-                        if (success) {
+                    public void onDone(BmobException e) {
+                        if (e == null) {
                             Message msg = new Message();
                             msg.what = RESET_PASSWORD_SUCCESS;
                             mHandler.handleMessage(msg);
@@ -156,8 +157,8 @@ public class ForgetPwdActivity extends BaseActivity {
     private void getVerifyCode() {
         BackendUtils.requestSMSCode(mMobileNumber.getText().toString(), new BackendUtils.DoneCallback() {
             @Override
-            public void onDone(boolean success, int code) {
-                if (!success) {
+            public void onDone(BmobException e) {
+                if (e != null) {
                     mTimer.cancel();
                     MiscUtils.makeToast(ForgetPwdActivity.this, "获取验证码失败，请稍后重试", false);
                 }

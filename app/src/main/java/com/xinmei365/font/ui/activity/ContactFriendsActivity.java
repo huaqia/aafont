@@ -26,6 +26,7 @@ import com.xinmei365.font.MyApplication;
 import com.xinmei365.font.R;
 import com.xinmei365.font.model.User;
 import com.xinmei365.font.utils.BackendUtils;
+import com.xinmei365.font.utils.MiscUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -109,9 +110,8 @@ public class ContactFriendsActivity extends BaseActivity {
     }
 
     private void fetchData(final int type, final String name) {
-        final User currentUser = BmobUser.getCurrentUser(User.class);
         BmobQuery<User> query = new BmobQuery<>();
-        query.addWhereEqualTo("objectId" , currentUser.getObjectId());
+        query.addWhereEqualTo("objectId" , BackendUtils.getObjectId());
         query.findObjects(new FindListener<User>() {
             @Override
             public void done(List<User> list, BmobException e) {
@@ -221,12 +221,16 @@ public class ContactFriendsActivity extends BaseActivity {
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        BmobIMUserInfo info = new BmobIMUserInfo(user.getObjectId(), user.getNickName(), user.getAvatar());
-                        BmobIMConversation conversationEntrance = BmobIM.getInstance().startPrivateConversation(info, null);
-                        if (conversationEntrance != null) {
-                            Intent intent = new Intent(ContactFriendsActivity.this, ChatActivity.class);
-                            intent.putExtra("conversation", conversationEntrance);
-                            startActivity(intent);
+                        try {
+                            BmobIMUserInfo info = new BmobIMUserInfo(user.getObjectId(), user.getNickName(), user.getAvatar());
+                            BmobIMConversation conversationEntrance = BmobIM.getInstance().startPrivateConversation(info, null);
+                            if (conversationEntrance != null) {
+                                Intent intent = new Intent(ContactFriendsActivity.this, ChatActivity.class);
+                                intent.putExtra("conversation", conversationEntrance);
+                                startActivity(intent);
+                            }
+                        } catch (IllegalArgumentException e) {
+                            MiscUtils.makeToast(ContactFriendsActivity.this, "连接服务器异常，请稍后再试！", false);
                         }
                     }
                 });

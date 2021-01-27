@@ -32,6 +32,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.bmob.v3.exception.BmobException;
 
 public class LoginActivity extends BaseActivity {
     @BindView(R.id.edt_login_username)
@@ -77,8 +78,8 @@ public class LoginActivity extends BaseActivity {
 //            String password = "e168f4487f897cd706a1395f023f169f";
             BackendUtils.loginByAccount(userName, password, new BackendUtils.DoneCallback() {
                 @Override
-                public void onDone(boolean success, int code) {
-                    if (success) {
+                public void onDone(BmobException e) {
+                    if (e == null) {
                         MiscUtils.makeToast(LoginActivity.this, "登录成功", false);
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
@@ -224,33 +225,39 @@ public class LoginActivity extends BaseActivity {
             equalConditions.put("username", userName);
             Map<String, Map<String, String>> conditions = new HashMap<>();
             conditions.put("equal", equalConditions);
-            BackendUtils.countForCondition(conditions, new BackendUtils.DoneCallback() {
+            BackendUtils.countForCondition(conditions, new BackendUtils.CountCallback() {
                 @Override
-                public void onDone(boolean success, int code) {
-                    if (success) {
+                public void onDone(BmobException e, int code) {
+                    if (e == null) {
                         if (code <= 0) {
                             BackendUtils.signUp(nickName, userName, "", md5(openId), new BackendUtils.DoneCallback() {
                                 @Override
-                                public void onDone(boolean success, int code) {
-                                    if (success) {
+                                public void onDone(BmobException e) {
+                                    if (e == null) {
                                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                         startActivity(intent);
                                         finish();
+                                    } else {
+                                        BackendUtils.handleException(e, LoginActivity.this);
                                     }
                                 }
                             });
                         } else {
                             BackendUtils.loginByAccount(userName, md5(openId), new BackendUtils.DoneCallback() {
                                 @Override
-                                public void onDone(boolean success, int code) {
-                                    if (success) {
+                                public void onDone(BmobException e) {
+                                    if (e == null) {
                                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                         startActivity(intent);
                                         LoginActivity.this.finish();
+                                    } else {
+                                        BackendUtils.handleException(e, LoginActivity.this);
                                     }
                                 }
                             });
                         }
+                    } else {
+                        BackendUtils.handleException(e, LoginActivity.this);
                     }
                 }
             });

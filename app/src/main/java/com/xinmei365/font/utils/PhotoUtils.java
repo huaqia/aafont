@@ -81,12 +81,11 @@ public class PhotoUtils {
         try {
             packageManager = mContext.getApplicationContext().getPackageManager();
             applicationInfo = packageManager.getApplicationInfo(mContext.getPackageName(), 0);
-        } catch (PackageManager.NameNotFoundException var4) {
-            applicationInfo = null;
+        } catch (Exception e) {
+            return null;
         }
 
-        String applicationName = (String)packageManager.getApplicationLabel(applicationInfo);
-        return applicationName;
+        return (String)packageManager.getApplicationLabel(applicationInfo);
     }
 
     public static String saveAsBitmap(Context context, Bitmap bitmap) {

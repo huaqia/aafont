@@ -30,7 +30,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
@@ -39,9 +38,7 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.Window;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -51,7 +48,6 @@ import com.xinmei365.font.filter.FilterFactory;
 import com.xinmei365.font.filter.FilterItem;
 import com.xinmei365.font.filter.FilterSDK;
 import com.xinmei365.font.filter.GPUImageFilter;
-import com.xinmei365.font.filter.MagicEngine;
 import com.xinmei365.font.ui.adapter.EffectFilterAdapter;
 import com.xinmei365.font.ui.widget.CameraSurfaceView;
 import com.xinmei365.font.utils.BitmapUtils;
@@ -172,9 +168,6 @@ public class ProduceActivity extends BaseActivity {
 
     private EffectFilterAdapter mAdapter;
     private Dialog mDialog;
-    private int mCurrentMode;
-    private MagicEngine mMagicEngine;
-    private boolean mIsRecording = false;
 
     /**
      * {@link CameraDevice.StateCallback} is called when {@link CameraDevice} changes its state.
@@ -372,7 +365,6 @@ public class ProduceActivity extends BaseActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mFilterRecyclerView.setLayoutManager(linearLayoutManager);
-//        mAdapter = new CameraFilterAdapter(getApplicationContext(), FilterFactory.getPortraitFilterItem());
         mAdapter = new EffectFilterAdapter(mFilters, new EffectFilterAdapter.OnClickListener() {
             @Override
             public void onClick(int index) {
@@ -387,8 +379,6 @@ public class ProduceActivity extends BaseActivity {
                 finish();
             }
         });
-        MagicEngine.Builder builder = new MagicEngine.Builder();
-        mMagicEngine = builder.build(mCameraSurfaceView);
         mPreviewSize = new Size(screenSize.x, screenSize.x * 4 / 3);
         mCameraSurfaceView.setAspectRatio(mPreviewSize.getWidth(), mPreviewSize.getHeight());
         mChangeSizeAction.setOnClickListener(new View.OnClickListener() {

@@ -15,8 +15,8 @@ android {
         applicationId "com.xinmei365.font"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 702
-        versionName "7.0.0.2"
+        versionCode 703
+        versionName "7.0.0.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [UMENG_CHANNEL_VALUE: "official"]
         ndk {
@@ -42,26 +42,26 @@ android {
             dimension 'channel'
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "360"]
         }
-        OPPO {
-            dimension 'channel'
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "OPPO"]
-        }
-        VIVO {
-            dimension 'channel'
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "VIVO"]
-        }
+//        OPPO {
+//            dimension 'channel'
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "OPPO"]
+//        }
+//        VIVO {
+//            dimension 'channel'
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "VIVO"]
+//        }
         小米商店 {
             dimension 'channel'
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "小米商店"]
         }
-        google_market {
-            dimension 'channel'
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "google market"]
-        }
-        应用宝 {
-            dimension 'channel'
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "应用宝"]
-        }
+//        google_market {
+//            dimension 'channel'
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "google market"]
+//        }
+//        应用宝 {
+//            dimension 'channel'
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "应用宝"]
+//        }
     }
 
     buildTypes {

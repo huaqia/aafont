@@ -17,6 +17,7 @@ import com.xinmei365.font.utils.NetworkUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.bmob.v3.exception.BmobException;
 
 public class ChangePasswordActivity extends BaseActivity {
     @BindView(R.id.close)
@@ -61,12 +62,14 @@ public class ChangePasswordActivity extends BaseActivity {
             } else {
                 BackendUtils.updateCurrentUserPassword(oldPassword, newPassword, new BackendUtils.DoneCallback() {
                     @Override
-                    public void onDone(boolean success, int code) {
-                        if (success) {
+                    public void onDone(BmobException e) {
+                        if (e == null) {
                             MiscUtils.makeToast(ChangePasswordActivity.this, "密码修改成功", false);
                             finish();
-                        } else {
+                        } else if (e.getErrorCode() == 210) {
                             MiscUtils.makeToast(ChangePasswordActivity.this, "旧密码错误", false);
+                        } else {
+                            BackendUtils.handleException(e, ChangePasswordActivity.this);
                         }
                     }
                 });

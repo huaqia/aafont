@@ -15,6 +15,7 @@ import com.xinmei365.font.model.Feedback;
 import com.xinmei365.font.model.PushMessage;
 import com.xinmei365.font.model.User;
 import com.xinmei365.font.ui.activity.LoginActivity;
+import com.xinmei365.font.ui.activity.UserActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,10 @@ import cn.bmob.v3.listener.UpdateListener;
 
 public class BackendUtils {
     private static final String TAG = "BackendUtils";
+
+    private static String sUserName;
+    private static String sObjectId;
+
     public static void init(Context context) {
         Bmob.resetDomain("http://ztgjsdk.aafont.com.cn/8/");
         Bmob.initialize(context, Constant.BMOB_KEY);
@@ -51,7 +56,19 @@ public class BackendUtils {
     }
 
     public static String getUsername() {
-        return BmobUser.getCurrentUser(User.class).getUsername();
+        User user = BmobUser.getCurrentUser(User.class);
+        if (user != null) {
+            sUserName = user.getUsername();
+        }
+        return sUserName;
+    }
+
+    public static String getObjectId() {
+        User user = BmobUser.getCurrentUser(User.class);
+        if (user != null) {
+            sObjectId = user.getObjectId();
+        }
+        return sObjectId;
     }
 
     public static void signUp(String nickName, String name, String phone, String password, final DoneCallback callback) {
@@ -64,20 +81,18 @@ public class BackendUtils {
         user.setPassword(password);
         user.signUp(new SaveListener<User>() {
             @Override
-            public void done(User user, BmobException e) {
+            public void done(User user, final BmobException e) {
                 if (e == null) {
                     final String id = BmobInstallationManager.getInstallationId();
                     user.setInstallationId(id);
                     user.update(new UpdateListener() {
                         @Override
-                        public void done(BmobException e) {
-                            callback.onDone(true, 0);
+                        public void done(BmobException e2) {
+                            callback.onDone(e);
                         }
                     });
                 } else {
-                    if (e.getErrorCode() == 202) {
-                        callback.onDone(false, 0);
-                    }
+                    callback.onDone(e);
                 }
             }
         });
@@ -97,7 +112,7 @@ public class BackendUtils {
         BmobUser.loginByAccount(userName, password, new LogInListener<User>() {
             @Override
             public void done(final User user, BmobException e) {
-                callback.onDone(e == null, 0);
+                callback.onDone(e);
             }
         });
     }
@@ -110,7 +125,7 @@ public class BackendUtils {
         BmobSMS.requestSMSCode(phoneNumber, "Register", new QueryListener<Integer>() {
             @Override
             public void done(Integer integer, BmobException e) {
-                callback.onDone(e == null, 0);
+                callback.onDone(e);
             }
         });
     }
@@ -119,26 +134,18 @@ public class BackendUtils {
         BmobUser.resetPasswordBySMSCode(code, newPassword, new UpdateListener() {
             @Override
             public void done(BmobException e) {
-                callback.onDone(e == null, 0);
+                callback.onDone(e);
             }
         });
     }
 
-    public static void checkUserPhoneNumber(final Context context, String phoneNumber, final DoneCallback callback) {
+    public static void checkUserPhoneNumber(final Context context, String phoneNumber, final CountCallback callback) {
         BmobQuery<BmobUser> query = new BmobQuery<>();
         query.addWhereEqualTo("mobilePhoneNumber", phoneNumber);
         query.findObjects(new FindListener<BmobUser>() {
             @Override
             public void done(List<BmobUser> list, BmobException e) {
-                if (e == null) {
-                    callback.onDone(e == null, list.size());
-                } else {
-                    if (e.getErrorCode() == 9016) {
-                        MiscUtils.makeToast(context, "网络被外星人劫持了，请稍后再试…", true);
-                    } else {
-                        Log.e(TAG, e.toString());
-                    }
-                }
+                callback.onDone(e, list.size());
             }
         });
 
@@ -148,13 +155,7 @@ public class BackendUtils {
         BmobUser.updateCurrentUserPassword(oldPassword, newPassword, new UpdateListener() {
             @Override
             public void done(BmobException e) {
-                if (e == null) {
-                    callback.onDone(true, 0);
-                } else {
-                    if (e.getErrorCode() == 210) {
-                        callback.onDone(false, 0);
-                    }
-                }
+                callback.onDone(e);
             }
         });
     }
@@ -163,23 +164,28 @@ public class BackendUtils {
         BmobSMS.verifySmsCode(phoneNumber, smsCode, new UpdateListener() {
             @Override
             public void done(BmobException e) {
-                callback.onDone(e == null, 0);
+                callback.onDone(e);
             }
         });
 
     }
 
     public static void saveFeedback(String content, String contactInfo, final DoneCallback callback) {
-        Feedback feedback = new Feedback();
-        feedback.setContent(content);
-        feedback.setContactInfo(contactInfo);
-        feedback.setUser(BmobUser.getCurrentUser(User.class));
-        feedback.save(new SaveListener<String>() {
-            @Override
-            public void done(String s, BmobException e) {
-                callback.onDone(e == null, 0);
-            }
-        });
+        User user = BmobUser.getCurrentUser(User.class);
+        if (user != null) {
+            Feedback feedback = new Feedback();
+            feedback.setContent(content);
+            feedback.setContactInfo(contactInfo);
+            feedback.setUser(BmobUser.getCurrentUser(User.class));
+            feedback.save(new SaveListener<String>() {
+                @Override
+                public void done(String s, BmobException e) {
+                    callback.onDone(e);
+                }
+            });
+        } else {
+            callback.onDone(new BmobException(211, new Throwable()));
+        }
     }
 
     public static void pushMessage(final Context context, User user, final String channel, final Map<String, Object> extraMap) {
@@ -195,17 +201,21 @@ public class BackendUtils {
                     User user = list.get(0);
                     ArrayList<String> channels = user.getChannels();
                     if (channels == null || !channels.contains(channel)) {
-                        BmobIMUserInfo info = new BmobIMUserInfo(user.getObjectId(), user.getNickName(), user.getAvatar());
-                        BmobIMConversation conversationEntrance = BmobIM.getInstance().startPrivateConversation(info, true, null);
-                        BmobIMConversation messageManager = BmobIMConversation.obtain(BmobIMClient.getInstance(), conversationEntrance);
-                        PushMessage msg = new PushMessage();
-                        msg.setContent(channel);
-                        msg.setExtraMap(extraMap);
-                        messageManager.sendMessage(msg, new MessageSendListener() {
-                            @Override
-                            public void done(BmobIMMessage bmobIMMessage, BmobException e) {
-                            }
-                        });
+                        try {
+                            BmobIMUserInfo info = new BmobIMUserInfo(user.getObjectId(), user.getNickName(), user.getAvatar());
+                            BmobIMConversation conversationEntrance = BmobIM.getInstance().startPrivateConversation(info, true, null);
+                            BmobIMConversation messageManager = BmobIMConversation.obtain(BmobIMClient.getInstance(), conversationEntrance);
+                            PushMessage msg = new PushMessage();
+                            msg.setContent(channel);
+                            msg.setExtraMap(extraMap);
+                            messageManager.sendMessage(msg, new MessageSendListener() {
+                                @Override
+                                public void done(BmobIMMessage bmobIMMessage, BmobException e) {
+                                }
+                            });
+                        } catch (IllegalArgumentException exception) {
+                            MiscUtils.makeToast(context, "连接服务器异常，请稍后再试！", false);
+                        }
                     }
                 } else {
                     if (e.getErrorCode() == 9016) {
@@ -218,7 +228,7 @@ public class BackendUtils {
         });
     }
 
-    public static void countForCondition(Map<String, Map<String, String>> conditions, final DoneCallback callback) {
+    public static void countForCondition(Map<String, Map<String, String>> conditions, final CountCallback callback) {
         BmobQuery<User> query = new BmobQuery<>();
         for (String key : conditions.keySet()) {
             if (key.equals("equal")) {
@@ -232,9 +242,9 @@ public class BackendUtils {
             @Override
             public void done(Integer integer, BmobException e) {
                 if (integer != null) {
-                    callback.onDone(e == null, integer);
+                    callback.onDone(e, integer);
                 } else {
-                    callback.onDone(e == null, 0);
+                    callback.onDone(e, 0);
                 }
             }
         });
@@ -267,6 +277,10 @@ public class BackendUtils {
     }
 
     public interface DoneCallback {
-        void onDone(boolean success, int code);
+        void onDone(BmobException e);
+    }
+
+    public interface CountCallback {
+        void onDone(BmobException e, int code);
     }
 }

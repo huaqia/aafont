@@ -98,7 +98,7 @@ public class SearchActivity extends BaseActivity {
             }
         });
 
-        String username = BmobUser.getCurrentUser(User.class).getUsername();
+        String username = BackendUtils.getUsername();
         mRecordUser = new RecordUser(this , username);
 
         initData();

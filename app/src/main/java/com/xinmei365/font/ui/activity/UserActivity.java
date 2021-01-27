@@ -19,6 +19,7 @@ import com.xinmei365.font.model.User;
 import com.xinmei365.font.ui.adapter.PageAdapter;
 import com.xinmei365.font.ui.fragment.NoteFragment;
 import com.xinmei365.font.utils.BackendUtils;
+import com.xinmei365.font.utils.MiscUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -154,12 +155,16 @@ public class UserActivity extends BaseActivity {
                         mChatIcon.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                BmobIMUserInfo info = new BmobIMUserInfo(user.getObjectId(), user.getNickName(), user.getAvatar());
-                                BmobIMConversation conversationEntrance = BmobIM.getInstance().startPrivateConversation(info, null);
-                                if (conversationEntrance != null) {
-                                    Intent intent = new Intent(UserActivity.this, ChatActivity.class);
-                                    intent.putExtra("conversation", conversationEntrance);
-                                    startActivity(intent);
+                                try {
+                                    BmobIMUserInfo info = new BmobIMUserInfo(user.getObjectId(), user.getNickName(), user.getAvatar());
+                                    BmobIMConversation conversationEntrance = BmobIM.getInstance().startPrivateConversation(info, null);
+                                    if (conversationEntrance != null) {
+                                        Intent intent = new Intent(UserActivity.this, ChatActivity.class);
+                                        intent.putExtra("conversation", conversationEntrance);
+                                        startActivity(intent);
+                                    }
+                                } catch (IllegalArgumentException e) {
+                                    MiscUtils.makeToast(UserActivity.this, "连接服务器异常，请稍后再试！", false);
                                 }
                             }
                         });

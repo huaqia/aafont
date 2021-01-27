@@ -14,6 +14,7 @@ import com.xinmei365.font.utils.BackendUtils;
 import com.xinmei365.font.utils.MiscUtils;
 
 import butterknife.BindView;
+import cn.bmob.v3.exception.BmobException;
 
 public class FeedbackActivity extends BaseActivity {
     @BindView(R.id.close)
@@ -44,10 +45,12 @@ public class FeedbackActivity extends BaseActivity {
                 } else {
                     BackendUtils.saveFeedback(commit, contactInfo, new BackendUtils.DoneCallback() {
                         @Override
-                        public void onDone(boolean success, int code) {
-                            if (success) {
+                        public void onDone(BmobException e) {
+                            if (e == null) {
                                 MiscUtils.makeToast(FeedbackActivity.this, "成功提交反馈!", false);
                                 finish();
+                            } else {
+                                BackendUtils.handleException(e, FeedbackActivity.this);
                             }
                         }
                     });

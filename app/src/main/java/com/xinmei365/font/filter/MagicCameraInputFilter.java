@@ -14,7 +14,7 @@ public class MagicCameraInputFilter extends GPUImageFilter{
     private float[] mTextureTransformMatrix;
     private int mTextureTransformMatrixLocation;
     private int mSingleStepOffsetLocation;
-    private int mParamsLocation;
+//    private int mParamsLocation;
 
     private int[] mFrameBuffers = null;
     private int[] mFrameBufferTextures = null;
@@ -30,8 +30,7 @@ public class MagicCameraInputFilter extends GPUImageFilter{
         super.onInit();
         mTextureTransformMatrixLocation = GLES20.glGetUniformLocation(mGLProgId, "textureTransform");
         mSingleStepOffsetLocation = GLES20.glGetUniformLocation(getProgram(), "singleStepOffset");
-        mParamsLocation = GLES20.glGetUniformLocation(getProgram(), "params");
-        setBeautyLevel(MagicParams.beautyLevel);
+//        mParamsLocation = GLES20.glGetUniformLocation(getProgram(), "params");
     }
 
     public void setTextureTransformMatrix(float[] mtx){
@@ -127,37 +126,37 @@ public class MagicCameraInputFilter extends GPUImageFilter{
         return mFrameBufferTextures[0];
     }
 
-    public void initCameraFrameBuffer(int width, int height) {
-        if(mFrameBuffers != null && (mFrameWidth != width || mFrameHeight != height))
-            destroyFramebuffers();
-        if (mFrameBuffers == null) {
-            mFrameWidth = width;
-            mFrameHeight = height;
-            mFrameBuffers = new int[1];
-            mFrameBufferTextures = new int[1];
+//    public void initCameraFrameBuffer(int width, int height) {
+//        if(mFrameBuffers != null && (mFrameWidth != width || mFrameHeight != height))
+//            destroyFrameBuffers();
+//        if (mFrameBuffers == null) {
+//            mFrameWidth = width;
+//            mFrameHeight = height;
+//            mFrameBuffers = new int[1];
+//            mFrameBufferTextures = new int[1];
+//
+//            GLES20.glGenFramebuffers(1, mFrameBuffers, 0);
+//            GLES20.glGenTextures(1, mFrameBufferTextures, 0);
+//            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mFrameBufferTextures[0]);
+//            GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA, width, height, 0,
+//                    GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, null);
+//            GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
+//                    GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+//            GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
+//                    GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
+//            GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
+//                    GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
+//            GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
+//                    GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
+//            GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, mFrameBuffers[0]);
+//            GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0,
+//                    GLES20.GL_TEXTURE_2D, mFrameBufferTextures[0], 0);
+//            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
+//            GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
+//        }
+//    }
 
-            GLES20.glGenFramebuffers(1, mFrameBuffers, 0);
-            GLES20.glGenTextures(1, mFrameBufferTextures, 0);
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mFrameBufferTextures[0]);
-            GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA, width, height, 0,
-                    GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, null);
-            GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-                    GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
-            GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-                    GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
-            GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-                    GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
-            GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-                    GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
-            GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, mFrameBuffers[0]);
-            GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0,
-                    GLES20.GL_TEXTURE_2D, mFrameBufferTextures[0], 0);
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
-            GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
-        }
-    }
-
-    public void destroyFramebuffers() {
+    public void destroyFrameBuffers() {
         if (mFrameBufferTextures != null) {
             GLES20.glDeleteTextures(1, mFrameBufferTextures, 0);
             mFrameBufferTextures = null;
@@ -180,39 +179,10 @@ public class MagicCameraInputFilter extends GPUImageFilter{
         setTexelSize(width, height);
     }
 
-    public void setBeautyLevel(int level){
-        switch (level) {
-            case 0:
-                setFloat(mParamsLocation, 0.0f);
-                break;
-            case 1:
-                setFloat(mParamsLocation, 1.0f);
-                break;
-            case 2:
-                setFloat(mParamsLocation, 0.8f);
-                break;
-            case 3:
-                setFloat(mParamsLocation,0.6f);
-                break;
-            case 4:
-                setFloat(mParamsLocation, 0.4f);
-                break;
-            case 5:
-                setFloat(mParamsLocation,0.33f);
-                break;
-            default:
-                break;
-        }
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        destroyFramebuffers();
-    }
-
-    public void onBeautyLevelChanged(){
-        setBeautyLevel(MagicParams.beautyLevel);
+        destroyFrameBuffers();
     }
 
 }

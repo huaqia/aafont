@@ -131,9 +131,8 @@ public class EditUserMessageActivity extends BaseActivity {
 //                    day = String.valueOf(mDay);
 //                }
 //                String mBirthDayText = mYear + "年" + month + "月" + day + "日";
-//                final User currentUser = BmobUser.getCurrentUser(User.class);
 //                User newu = new User();
-//                newu.update(currentUser.getObjectId(), new UpdateListener() {
+//                newu.update(BackendUtil.getObjectId(), new UpdateListener() {
 //                    @Override
 //                    public void done(BmobException e) {
 //                        if (e == null) {

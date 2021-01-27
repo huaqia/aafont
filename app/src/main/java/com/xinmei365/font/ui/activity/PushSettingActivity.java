@@ -46,7 +46,7 @@ public class PushSettingActivity extends BaseActivity {
                 finish();
             }
         });
-        mUserId = BmobUser.getCurrentUser(User.class).getObjectId();
+        mUserId = BackendUtils.getObjectId();
         setCheckedStatus();
         setOnCheckedChangeListeners();
     }
