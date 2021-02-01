@@ -161,7 +161,6 @@ public class NoteFragment extends BaseFragment {
     private void fetchData(final boolean needEmptyView, final int type) {
         BmobQuery<Note> query = new BmobQuery<>();
         query.include("user");
-        query.order("-createdAt");
         query.setLimit(PAGE_LIMIT);
         if (type == LOAD_MORE && mLastTime != null) {
             Date date = null;
@@ -175,6 +174,7 @@ public class NoteFragment extends BaseFragment {
                 query.addWhereLessThanOrEqualTo("createdAt", new BmobDate(date));
             }
         }
+        String order = "hide,-createdAt";;
         if (!TextUtils.isEmpty(mDataType)) {
             if (mDataType.equals("font")) {
                 query.addWhereEqualTo("type", "字体");
@@ -184,7 +184,7 @@ public class NoteFragment extends BaseFragment {
                 query.addWhereEqualTo("type", "主题");
             } else if (mDataType.equals("recommend")) {
                 query.addWhereGreaterThan("priority", 0);
-                query.order("-priority");
+                order = "-priority,-createdAt";
             }
         } else if (!TextUtils.isEmpty(mKey)) {
 //            query.addWhereEqualTo("title", mKey);
@@ -196,6 +196,7 @@ public class NoteFragment extends BaseFragment {
         } else if (!TextUtils.isEmpty(mLikeId)) {
             query.addWhereContainsAll("likeIds", Collections.singletonList(mLikeId));
         }
+        query.order(order);
         query.findObjects(new FindListener<Note>() {
             @Override
             public void done(List<Note> list, BmobException e) {

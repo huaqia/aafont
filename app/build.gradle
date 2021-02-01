@@ -15,8 +15,8 @@ android {
         applicationId "com.xinmei365.font"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 703
-        versionName "7.0.0.3"
+        versionCode 704
+        versionName "7.0.0.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [UMENG_CHANNEL_VALUE: "official"]
         ndk {
@@ -50,10 +50,14 @@ android {
 //            dimension 'channel'
 //            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "VIVO"]
 //        }
-        小米商店 {
-            dimension 'channel'
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "小米商店"]
-        }
+//        小米商店 {
+//            dimension 'channel'
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "小米商店"]
+//        }
+//        华为 {
+//            dimension 'channel'
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "华为"]
+//        }
 //        google_market {
 //            dimension 'channel'
 //            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "google market"]

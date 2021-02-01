@@ -24,6 +24,7 @@ public class Note extends BmobObject {
     private ArrayList<String> favoriteIds;
     private int hot;
     private int priority;
+    private int hide;
 
     public User getUser() {
         return user;
@@ -148,5 +149,12 @@ public class Note extends BmobObject {
     }
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public int getHide() {
+        return hide;
+    }
+    public void setHide(int hide) {
+        this.hide = hide;
     }
 }
