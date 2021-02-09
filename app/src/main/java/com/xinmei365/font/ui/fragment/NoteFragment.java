@@ -4,11 +4,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,13 +19,18 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.xinmei365.font.R;
+import com.xinmei365.font.model.Banner;
 import com.xinmei365.font.model.Note;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.xinmei365.font.model.User;
+import com.xinmei365.font.ui.activity.NoteDetailActivity;
 import com.xinmei365.font.ui.adapter.NoteAdapter;
 import com.xinmei365.font.utils.BackendUtils;
 import com.xinmei365.font.utils.DensityUtils;
@@ -63,7 +70,7 @@ public class NoteFragment extends BaseFragment {
 
     private List<Note> mNotes = new ArrayList<>();
     private NoteAdapter mAdapter;
-    private String mLastTime;
+    private int mOffset;
     private Context mContext;
     private String mDataType;
     private String mKey;
@@ -72,6 +79,8 @@ public class NoteFragment extends BaseFragment {
     private String mLikeId;
     private boolean mNeedEmptyView;
     private BroadcastReceiver mNoteListChangeReceiver;
+    private View mHeaderView;
+    private SliderLayout mSliderLayout;
 
     public void setDateType(String type) {
         mDataType = type;
@@ -130,13 +139,36 @@ public class NoteFragment extends BaseFragment {
         } else {
             mNeedEmptyView = false;
         }
-        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    layoutManager.invalidateSpanAssignments();
+                    mRecyclerView.invalidateItemDecorations();
+                }
+            }
+        });
+        mRecyclerView.getItemAnimator().setAddDuration(0);
+        mRecyclerView.getItemAnimator().setChangeDuration(0);
+        mRecyclerView.getItemAnimator().setMoveDuration(0);
+        mRecyclerView.getItemAnimator().setRemoveDuration(0);
+        ((SimpleItemAnimator)mRecyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+        mRecyclerView.setLayoutManager(layoutManager);
         mAdapter = new NoteAdapter(mContext, 2);
+        if (!TextUtils.isEmpty(mDataType)) {
+            mHeaderView = LayoutInflater.from(mContext).inflate(R.layout.item_banner_header, mRecyclerView, false);
+            mAdapter.setHeaderView(mHeaderView);
+            mSliderLayout = (SliderLayout) mHeaderView.findViewById(R.id.recommend_slider_banner);
+        }
         mRecyclerView.setAdapter(mAdapter);
         mSwipeRefreshLayout.autoRefresh();
         mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
+                refreshRecommendHeader();
                 fetchData(mNeedEmptyView, PULL_REFRESH);
             }
         });
@@ -158,23 +190,81 @@ public class NoteFragment extends BaseFragment {
         broadcastManager.registerReceiver(mNoteListChangeReceiver, intentFilter);
     }
 
+    private void refreshRecommendHeader() {
+        if (!TextUtils.isEmpty(mDataType)) {
+            BmobQuery<Banner> query = new BmobQuery<>();
+            query.order("-createdAt");
+            query.addWhereEqualTo("type", mDataType);
+            query.findObjects(new FindListener<Banner>() {
+                @Override
+                public void done(List<Banner> list, BmobException e) {
+                    boolean hasData = false;
+                    mSliderLayout.removeAllSliders();
+                    if (e == null) {
+                        for (final Banner banner : list) {
+                            BaseSliderView view = new DefaultSliderView(getContext()).image(banner.getImage());
+                            view.setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+                                @Override
+                                public void onSliderClick(BaseSliderView slider) {
+                                    String url = banner.getUrl();
+                                    if (!TextUtils.isEmpty(url)) {
+                                        if (url.startsWith("http://")) {
+                                            Uri uri = Uri.parse(url);
+                                            startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                                            //                                                          Uri uri = Uri.parse("http://zhuti.xiaomi.com/detail/d26f65c6-11e0-4b98-a91e-5f0b587bb541");
+                                            //                                                          startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                                            //                                                          Intent intent = new Intent(getContext(), WebViewActivity.class);
+                                            //                                                          intent.putExtra("url", "http://zhuti.xiaomi.com/detail/d26f65c6-11e0-4b98-a91e-5f0b587bb541");
+                                            //                                                          getContext().startActivity(intent);
+                                            //                                                          Intent new_intent = new Intent(Intent.ACTION_VIEW, Uri.parse("newthemedetail://newthemehost?pkg=com.bbk.theme&restype=4&id=400014747")); //oaps://theme/detail?rtp=font&id=2246947&openinsystem=true&from=h5
+                                            //                                                          startActivity(new_intent);
+                                        } else {
+                                            BmobQuery<Note> query = new BmobQuery<>();
+                                            query.addWhereEqualTo("objectId", url);
+                                            query.findObjects(new FindListener<Note>() {
+                                                @Override
+                                                public void done(List<Note> list, BmobException e) {
+                                                    if (e == null) {
+                                                        if (list.size() == 1) {
+                                                            final Note note = list.get(0);
+                                                            Intent intent = new Intent(getContext(), NoteDetailActivity.class);
+                                                            intent.putExtra("note", note);
+                                                            getContext().startActivity(intent);
+                                                        }
+                                                    } else {
+                                                        BackendUtils.handleException(e, getActivity());
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
+                            });
+                            hasData = true;
+                            mSliderLayout.addSlider(view);
+                        }
+                    } else {
+                        BackendUtils.handleException(e, getActivity());
+                    }
+                    if (hasData) {
+                        mAdapter.setHeaderView(mHeaderView);
+                    } else {
+                        mAdapter.removeHeaderView();
+                    }
+                }
+            });
+        }
+    }
+
     private void fetchData(final boolean needEmptyView, final int type) {
         BmobQuery<Note> query = new BmobQuery<>();
         query.include("user");
         query.setLimit(PAGE_LIMIT);
-        if (type == LOAD_MORE && mLastTime != null) {
-            Date date = null;
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            try {
-                date = dateFormat.parse(mLastTime);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            if (date != null) {
-                query.addWhereLessThanOrEqualTo("createdAt", new BmobDate(date));
-            }
+        if (type == PULL_REFRESH) {
+            mOffset = 0;
         }
-        String order = "hide,-createdAt";;
+        query.setSkip(mOffset);
+        String order = "hide,-updatedAt";
         if (!TextUtils.isEmpty(mDataType)) {
             if (mDataType.equals("font")) {
                 query.addWhereEqualTo("type", "字体");
@@ -209,15 +299,16 @@ public class NoteFragment extends BaseFragment {
                         mNotes.addAll(list);
                         if (list.size() < PAGE_LIMIT) {
                             mSwipeRefreshLayout.setEnableLoadmore(false);
+                            mOffset += list.size();
                         } else {
                             mSwipeRefreshLayout.setEnableLoadmore(true);
+                            mOffset += PAGE_LIMIT;
                         }
                         mAdapter.setData(mNotes);
-                        mLastTime = list.get(list.size() - 1).getCreatedAt();
                     } else {
                         mSwipeRefreshLayout.setEnableLoadmore(false);
                         mAdapter.notifyDataSetChanged();
-                        if (needEmptyView) {
+                        if (needEmptyView && mNotes.isEmpty()) {
                             mEmptyView.setVisibility(View.VISIBLE);
                         }
                     }

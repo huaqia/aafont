@@ -7,6 +7,7 @@ import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,22 +55,8 @@ public class FollowFragment extends BaseFragment {
 
     @BindView(R.id.frame_search)
     LinearLayout mSearch;
-    @BindView(R.id.create_new)
-    LinearLayout mCreateNew;
-    @BindView(R.id.profile_image)
-    CircleImageView mUserIcon;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    @BindView(R.id.empty_view)
-    LinearLayout mEmptyView;
-    @BindView(R.id.empty_icon)
-    AppCompatImageView mEmptyIcon;
-    @BindView(R.id.empty_title)
-    AppCompatTextView mEmptyTitle;
-    @BindView(R.id.empty_info)
-    AppCompatTextView mEmptyInfo;
-    @BindView(R.id.recommend_text)
-    AppCompatTextView mRecommendText;
     @BindView(R.id.recommend_recycler_view)
     RecyclerView mRecommendRecyclerView;
     @BindView(R.id.swipeLayout_follow)
@@ -78,8 +65,14 @@ public class FollowFragment extends BaseFragment {
     private List<Note> mNotes = new ArrayList<>();
     private NoteAdapter mAdapter;
     private RecommendAdapter mRecommendAdapter;
-    private String mLastTime;
     private Context mContext;
+    private CircleImageView mUserIcon;
+    private LinearLayout mCreateNew;
+    private CircleImageView mEmptyUserIcon;
+    private LinearLayout mEmptyCreateNew;
+    private LinearLayout mEmptyView;
+    private AppCompatTextView mRecommendText;
+    private int mOffset;
 
     @Override
     public View createMyView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -90,16 +83,44 @@ public class FollowFragment extends BaseFragment {
     public void init() {
         super.init();
         mContext = getActivity();
-        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    layoutManager.invalidateSpanAssignments();
+                    mRecyclerView.invalidateItemDecorations();
+                }
+            }
+        });
+        mRecyclerView.getItemAnimator().setAddDuration(0);
+        mRecyclerView.getItemAnimator().setChangeDuration(0);
+        mRecyclerView.getItemAnimator().setMoveDuration(0);
+        mRecyclerView.getItemAnimator().setRemoveDuration(0);
+        ((SimpleItemAnimator)mRecyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+        mRecyclerView.setLayoutManager(layoutManager);
         mAdapter = new NoteAdapter(mContext, 2);
+        View header = LayoutInflater.from(mContext).inflate(R.layout.item_follow_header, mRecyclerView, false);
+        mAdapter.setHeaderView(header);
+        mCreateNew = (LinearLayout)header.findViewById(R.id.create_new);
+        mUserIcon = (CircleImageView)header.findViewById(R.id.profile_image);
         mRecyclerView.setAdapter(mAdapter);
         mRecommendRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         mRecommendAdapter = new RecommendAdapter(mContext);
+        View emptyHeader = LayoutInflater.from(mContext).inflate(R.layout.item_follow_header, mRecommendRecyclerView, false);
+        mEmptyCreateNew = (LinearLayout)emptyHeader.findViewById(R.id.create_new);
+        mEmptyUserIcon = (CircleImageView)emptyHeader.findViewById(R.id.profile_image);
+        mEmptyView = (LinearLayout)emptyHeader.findViewById(R.id.empty_view);
+        mRecommendText = (AppCompatTextView)emptyHeader.findViewById(R.id.recommend_text);
+        mRecommendAdapter.setHeaderView(emptyHeader);
         mRecommendRecyclerView.setAdapter(mRecommendAdapter);
         mSwipeRefreshLayout.autoRefresh();
         mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
+                refreshHeader();
                 fetchData(PULL_REFRESH);
             }
         });
@@ -107,26 +128,6 @@ public class FollowFragment extends BaseFragment {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 fetchData(LOAD_MORE);
-            }
-        });
-        BmobQuery<User> queryU = new BmobQuery<>();
-        final User currentUser = BmobUser.getCurrentUser(User.class);
-        queryU.addWhereEqualTo("objectId" , currentUser.getObjectId());
-        queryU.findObjects(new FindListener<User>() {
-            @Override
-            public void done(List<User> list, BmobException e) {
-                if (e == null){
-                    User user = list.get(0);
-                    if (user.getAvatar() != null) {
-                        Glide.with(MyApplication.getInstance())
-                                .load(user.getAvatar())
-                                .fitCenter()
-                                .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                                .into(mUserIcon);
-                    }
-                } else {
-                    BackendUtils.handleException(e, mContext);
-                }
             }
         });
         mSearch.setOnClickListener(new View.OnClickListener() {
@@ -141,9 +142,40 @@ public class FollowFragment extends BaseFragment {
                 ((MainActivity)getActivity()).showCreateDialog();
             }
         });
-        mEmptyIcon.setImageResource(R.drawable.icon_empty_follow_result);
-        mEmptyTitle.setText("还没有关注的人哦");
-        mEmptyInfo.setText("“关注后，可以在这里查看对方的最新状态”");
+        mEmptyCreateNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity)getActivity()).showCreateDialog();
+            }
+        });
+    }
+
+    private void refreshHeader() {
+        BmobQuery<User> queryU = new BmobQuery<>();
+        final User currentUser = BmobUser.getCurrentUser(User.class);
+        queryU.addWhereEqualTo("objectId" , currentUser.getObjectId());
+        queryU.findObjects(new FindListener<User>() {
+            @Override
+            public void done(List<User> list, BmobException e) {
+                if (e == null){
+                    User user = list.get(0);
+                    if (user.getAvatar() != null) {
+                        Glide.with(MyApplication.getInstance())
+                                .load(user.getAvatar())
+                                .fitCenter()
+                                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                                .into(mUserIcon);
+                        Glide.with(MyApplication.getInstance())
+                                .load(user.getAvatar())
+                                .fitCenter()
+                                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                                .into(mEmptyUserIcon);
+                    }
+                } else {
+                    BackendUtils.handleException(e, mContext);
+                }
+            }
+        });
     }
 
     private void fetchData(final int type) {
@@ -163,14 +195,18 @@ public class FollowFragment extends BaseFragment {
                         }
                     }
                     if (hasContent) {
+                        mRecyclerView.setVisibility(View.VISIBLE);
                         mEmptyView.setVisibility(View.GONE);
+                        mRecommendRecyclerView.setVisibility(View.GONE);
                     } else {
                         if (type == PULL_REFRESH) {
                             mSwipeRefreshLayout.finishRefresh();
                         } else {
                             mSwipeRefreshLayout.finishLoadmore();
                         }
+                        mRecyclerView.setVisibility(View.GONE);
                         mEmptyView.setVisibility(View.VISIBLE);
+                        mRecommendRecyclerView.setVisibility(View.VISIBLE);
                         fetchRecommendData();
                     }
                 } else {
@@ -188,20 +224,13 @@ public class FollowFragment extends BaseFragment {
     private void fetchToData(final int type, final ArrayList<String> focusList) {
         BmobQuery<Note> query = new BmobQuery<>();
         query.include("user");
-        query.order("-createdAt");
         query.setLimit(PAGE_LIMIT);
-        if (type == LOAD_MORE && mLastTime != null) {
-            Date date = null;
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            try {
-                date = dateFormat.parse(mLastTime);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            if (date != null) {
-                query.addWhereLessThanOrEqualTo("createdAt", new BmobDate(date));
-            }
+        if (type == PULL_REFRESH) {
+            mOffset = 0;
         }
+        query.setSkip(mOffset);
+        query.order("hide,-updatedAt");
+        query.setLimit(PAGE_LIMIT);
         query.addWhereContainedIn("userId", focusList);
         query.findObjects(new FindListener<Note>() {
             @Override
@@ -210,28 +239,28 @@ public class FollowFragment extends BaseFragment {
                     if (type == PULL_REFRESH) {
                         mNotes.clear();
                     }
-                    boolean hasContent = false;
                     if (list.size() > 0) {
-                        hasContent = true;
                         mNotes.addAll(list);
                         if (list.size() < PAGE_LIMIT) {
                             mSwipeRefreshLayout.setEnableLoadmore(false);
+                            mOffset += list.size();
                         } else {
                             mSwipeRefreshLayout.setEnableLoadmore(true);
+                            mOffset += PAGE_LIMIT;
                         }
                         mAdapter.setData(mNotes);
-                        mLastTime = list.get(list.size() - 1).getCreatedAt();
-                    } else if (type == LOAD_MORE) {
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        mEmptyView.setVisibility(View.GONE);
+                        mRecommendRecyclerView.setVisibility(View.GONE);
+                    } else {
                         mSwipeRefreshLayout.setEnableLoadmore(false);
                         mAdapter.notifyDataSetChanged();
-                    } else {
-                        mSwipeRefreshLayout.setEnableLoadmore(false);
-                    }
-                    if (hasContent) {
-                        mEmptyView.setVisibility(View.GONE);
-                    } else {
-                        mEmptyView.setVisibility(View.VISIBLE);
-                        fetchRecommendData();
+                        if (mNotes.isEmpty()) {
+                            mRecyclerView.setVisibility(View.GONE);
+                            mEmptyView.setVisibility(View.VISIBLE);
+                            mRecommendRecyclerView.setVisibility(View.VISIBLE);
+                            fetchRecommendData();
+                        }
                     }
                 } else {
                     BackendUtils.handleException(e, mContext);

@@ -33,6 +33,10 @@
     @butterknife.* <methods>;
 }
 
+-keep class * extends java.io.Serializable {
+    *;
+}
+
 -ignorewarnings
 
 -keepattributes Signature,*Annotation*
@@ -89,6 +93,16 @@
 -keep class org.apache.commons.**{*;}
 -keep class org.apache.http.**{*;}
 
+
+-keepclassmembers class * {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+
+# Only required if you use AsyncExecutor
+-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
+    <init>(java.lang.Throwable);
+}
 # 不混淆im sdk
 -keep class cn.bmob.newim.**{*;}
 -dontwarn cn.bmob.newim.**

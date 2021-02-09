@@ -144,6 +144,10 @@ public class DetailPicFragment extends BaseFragment {
     }
 
     public Bitmap getBitmap() {
-        return ((GlideBitmapDrawable)mImage.getDrawable().getCurrent()).getBitmap();
+        if (mImage.getDrawable() != null) {
+            return ((GlideBitmapDrawable) mImage.getDrawable().getCurrent()).getBitmap();
+        } else {
+            return null;
+        }
     }
 }

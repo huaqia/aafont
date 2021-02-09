@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -71,7 +72,24 @@ public class DraftsActivity extends BaseActivity {
                     }
                 }
             });
-            mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+            final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+            layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+            mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        layoutManager.invalidateSpanAssignments();
+                        mRecyclerView.invalidateItemDecorations();
+                    }
+                }
+            });
+            mRecyclerView.getItemAnimator().setAddDuration(0);
+            mRecyclerView.getItemAnimator().setChangeDuration(0);
+            mRecyclerView.getItemAnimator().setMoveDuration(0);
+            mRecyclerView.getItemAnimator().setRemoveDuration(0);
+            ((SimpleItemAnimator)mRecyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+            mRecyclerView.setLayoutManager(layoutManager);
             mAdapter = new DraftAdapter(DraftsActivity.this, 2, noteDatas);
             mRecyclerView.setAdapter(mAdapter);
         }

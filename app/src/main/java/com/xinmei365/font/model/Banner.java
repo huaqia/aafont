@@ -6,6 +6,7 @@ import cn.bmob.v3.datatype.BmobFile;
 public class Banner extends BmobObject {
     public String image;
     public String url;
+    public String type;
 
     public String getImage() {
         return image;
@@ -19,5 +20,12 @@ public class Banner extends BmobObject {
     }
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getType() {
+        return type;
+    }
+    public void setType(String type) {
+        this.type = type;
     }
 }

@@ -2,7 +2,6 @@ package com.xinmei365.font.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
@@ -14,9 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.xinmei365.font.MyApplication;
 import com.xinmei365.font.R;
 import com.xinmei365.font.model.Note;
@@ -36,11 +34,15 @@ import cn.bmob.v3.listener.UpdateListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    public static final int TYPE_NORMAL = 0;
+    public static final int TYPE_HEADER = 1;
+
     private Context mContext;
     private List<Note> mNotes;
     private int mColumns;
     private int mParentWidth;
     private int mMargin;
+    private View mHeaderView;
 
     public void setData(List<Note> notes) {
         mNotes = notes;
@@ -53,9 +55,30 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         mMargin = DensityUtils.dip2px(mContext, 3.33f);
     }
 
+    public View getHeaderView() {
+        return mHeaderView;
+    }
+
+    public void setHeaderView(View headerView) {
+        if (mHeaderView == null) {
+            mHeaderView = headerView;
+            notifyItemInserted(0);
+        }
+    }
+
+    public void removeHeaderView() {
+        if (mHeaderView != null) {
+            mHeaderView = null;
+            notifyItemRemoved(0);
+        }
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (mHeaderView != null && viewType == TYPE_HEADER) {
+            return new Holder(mHeaderView);
+        }
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         mParentWidth = parent.getWidth();
         return new NoteViewHolder(inflater.inflate(R.layout.item_note, parent, false));
@@ -63,10 +86,14 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+        if(getItemViewType(position) == TYPE_HEADER) {
+            return;
+        }
+        final int pos = getRealPosition(holder);
         if (holder instanceof NoteViewHolder) {
             final NoteViewHolder viewHolder = (NoteViewHolder) holder;
 //            viewHolder.setIsRecyclable(false);
-            final Note note = mNotes.get(position);
+            final Note note = mNotes.get(pos);
             float firstRatio = Float.parseFloat(note.getFirstRatio());
             float limitRatio = (float)4 / 3;
             ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) viewHolder.mNoteImage.getLayoutParams();
@@ -78,15 +105,21 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
             viewHolder.mNoteImage.setLayoutParams(params);
             final String url = note.getPics().get(0);
+//            Glide.with(MyApplication.getInstance())
+//                    .load(url)
+//                    .asBitmap()
+//                    .into(new SimpleTarget<Bitmap>() {
+//                        @Override
+//                        public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+//                            viewHolder.mNoteImage.setImageBitmap(bitmap);
+//                        }
+//                    });
             Glide.with(MyApplication.getInstance())
                     .load(url)
-                    .asBitmap()
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
-                            viewHolder.mNoteImage.setImageBitmap(bitmap);
-                        }
-                    });
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                    .priority(Priority.NORMAL)
+                    .dontTransform()
+                    .into(viewHolder.mNoteImage);
             User noteUser = note.getUser();
             if (noteUser.getAvatar() != null) {
                 Glide.with(MyApplication.getInstance())
@@ -99,14 +132,14 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 if (TextUtils.isEmpty(note.getIntro())) {
                     viewHolder.mNoteTitle.setVisibility(View.GONE);
                 } else {
+                    viewHolder.mNoteTitle.setVisibility(View.VISIBLE);
                     viewHolder.mNoteTitle.setText(note.getIntro());
                 }
             } else {
+                viewHolder.mNoteTitle.setVisibility(View.VISIBLE);
                 viewHolder.mNoteTitle.setText(note.getTitle());
             }
             viewHolder.mUserName.setText(noteUser.getNickName());
-//                viewHolder.mProductTime.setText(TimeUtils.getTimeFormatText(TimeUtils.getSimpleDateFormat(product.getCreatedAt())));
-//            final int finalPosition = position;
             ArrayList<String> likeIdList = note.getLikeIds();
             final User currentUser = BmobUser.getCurrentUser(User.class);
             if (likeIdList != null && likeIdList.contains(currentUser.getObjectId())) {
@@ -145,8 +178,6 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     map.put("noteId", note.getObjectId());
                     BackendUtils.pushMessage(mContext, note.getUser(), "LIKE", map);
                     note.setLikeIds(likeIdList);
-//                        mNotes.set(finalPosition, product);
-//                        mAdapter.notifyItemChanged(position);
                     note.update(new UpdateListener() {
                         @Override
                         public void done(BmobException e) {
@@ -167,16 +198,54 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @Override
+    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        if (mHeaderView != null) {
+            ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
+            if (lp != null
+                    && lp instanceof StaggeredGridLayoutManager.LayoutParams) {
+                StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
+                p.setFullSpan(holder.getLayoutPosition() == 0);
+            }
+        }
+    }
+
+    @Override
     public int getItemViewType(int position) {
-        return -1;
+        if (mHeaderView == null) {
+            return TYPE_NORMAL;
+        }
+        if (position == 0) {
+            return TYPE_HEADER;
+        }
+        return TYPE_NORMAL;
+    }
+
+    public int getRealPosition(RecyclerView.ViewHolder holder) {
+        int position = holder.getLayoutPosition();
+        return mHeaderView == null ? position : position - 1;
     }
 
     @Override
     public int getItemCount() {
         if (mNotes == null) {
-            return 0;
+            if (mHeaderView == null) {
+                return 0;
+            } else {
+                return 1;
+            }
         } else {
-            return mNotes.size();
+            if (mHeaderView == null) {
+                return mNotes.size();
+            } else {
+                return mNotes.size() + 1;
+            }
+        }
+    }
+
+    static class Holder extends RecyclerView.ViewHolder {
+        public Holder(View itemView) {
+            super(itemView);
         }
     }
 

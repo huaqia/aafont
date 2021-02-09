@@ -14,9 +14,9 @@ android {
     defaultConfig {
         applicationId "com.xinmei365.font"
         minSdkVersion 21
-        targetSdkVersion 28
-        versionCode 704
-        versionName "7.0.0.4"
+        targetSdkVersion 30
+        versionCode 706
+        versionName "7.0.0.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [UMENG_CHANNEL_VALUE: "official"]
         ndk {
@@ -50,14 +50,14 @@ android {
 //            dimension 'channel'
 //            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "VIVO"]
 //        }
-//        小米商店 {
-//            dimension 'channel'
-//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "小米商店"]
-//        }
-//        华为 {
-//            dimension 'channel'
-//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "华为"]
-//        }
+        小米商店 {
+            dimension 'channel'
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "小米商店"]
+        }
+        华为 {
+            dimension 'channel'
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "华为"]
+        }
 //        google_market {
 //            dimension 'channel'
 //            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "google market"]
@@ -71,12 +71,17 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
+            shrinkResources false
+            zipAlignEnabled false
+            debuggable true
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
+            debuggable false
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

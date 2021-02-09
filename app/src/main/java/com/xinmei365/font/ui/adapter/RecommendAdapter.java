@@ -35,11 +35,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final String TAG = "RecommendAdapter";
+    public static final int TYPE_NORMAL = 0;
+    public static final int TYPE_HEADER = 1;
 
     private Context mContext;
     private List<User> mUsers;
     private int mFollowColor;
     private int mFollowedColor;
+    private View mHeaderView;
 
     public void setData(List<User> users) {
         mUsers = users;
@@ -52,18 +55,34 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         mFollowedColor = context.getResources().getColor(R.color.colorActiveState);
     }
 
+    public View getHeaderView() {
+        return mHeaderView;
+    }
+
+    public void setHeaderView(View headerView) {
+        mHeaderView = headerView;
+        notifyItemInserted(0);
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (mHeaderView != null && viewType == TYPE_HEADER) {
+            return new Holder(mHeaderView);
+        }
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         return new RecommmendViewHolder(inflater.inflate(R.layout.item_recommend, parent, false));
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+        if(getItemViewType(position) == TYPE_HEADER) {
+            return;
+        }
+        final int pos = getRealPosition(holder);
         if (holder instanceof RecommmendViewHolder) {
             final RecommmendViewHolder viewHolder = (RecommmendViewHolder)holder;
-            final User user = mUsers.get(position);
+            final User user = mUsers.get(pos);
             final String userId = user.getObjectId();
             if (user.getAvatar() != null) {
                 Glide.with(MyApplication.getInstance())
@@ -134,7 +153,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             });
             fetchNotes(user.getObjectId(), viewHolder);
-            if (position == 0) {
+            if (pos == 0) {
                 viewHolder.gang.setVisibility(View.GONE);
             } else {
                 viewHolder.gang.setVisibility(View.VISIBLE);
@@ -143,11 +162,35 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     @Override
+    public int getItemViewType(int position) {
+        if (mHeaderView == null) {
+            return TYPE_NORMAL;
+        }
+        if (position == 0) {
+            return TYPE_HEADER;
+        }
+        return TYPE_NORMAL;
+    }
+
+    public int getRealPosition(RecyclerView.ViewHolder holder) {
+        int position = holder.getLayoutPosition();
+        return mHeaderView == null ? position : position - 1;
+    }
+
+    @Override
     public int getItemCount() {
         if (mUsers == null) {
-            return 0;
+            if (mHeaderView == null) {
+                return 0;
+            } else {
+                return 1;
+            }
         } else {
-            return mUsers.size();
+            if (mHeaderView == null) {
+                return mUsers.size();
+            } else {
+                return mUsers.size() + 1;
+            }
         }
     }
 
@@ -279,6 +322,12 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             view.setTextColor(mFollowColor);
             view.setBackgroundResource(R.drawable.ic_followed);
             BackendUtils.pushMessage(mContext, user, "FOLLOW", null);
+        }
+    }
+
+    static class Holder extends RecyclerView.ViewHolder {
+        public Holder(View itemView) {
+            super(itemView);
         }
     }
 

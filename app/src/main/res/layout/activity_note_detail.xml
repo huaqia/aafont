@@ -56,7 +56,7 @@
                     android:layout_marginEnd="14dp"
                     android:textColor="#666666"
                     android:ellipsize="end"
-                    android:textSize="12sp" />
+                    android:textSize="14.67sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -141,7 +141,7 @@
                             android:maxLines="2"
                             android:gravity="start"
                             android:textColor="#343434"
-                            android:textSize="12sp" />
+                            android:textSize="14.67sp" />
 
                         <android.support.v7.widget.AppCompatTextView
                             android:id="@+id/note_intro"
@@ -151,7 +151,7 @@
                             android:layout_marginStart="11dp"
                             android:gravity="start"
                             android:textColor="#666666"
-                            android:textSize="10sp" />
+                            android:textSize="12sp" />
 
                         <android.support.v7.widget.AppCompatTextView
                             android:id="@+id/note_time"
@@ -188,7 +188,7 @@
                     android:layout_marginEnd="11dp"
                     android:layout_marginTop="16dp"
                     android:layout_below="@+id/note_info"
-                    android:background="#CCCCCC" />
+                    android:background="#4ECCCCCC" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/comment_title"
@@ -248,7 +248,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_above="@+id/action_bar"
-        android:background="#CCCCCC" />
+        android:background="#4ECCCCCC" />
 
     <LinearLayout
         android:id="@+id/action_bar"

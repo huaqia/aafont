@@ -152,6 +152,9 @@ public class TagImageView extends FrameLayout {
 
 
     public void addTag(String text, boolean canMove, boolean isLeft, int[] xy, int[] wh) {
+        if (TextUtils.isEmpty(text)) {
+            return;
+        }
         final TagInfoBean bean = new TagInfoBean();
         bean.setCanMove(canMove);
         bean.setNotesTagId(652);

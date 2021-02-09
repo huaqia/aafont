@@ -145,7 +145,11 @@ public class BackendUtils {
         query.findObjects(new FindListener<BmobUser>() {
             @Override
             public void done(List<BmobUser> list, BmobException e) {
-                callback.onDone(e, list.size());
+                if (list != null) {
+                    callback.onDone(e, list.size());
+                } else {
+                    callback.onDone(e, 0);
+                }
             }
         });
 

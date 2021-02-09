@@ -726,41 +726,69 @@ public class NoteDetailActivity extends BaseActivity {
         view.findViewById(R.id.more_edit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AsyncTask<Void, Void, ArrayList<String>>() {
+                dismissMoreDialog();
+                showProgressBar(true, "图片处理中...");
+                new Thread(new Runnable() {
                     @Override
-                    protected void onPreExecute() {
-                        super.onPreExecute();
-                        showProgressBar(true, "图片处理中...");
-                    }
-                    @Override
-                    protected ArrayList<String> doInBackground(Void... params) {
-                        ArrayList<String> urls = new ArrayList<>();
-                        for (Fragment fragment : mFragments) {
-                            Bitmap bitmap = ((DetailPicFragment) fragment).getBitmap();
-                            File file = new File(FileUtils.getFileDir(mContext, "download"), System.currentTimeMillis() + ".png");
-                            try {
-                                bitmap.compress(Bitmap.CompressFormat.PNG, 80, new FileOutputStream(file));
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
+                    public void run() {
+                        final ArrayList<String> urls = new ArrayList<>();
+                        int tryTimes = 0;
+                        while (true) {
+                            urls.clear();
+                            boolean hasWrong = false;
+                            for (Fragment fragment : mFragments) {
+                                Bitmap bitmap = ((DetailPicFragment) fragment).getBitmap();
+                                if (bitmap == null) {
+                                    hasWrong = true;
+                                    break;
+                                }
+                                File file = new File(FileUtils.getFileDir(mContext, "download"), System.currentTimeMillis() + ".png");
+                                try {
+                                    bitmap.compress(Bitmap.CompressFormat.PNG, 80, new FileOutputStream(file));
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                }
+                                urls.add(file.getAbsolutePath());
                             }
-                            urls.add(file.getAbsolutePath());
+                            tryTimes += 1;
+                            if (hasWrong) {
+                                if (tryTimes < 10) {
+                                    try {
+                                        Thread.sleep(2000);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                } else {
+                                    NoteDetailActivity.this.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            showProgressBar(false);
+                                            MiscUtils.makeToast(NoteDetailActivity.this, "数据获取有问题，请稍后重试！", false);
+                                        }
+                                    });
+                                    break;
+                                }
+                            } else {
+                                NoteDetailActivity.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent intent = new Intent(getApplicationContext(), PublishActivity.class);
+                                        intent.putExtra("noteId", mNote.getObjectId());
+                                        intent.putStringArrayListExtra("urls", urls);
+                                        intent.putStringArrayListExtra("savedUrls", urls);
+                                        intent.putExtra("title", mNote.getTitle());
+                                        intent.putExtra("intro", mNote.getIntro());
+                                        intent.putExtra("type", mNote.getType());
+                                        startActivity(intent);
+                                        showProgressBar(false);
+                                    }
+                                });
+                                break;
+                            }
                         }
-                        return urls;
+
                     }
-                    @Override
-                    protected void onPostExecute(ArrayList<String> urls) {
-                        Intent intent = new Intent(getApplicationContext(), PublishActivity.class);
-                        intent.putExtra("noteId", mNote.getObjectId());
-                        intent.putStringArrayListExtra("urls", urls);
-                        intent.putStringArrayListExtra("savedUrls", urls);
-                        intent.putExtra("title", mNote.getTitle());
-                        intent.putExtra("intro", mNote.getIntro());
-                        intent.putExtra("type", mNote.getType());
-                        startActivity(intent);
-                        dismissMoreDialog();
-                        showProgressBar(false);
-                    }
-                }.execute();
+                }).start();
             }
         });
         view.findViewById(R.id.more_delete).setOnClickListener(new View.OnClickListener() {
