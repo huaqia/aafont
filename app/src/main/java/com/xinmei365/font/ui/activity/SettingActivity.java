@@ -48,8 +48,13 @@ public class SettingActivity extends BaseActivity {
                 finish();
             }
         });
-        String phoneNumber = BmobUser.getCurrentUser(User.class).getMobilePhoneNumber();
-        if (TextUtils.isEmpty(phoneNumber)) {
+        User user = BmobUser.getCurrentUser(User.class);
+        if (user != null) {
+            String phoneNumber = user.getMobilePhoneNumber();
+            if (TextUtils.isEmpty(phoneNumber)) {
+                mChangePasswd.setVisibility(View.GONE);
+            }
+        } else {
             mChangePasswd.setVisibility(View.GONE);
         }
 

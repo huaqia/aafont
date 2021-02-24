@@ -207,11 +207,10 @@ public class NoteDetailActivity extends BaseActivity {
             mTitle.setVisibility(View.GONE);
         }
         final String noteType = mNote.getType();
-        if (RomUtils.isOppo() && !TextUtils.isEmpty(mNote.getOppoFontId())) {
-            mDownloadFont.setVisibility(View.VISIBLE);
-            mDownloadFont.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+        mDownloadFont.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (RomUtils.isOppo() && !TextUtils.isEmpty(mNote.getOppoFontId())) {
                     String typeStr = "font";
                     if (noteType.equals("主题")) {
                         typeStr = "theme";
@@ -228,13 +227,7 @@ public class NoteDetailActivity extends BaseActivity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
-            });
-        } else if (RomUtils.isVivo() && !TextUtils.isEmpty(mNote.getVivoFontId())) {
-            mDownloadFont.setVisibility(View.VISIBLE);
-            mDownloadFont.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+                } else if (RomUtils.isVivo() && !TextUtils.isEmpty(mNote.getVivoFontId())) {
                     String typeStr = "4";
                     if (noteType.equals("主题")) {
                         typeStr = "1";
@@ -249,13 +242,7 @@ public class NoteDetailActivity extends BaseActivity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
-            });
-        } else if (RomUtils.isEmui() && !TextUtils.isEmpty(mNote.getHuaweiFontId())) {
-            mDownloadFont.setVisibility(View.VISIBLE);
-            mDownloadFont.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+                } else if (RomUtils.isEmui() && !TextUtils.isEmpty(mNote.getHuaweiFontId())) {
                     Map<String, String> map = new HashMap<>();
                     map.put("type", "huawei");
                     map.put("name", mNote.getHuaweiFontId());
@@ -266,13 +253,7 @@ public class NoteDetailActivity extends BaseActivity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
-            });
-        } else if (RomUtils.isMiui() && !TextUtils.isEmpty(mNote.getXiaomiFontId())) {
-            mDownloadFont.setVisibility(View.VISIBLE);
-            mDownloadFont.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+                } else if (RomUtils.isMiui() && !TextUtils.isEmpty(mNote.getXiaomiFontId())) {
                     Map<String, String> map = new HashMap<>();
                     map.put("type", "xiaomi");
                     map.put("name", mNote.getXiaomiFontId());
@@ -283,9 +264,15 @@ public class NoteDetailActivity extends BaseActivity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                } else {
+                    if (RomUtils.isOppo() || RomUtils.isVivo() || RomUtils.isEmui() || RomUtils.isMiui()) {
+                        MiscUtils.makeToast(mContext, "抱歉，该资源还没有上线到主题商店，暂时无法下载", true);
+                    } else {
+                        MiscUtils.makeToast(mContext, "抱歉，您的手机型号暂不支持下载本应用资源", true);
+                    }
                 }
-            });
-        }
+            };
+        });
         if (!TextUtils.isEmpty(mNote.getIntro())) {
             mIntro.setVisibility(View.VISIBLE);
             mIntro.setText(mNote.getIntro());

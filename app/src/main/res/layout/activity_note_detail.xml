@@ -176,8 +176,7 @@
                         android:textSize="12dp"
                         android:paddingStart="27.67dp"
                         android:paddingTop="3dp"
-                        android:background="@drawable/ic_download"
-                        android:visibility="gone" />
+                        android:background="@drawable/ic_download" />
                 </RelativeLayout>
 
                 <View

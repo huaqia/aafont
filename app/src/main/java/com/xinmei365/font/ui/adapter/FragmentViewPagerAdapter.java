@@ -57,7 +57,7 @@ public class FragmentViewPagerAdapter extends PagerAdapter implements ViewPager.
             fragmentManager.executePendingTransactions();
         }
 
-        if(fragment.getView().getParent() == null){
+        if (fragment.getView().getParent() == null){
             container.addView(fragment.getView()); // 为viewpager增加布局
         }
 

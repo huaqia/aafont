@@ -284,11 +284,13 @@ public class GPUImageView extends FrameLayout {
 
         protected void onPostExecute(Bitmap bitmap) {
             super.onPostExecute(bitmap);
-            float width = (float)bitmap.getWidth();
-            float height = (float)bitmap.getHeight();
-            float ratio = width / height;
-            GPUImageView.this.setRatio(ratio);
-            GPUImageView.this.setImage(bitmap);
+            if (bitmap != null) {
+                float width = (float) bitmap.getWidth();
+                float height = (float) bitmap.getHeight();
+                float ratio = width / height;
+                GPUImageView.this.setRatio(ratio);
+                GPUImageView.this.setImage(bitmap);
+            }
         }
     }
 

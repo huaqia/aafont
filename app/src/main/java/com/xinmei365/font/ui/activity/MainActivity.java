@@ -98,7 +98,7 @@ public class MainActivity extends BaseActivity {
         mTabSelectedColor = getResources().getColor(R.color.main_tab_selected_color);
         setDefaultFragment();
         final User user = BmobUser.getCurrentUser(User.class);
-        if (!TextUtils.isEmpty(user.getObjectId()) &&
+        if (user != null && !TextUtils.isEmpty(user.getObjectId()) &&
                 BmobIM.getInstance().getCurrentStatus().getCode() != ConnectionStatus.CONNECTED.getCode()) {
             BmobIM.connect(user.getObjectId(), new ConnectListener() {
                 @Override
