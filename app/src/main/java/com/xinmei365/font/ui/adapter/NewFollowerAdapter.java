@@ -103,7 +103,7 @@ public class NewFollowerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                 if (relations != null && relations.contains(userId)) {
                                     follow = false;
                                 }
-                                setFollowAction(viewHolder.mFocusAction, follow, user);
+                                setFollowAction(viewHolder.mFocusAction, follow, user, false);
                             }
                         } else {
                             BackendUtils.handleException(e, mContext);
@@ -164,7 +164,7 @@ public class NewFollowerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                     }
                                     if (user.getFocusIds() == null || !user.getFocusIds().contains(userId)) {
                                         focusIdList.add(userId);
-                                        setFollowAction(viewHolder.mFocusAction, false, user);
+                                        setFollowAction(viewHolder.mFocusAction, false, user, true);
                                         user.setFocusIds(focusIdList);
                                         user.update(new UpdateListener() {
                                             @Override
@@ -177,7 +177,7 @@ public class NewFollowerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 focusIdList.remove(userId);
-                                                setFollowAction(viewHolder.mFocusAction, true, user);
+                                                setFollowAction(viewHolder.mFocusAction, true, user, true);
                                                 user.setFocusIds(focusIdList);
                                                 user.update(new UpdateListener() {
                                                     @Override
@@ -199,7 +199,7 @@ public class NewFollowerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    private void setFollowAction(AppCompatTextView view, boolean follow, User user) {
+    private void setFollowAction(AppCompatTextView view, boolean follow, User user, boolean pushMessage) {
         if (follow) {
             view.setText("回粉");
             view.setTextColor(mFollowedColor);
@@ -208,7 +208,9 @@ public class NewFollowerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             view.setText(R.string.unfollow);
             view.setTextColor(mFollowColor);
             view.setBackgroundResource(R.drawable.ic_followed);
-            BackendUtils.pushMessage(mContext, user, "FOLLOW", null);
+            if (pushMessage) {
+                BackendUtils.pushMessage(mContext, user, "FOLLOW", null);
+            }
         }
     }
 

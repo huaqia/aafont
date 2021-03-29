@@ -94,7 +94,6 @@
         <activity android:name=".ui.activity.TypeSelectActivity"/>
         <activity android:name=".ui.activity.DraftsActivity"/>
         <activity android:name=".ui.activity.ChatActivity"/>
-        <activity android:name=".ui.activity.MessageCenterActivity"/>
         <activity android:name=".ui.activity.NewFollowersActivity"/>
         <activity android:name=".ui.activity.LikeFavoriteActivity"/>
         <activity android:name=".ui.activity.NewCommentsActivity"/>

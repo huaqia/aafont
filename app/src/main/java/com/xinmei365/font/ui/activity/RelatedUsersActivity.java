@@ -36,7 +36,7 @@ public class RelatedUsersActivity extends BaseActivity {
     private static final int PULL_REFRESH = 0;
     private static final int LOAD_MORE = 1;
 
-    private static final int PAGE_LIMIT = 10;
+    private static final int PAGE_LIMIT = 30;
 
     @BindView(R.id.close)
     AppCompatImageView mClose;

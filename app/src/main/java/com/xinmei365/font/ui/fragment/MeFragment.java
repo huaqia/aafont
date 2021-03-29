@@ -25,6 +25,7 @@ import com.xinmei365.font.ui.activity.RelatedUsersActivity;
 import com.xinmei365.font.ui.activity.SettingActivity;
 import com.xinmei365.font.ui.adapter.PageAdapter;
 import com.xinmei365.font.utils.BackendUtils;
+import com.xinmei365.font.utils.DensityUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,8 @@ public class MeFragment extends BaseFragment {
     private static String LIKE = "赞过";
     @BindView(R.id.user_name)
     AppCompatTextView mName;
+    @BindView(R.id.official_sign)
+    AppCompatImageView mOfficialSign;
     @BindView(R.id.app_id)
     AppCompatTextView mAppId;
     @BindView(R.id.focus_num)
@@ -134,6 +137,12 @@ public class MeFragment extends BaseFragment {
                         mEditIntro.setOnClickListener(null);
                     }
                     mName.setText(user.getNickName());
+                    if (user.getRole() == 1) {
+                        mOfficialSign.setVisibility(View.VISIBLE);
+                        mName.setMaxWidth(DensityUtils.dip2px(getContext(), 150));
+                    } else {
+                        mOfficialSign.setVisibility(View.GONE);
+                    }
                     mAppId.setText("字体管家号:" + user.getAppId());
                     if (user.getGender() == 0) {
                         mGenderIcon.setImageResource(R.drawable.ic_sex_boy);
@@ -170,6 +179,11 @@ public class MeFragment extends BaseFragment {
                         } else {
                             ids.remove(currentUser.getObjectId());
                             mFocusText.setText(ids.size() + "");
+                        }
+                        if (user.getRole() == 1) {
+                            mFollowArea.setVisibility(View.GONE);
+                        } else {
+                            mFollowArea.setVisibility(View.VISIBLE);
                         }
                     } else {
                         mFocusText.setText("0");

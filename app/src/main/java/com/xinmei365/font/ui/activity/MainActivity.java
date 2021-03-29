@@ -1,17 +1,8 @@
 package com.xinmei365.font.ui.activity;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -25,7 +16,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -46,11 +36,11 @@ import com.xinmei365.font.R;
 import com.xinmei365.font.model.DraftData;
 import com.xinmei365.font.model.RefreshEvent;
 import com.xinmei365.font.model.User;
-import com.xinmei365.font.ui.fragment.FollowFragment;
+import com.xinmei365.font.ui.fragment.ForumFragment;
 import com.xinmei365.font.ui.fragment.HomeFragment;
 import com.xinmei365.font.ui.fragment.MeFragment;
+import com.xinmei365.font.ui.fragment.MessageFragment;
 import com.xinmei365.font.utils.Constant;
-import com.xinmei365.font.utils.FastBlurUtility;
 import com.xinmei365.font.utils.FileUtils;
 import com.xinmei365.font.utils.MiscUtils;
 import com.xinmei365.font.utils.PermissionUtils;
@@ -70,10 +60,14 @@ public class MainActivity extends BaseActivity {
     AppCompatTextView mHomeText;
     @BindView(R.id.icon_home)
     AppCompatImageView mHomeImg;
-    @BindView(R.id.text_follow)
-    AppCompatTextView mFollowText;
-    @BindView(R.id.icon_follow)
-    AppCompatImageView mFollowImg;
+    @BindView(R.id.text_forum)
+    AppCompatTextView mForumText;
+    @BindView(R.id.icon_forum)
+    AppCompatImageView mForumImg;
+    @BindView(R.id.text_message)
+    AppCompatTextView mMessageText;
+    @BindView(R.id.icon_message)
+    AppCompatImageView mMessageImg;
     @BindView(R.id.text_me)
     AppCompatTextView mMeText;
     @BindView(R.id.icon_me)
@@ -81,7 +75,8 @@ public class MainActivity extends BaseActivity {
     private Dialog mDialog;
     private Fragment mFragmentContent;
     private HomeFragment mHomeFragment;
-    private FollowFragment mFollowFragment;
+    private ForumFragment mForumFragment;
+    private MessageFragment mMessageFragment;
     private MeFragment mMeFragment;
 
     private Boolean mNeedRequestPermissions;
@@ -202,7 +197,7 @@ public class MainActivity extends BaseActivity {
         // todo red point
     }
 
-    @OnClick({R.id.main_home, R.id.main_follow, R.id.main_me})
+    @OnClick({R.id.main_home, R.id.main_forum, R.id.main_message, R.id.main_me})
     public void tableClick(View view) {
         switch (view.getId()) {
             case R.id.main_home:
@@ -214,15 +209,24 @@ public class MainActivity extends BaseActivity {
                 }
                 switchFragment(mHomeFragment);
                 break;
-            case R.id.main_follow:
+            case R.id.main_forum:
                 resetComponentState();
-                mFollowText.setTextColor(mTabSelectedColor);
-                mFollowImg.setImageResource(R.drawable.ic_tab_follow_selected);
-                if (mFollowFragment == null) {
-                    mFollowFragment = new FollowFragment();
+                mForumText.setTextColor(mTabSelectedColor);
+                mForumImg.setImageResource(R.drawable.ic_tab_forum_selected);
+                if (mForumFragment == null) {
+                    mForumFragment = new ForumFragment();
                 }
-                switchFragment(mFollowFragment);
+                switchFragment(mForumFragment);
 //                BackendUtils.pushMessage(BackendUtils.getCurrentUser(), "FOLLOW", "消息内容");
+                break;
+            case R.id.main_message:
+                resetComponentState();
+                mMessageText.setTextColor(mTabSelectedColor);
+                mMessageImg.setImageResource(R.drawable.ic_tab_message_selected);
+                if (mMessageFragment == null) {
+                    mMessageFragment = new MessageFragment();
+                }
+                switchFragment(mMessageFragment);
                 break;
             case R.id.main_me:
                 resetComponentState();
@@ -241,8 +245,10 @@ public class MainActivity extends BaseActivity {
     private void resetComponentState() {
         mHomeText.setTextColor(mTabNormalColor);
         mHomeImg.setImageResource(R.drawable.ic_tab_home);
-        mFollowText.setTextColor(mTabNormalColor);
-        mFollowImg.setImageResource(R.drawable.ic_tab_follow);
+        mForumText.setTextColor(mTabNormalColor);
+        mForumImg.setImageResource(R.drawable.ic_tab_forum);
+        mMessageText.setTextColor(mTabNormalColor);
+        mMessageImg.setImageResource(R.drawable.ic_tab_message);
         mMeText.setTextColor(mTabNormalColor);
         mMeImg.setImageResource(R.drawable.ic_tab_me);
     }

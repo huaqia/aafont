@@ -139,6 +139,7 @@ public class ContactFriendsActivity extends BaseActivity {
     private void fetchToData(final int type, final ArrayList<String> focusList, String name) {
         BmobQuery<User> query = new BmobQuery<>();
         query.order("-createdAt");
+        query.addWhereNotEqualTo("objectId", BackendUtils.getObjectId());
         query.setLimit(PAGE_LIMIT);
         if (type == LOAD_MORE && mLastTime != null) {
             Date date = null;

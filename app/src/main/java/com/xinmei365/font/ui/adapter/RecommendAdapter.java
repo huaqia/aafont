@@ -196,6 +196,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private void fetchNotes(final String userId, final RecommmendViewHolder viewHolder) {
         BmobQuery<Note> query = new BmobQuery<>();
+        query.include("user");
         query.addWhereEqualTo("userId", userId);
         query.order("-hot");
         query.setLimit(3);

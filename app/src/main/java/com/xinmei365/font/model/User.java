@@ -11,6 +11,7 @@ public class User extends BmobUser {
     private String intro;
     private String installationId;
     private Integer appId;
+    private int role;
     private ArrayList<String> channels;
     private ArrayList<String> focusIds;
 
@@ -56,6 +57,10 @@ public class User extends BmobUser {
 
     public int getAppId() {
         return appId;
+    }
+
+    public int getRole() {
+        return role;
     }
 
     public ArrayList<String> getChannels() {

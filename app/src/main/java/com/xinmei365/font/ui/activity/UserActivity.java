@@ -19,6 +19,7 @@ import com.xinmei365.font.model.User;
 import com.xinmei365.font.ui.adapter.PageAdapter;
 import com.xinmei365.font.ui.fragment.NoteFragment;
 import com.xinmei365.font.utils.BackendUtils;
+import com.xinmei365.font.utils.DensityUtils;
 import com.xinmei365.font.utils.MiscUtils;
 
 import java.util.ArrayList;
@@ -44,6 +45,8 @@ public class UserActivity extends BaseActivity {
     AppCompatImageView mClose;
     @BindView(R.id.user_name)
     AppCompatTextView mName;
+    @BindView(R.id.official_sign)
+    AppCompatImageView mOfficialSign;
     @BindView(R.id.app_id)
     AppCompatTextView mAppId;
     @BindView(R.id.intro_string)
@@ -136,6 +139,12 @@ public class UserActivity extends BaseActivity {
                             }
                         });
                         mName.setText(user.getNickName());
+                        if (user.getRole() == 1) {
+                            mOfficialSign.setVisibility(View.VISIBLE);
+                            mName.setMaxWidth(DensityUtils.dip2px(getApplicationContext(), 150));
+                        } else {
+                            mOfficialSign.setVisibility(View.GONE);
+                        }
                         mAppId.setText("字体管家号:" + user.getAppId());
                         if (user.getIntro() != null) {
                             mIntro.setText(user.getIntro());
@@ -144,6 +153,9 @@ public class UserActivity extends BaseActivity {
                             mGenderIcon.setImageResource(R.drawable.ic_sex_boy);
                         } else {
                             mGenderIcon.setImageResource(R.drawable.ic_sex_girl);
+                        }
+                        if (user.getRole() == 1) {
+                            mFocusAction.setVisibility(View.GONE);
                         }
                         if (user.getAvatar() != null) {
                             Glide.with(MyApplication.getInstance())
@@ -168,6 +180,11 @@ public class UserActivity extends BaseActivity {
                                 }
                             }
                         });
+                        if (user.getRole() == 1) {
+                            mFollowArea.setVisibility(View.GONE);
+                        } else {
+                            mFollowArea.setVisibility(View.VISIBLE);
+                        }
                     } else {
                         mFocusText.setText("0");
                         mFocusArea.setOnClickListener(null);

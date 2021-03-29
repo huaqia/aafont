@@ -101,6 +101,7 @@ public class UsersFragment extends BaseFragment {
     private void fetchData(final int type) {
         BmobQuery<User> query = new BmobQuery<>();
         query.order("-createdAt");
+        query.addWhereNotEqualTo("role", 1);
         query.setLimit(PAGE_LIMIT);
         if (type == LOAD_MORE && mLastTime != null) {
             Date date = null;

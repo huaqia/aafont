@@ -81,6 +81,8 @@ public class NoteDetailActivity extends BaseActivity {
     CircleImageView mUserIcon;
     @BindView(R.id.user_name)
     AppCompatTextView mUserName;
+    @BindView(R.id.official_sign)
+    AppCompatImageView mOfficialSign;
     @BindView(R.id.nestedScrollView)
     NestedScrollView mNestedScrollView;
     @BindView(R.id.page_num)
@@ -200,6 +202,14 @@ public class NoteDetailActivity extends BaseActivity {
         final User noteUser = mNote.getUser();
         final String noteUserId = noteUser.getObjectId();
         mUserName.setText(noteUser.getNickName());
+        if (noteUser.getRole() == 1) {
+            mOfficialSign.setVisibility(View.VISIBLE);
+            mDownloadFont.setVisibility(View.VISIBLE);
+            mUserName.setMaxWidth(DensityUtils.dip2px(mContext, 150));
+        } else {
+            mOfficialSign.setVisibility(View.GONE);
+            mDownloadFont.setVisibility(View.GONE);
+        }
         if (!TextUtils.isEmpty(mNote.getTitle())) {
             mTitle.setVisibility(View.VISIBLE);
             mTitle.setText(mNote.getTitle());
@@ -231,6 +241,8 @@ public class NoteDetailActivity extends BaseActivity {
                     String typeStr = "4";
                     if (noteType.equals("主题")) {
                         typeStr = "1";
+                    } else if (noteType.equals("壁纸")) {
+                        typeStr = "2";
                     }
                     Map<String, String> map = new HashMap<>();
                     map.put("type", "vivo");
@@ -309,33 +321,37 @@ public class NoteDetailActivity extends BaseActivity {
         }
         if (!mNote.getUser().getObjectId().equals(currentUser.getObjectId())) {
             mMoreAction.setVisibility(View.GONE);
-            mFocusAction.setVisibility(View.VISIBLE);
-            BmobQuery<User> userQuery = new BmobQuery<>();
-            userQuery.addWhereEqualTo("objectId" , currentUser.getObjectId());
-            userQuery.findObjects(new FindListener<User>() {
-                @Override
-                public void done(List<User> list, BmobException e) {
-                    if (e == null) {
-                        boolean follow = true;
-                        if (list.size() == 1) {
-                            User user = list.get(0);
-                            ArrayList<String> relations = user.getFocusIds();
-                            if (relations != null && relations.contains(noteUserId)) {
-                                follow = false;
+            if (mNote.getUser().getRole() != 1) {
+                mFocusAction.setVisibility(View.VISIBLE);
+                BmobQuery<User> userQuery = new BmobQuery<>();
+                userQuery.addWhereEqualTo("objectId", currentUser.getObjectId());
+                userQuery.findObjects(new FindListener<User>() {
+                    @Override
+                    public void done(List<User> list, BmobException e) {
+                        if (e == null) {
+                            boolean follow = true;
+                            if (list.size() == 1) {
+                                User user = list.get(0);
+                                ArrayList<String> relations = user.getFocusIds();
+                                if (relations != null && relations.contains(noteUserId)) {
+                                    follow = false;
+                                }
                             }
+                            setFollowAction(follow);
+                            mFocusAction.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    setFollow(noteUserId);
+                                }
+                            });
+                        } else {
+                            BackendUtils.handleException(e, NoteDetailActivity.this);
                         }
-                        setFollowAction(follow);
-                        mFocusAction.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                setFollow(noteUserId);
-                            }
-                        });
-                    } else {
-                        BackendUtils.handleException(e, NoteDetailActivity.this);
                     }
-                }
-            });
+                });
+            } else {
+                mFocusAction.setVisibility(View.GONE);
+            }
         } else {
             mMoreAction.setVisibility(View.VISIBLE);
             mFocusAction.setVisibility(View.GONE);

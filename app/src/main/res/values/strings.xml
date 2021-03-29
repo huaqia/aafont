@@ -60,7 +60,8 @@
     <string name="search_result">搜索发现</string>
     <string name="filter">滤镜</string>
     <string name="sticker">贴纸</string>
-    <string name="main_focus">关注</string>
+    <string name="main_forum">广场</string>
+    <string name="main_message">消息</string>
     <string name="main_home">首页</string>
     <string name="main_me">我的</string>
     <string name="profile_edit">编辑资料</string>

@@ -67,6 +67,7 @@ public class SearchActivity extends BaseActivity {
     private List<Search> mUsedHotList = new ArrayList<>();
     private TagAdapter mRecordAdapter;
     private TagAdapter mHotAdapter;
+    private int mOfficialType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +79,7 @@ public class SearchActivity extends BaseActivity {
                 finish();
             }
         });
-        String key = getIntent().getStringExtra("key");
-        mSearchEdit.setText(key);
+        mOfficialType = getIntent().getIntExtra("officialType", 1);
         mSearchEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -176,6 +176,11 @@ public class SearchActivity extends BaseActivity {
     private void fetchHotList() {
         BmobQuery<Search> query = new BmobQuery<>();
         query.order("-count");
+        if (mOfficialType == -1) {
+            query.addWhereEqualTo("type", 0);
+        } else {
+            query.addWhereNotEqualTo("type", 1);
+        }
         query.setLimit(50);
         query.findObjects(new FindListener<Search>() {
             @Override
@@ -250,6 +255,11 @@ public class SearchActivity extends BaseActivity {
     private void updateServer(final String name) {
         BmobQuery<Search> query = new BmobQuery<>();
         query.addWhereEqualTo("name", name);
+        if (mOfficialType == -1) {
+            query.addWhereEqualTo("type", 0);
+        } else {
+            query.addWhereNotEqualTo("type", 1);
+        }
         query.findObjects(new FindListener<Search>() {
             @Override
             public void done(List<Search> list, BmobException e) {

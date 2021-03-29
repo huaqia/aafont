@@ -1,9 +1,7 @@
 package com.xinmei365.font.ui.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,35 +12,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.xinmei365.font.MyApplication;
 import com.xinmei365.font.R;
 import com.xinmei365.font.model.Note;
 import com.xinmei365.font.model.User;
-import com.xinmei365.font.ui.activity.MainActivity;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.xinmei365.font.ui.activity.SearchActivity;
 import com.xinmei365.font.ui.adapter.NoteAdapter;
 import com.xinmei365.font.ui.adapter.RecommendAdapter;
 import com.xinmei365.font.utils.BackendUtils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.datatype.BmobDate;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FollowFragment extends BaseFragment {
     private static final int PULL_REFRESH = 0;
@@ -53,8 +41,6 @@ public class FollowFragment extends BaseFragment {
 
     private static final String TAG = "FollowFragment";
 
-    @BindView(R.id.frame_search)
-    LinearLayout mSearch;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.recommend_recycler_view)
@@ -66,10 +52,6 @@ public class FollowFragment extends BaseFragment {
     private NoteAdapter mAdapter;
     private RecommendAdapter mRecommendAdapter;
     private Context mContext;
-    private CircleImageView mUserIcon;
-    private LinearLayout mCreateNew;
-    private CircleImageView mEmptyUserIcon;
-    private LinearLayout mEmptyCreateNew;
     private LinearLayout mEmptyView;
     private AppCompatTextView mRecommendText;
     private int mOffset;
@@ -104,14 +86,10 @@ public class FollowFragment extends BaseFragment {
         mAdapter = new NoteAdapter(mContext, 2);
         View header = LayoutInflater.from(mContext).inflate(R.layout.item_follow_header, mRecyclerView, false);
         mAdapter.setHeaderView(header);
-        mCreateNew = (LinearLayout)header.findViewById(R.id.create_new);
-        mUserIcon = (CircleImageView)header.findViewById(R.id.profile_image);
         mRecyclerView.setAdapter(mAdapter);
         mRecommendRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         mRecommendAdapter = new RecommendAdapter(mContext);
         View emptyHeader = LayoutInflater.from(mContext).inflate(R.layout.item_follow_header, mRecommendRecyclerView, false);
-        mEmptyCreateNew = (LinearLayout)emptyHeader.findViewById(R.id.create_new);
-        mEmptyUserIcon = (CircleImageView)emptyHeader.findViewById(R.id.profile_image);
         mEmptyView = (LinearLayout)emptyHeader.findViewById(R.id.empty_view);
         mRecommendText = (AppCompatTextView)emptyHeader.findViewById(R.id.recommend_text);
         mRecommendAdapter.setHeaderView(emptyHeader);
@@ -120,7 +98,6 @@ public class FollowFragment extends BaseFragment {
         mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                refreshHeader();
                 fetchData(PULL_REFRESH);
             }
         });
@@ -128,52 +105,6 @@ public class FollowFragment extends BaseFragment {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 fetchData(LOAD_MORE);
-            }
-        });
-        mSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(), SearchActivity.class));
-            }
-        });
-        mCreateNew.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((MainActivity)getActivity()).showCreateDialog();
-            }
-        });
-        mEmptyCreateNew.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((MainActivity)getActivity()).showCreateDialog();
-            }
-        });
-    }
-
-    private void refreshHeader() {
-        BmobQuery<User> queryU = new BmobQuery<>();
-        final User currentUser = BmobUser.getCurrentUser(User.class);
-        queryU.addWhereEqualTo("objectId" , currentUser.getObjectId());
-        queryU.findObjects(new FindListener<User>() {
-            @Override
-            public void done(List<User> list, BmobException e) {
-                if (e == null){
-                    User user = list.get(0);
-                    if (user.getAvatar() != null) {
-                        Glide.with(MyApplication.getInstance())
-                                .load(user.getAvatar())
-                                .fitCenter()
-                                .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                                .into(mUserIcon);
-                        Glide.with(MyApplication.getInstance())
-                                .load(user.getAvatar())
-                                .fitCenter()
-                                .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                                .into(mEmptyUserIcon);
-                    }
-                } else {
-                    BackendUtils.handleException(e, mContext);
-                }
             }
         });
     }
@@ -232,6 +163,9 @@ public class FollowFragment extends BaseFragment {
         query.order("hide,-updatedAt");
         query.setLimit(PAGE_LIMIT);
         query.addWhereContainedIn("userId", focusList);
+        BmobQuery<User> innerQuery = new BmobQuery<>();
+        innerQuery.addWhereNotEqualTo("role", 1);
+        query.addWhereMatchesQuery("user", "_User", innerQuery);
         query.findObjects(new FindListener<Note>() {
             @Override
             public void done(List<Note> list, BmobException e) {
@@ -280,6 +214,9 @@ public class FollowFragment extends BaseFragment {
         query.order("-hot");
         final User currentUser = BmobUser.getCurrentUser(User.class);
         query.addWhereNotEqualTo("userId", currentUser.getObjectId());
+        BmobQuery<User> innerQuery = new BmobQuery<>();
+        innerQuery.addWhereNotEqualTo("role", 1);
+        query.addWhereMatchesQuery("user", "_User", innerQuery);
         query.setLimit(RECOMMEND_LIMIT);
         query.findObjects(new FindListener<Note>() {
             @Override

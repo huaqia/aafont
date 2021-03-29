@@ -7,47 +7,6 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/create_new"
-        android:layout_width="54dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2.33dp"
-        android:layout_marginStart="9.67dp"
-        android:orientation="vertical">
-        <FrameLayout
-            android:layout_width="49.67dp"
-            android:layout_height="48.33dp"
-            android:layout_gravity="center_horizontal">
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_image"
-                android:layout_width="46.67dp"
-                android:layout_height="46.67dp"
-                android:scaleType="centerCrop"
-                android:layout_gravity="start|top"
-                android:src="@drawable/avatar" />
-            <android.support.v7.widget.AppCompatImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="end|bottom"
-                android:src="@drawable/ic_create"/>
-        </FrameLayout>
-
-        <android.support.v7.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_marginTop="5.67dp"
-            android:text="分享这一刻"
-            android:textColor="#ff666666"
-            android:textSize="10sp" />
-
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="9dp"
-        android:background="#4ECCCCCC" />
-
-    <LinearLayout
         android:id="@+id/empty_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

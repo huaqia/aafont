@@ -81,6 +81,7 @@ public class NoteFragment extends BaseFragment {
     private BroadcastReceiver mNoteListChangeReceiver;
     private View mHeaderView;
     private SliderLayout mSliderLayout;
+    private int mOfficialType;
 
     public void setDateType(String type) {
         mDataType = type;
@@ -100,6 +101,10 @@ public class NoteFragment extends BaseFragment {
 
     public void setLikeId(String id) {
         mLikeId = id;
+    }
+
+    public void setOfficialType(int officialType) {
+        mOfficialType = officialType;
     }
 
     @Override
@@ -220,6 +225,7 @@ public class NoteFragment extends BaseFragment {
                                             //                                                          startActivity(new_intent);
                                         } else {
                                             BmobQuery<Note> query = new BmobQuery<>();
+                                            query.include("user");
                                             query.addWhereEqualTo("objectId", url);
                                             query.findObjects(new FindListener<Note>() {
                                                 @Override
@@ -286,6 +292,13 @@ public class NoteFragment extends BaseFragment {
         } else if (!TextUtils.isEmpty(mLikeId)) {
             query.addWhereContainsAll("likeIds", Collections.singletonList(mLikeId));
         }
+        BmobQuery<User> innerQuery = new BmobQuery<>();
+        if (mOfficialType == 1) {
+            innerQuery.addWhereEqualTo("role", 1);
+        } else if (mOfficialType == -1) {
+            innerQuery.addWhereNotEqualTo("role", 1);
+        }
+        query.addWhereMatchesQuery("user", "_User", innerQuery);
         query.order(order);
         query.findObjects(new FindListener<Note>() {
             @Override

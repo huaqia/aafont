@@ -5,6 +5,7 @@ import cn.bmob.v3.BmobObject;
 public class Search extends BmobObject {
     private String name;
     private int count;
+    private int type;
 
     public String getName() {
         return name;
@@ -20,5 +21,13 @@ public class Search extends BmobObject {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

@@ -34,8 +34,6 @@ public class SettingActivity extends BaseActivity {
     AppCompatImageView mClose;
     @BindView(R.id.my_draft)
     RelativeLayout mMyDraft;
-    @BindView(R.id.my_message)
-    RelativeLayout mMyMessage;
     @BindView(R.id.change_passwd)
     RelativeLayout mChangePasswd;
 
@@ -102,12 +100,6 @@ public class SettingActivity extends BaseActivity {
                 } else {
                     MiscUtils.makeToast(SettingActivity.this, "没有草稿", false);
                 }
-            }
-        });
-        mMyMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), MessageCenterActivity.class));
             }
         });
     }

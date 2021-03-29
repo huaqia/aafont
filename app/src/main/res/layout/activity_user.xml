@@ -55,9 +55,19 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:textColor="#FFFFFF"
-                        android:textSize="14sp"
+                        android:textSize="13.67sp"
                         app:layout_constraintStart_toEndOf="@+id/profile_image"
                         app:layout_constraintTop_toTopOf="@+id/profile_image" />
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/official_sign"
+                        android:layout_width="27dp"
+                        android:layout_height="13.67dp"
+                        android:src="@drawable/ic_official_sign"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintStart_toEndOf="@+id/user_name"
+                        app:layout_constraintTop_toTopOf="@+id/user_name"
+                        app:layout_constraintBottom_toBottomOf="@+id/user_name" />
                     <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/app_id"
                         android:layout_width="wrap_content"

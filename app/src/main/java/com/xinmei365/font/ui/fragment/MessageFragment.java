@@ -1,19 +1,26 @@
-package com.xinmei365.font.ui.activity;
+package com.xinmei365.font.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 
 import com.xinmei365.font.R;
 import com.xinmei365.font.model.RefreshEvent;
+import com.xinmei365.font.ui.activity.ContactFriendsActivity;
+import com.xinmei365.font.ui.activity.LikeFavoriteActivity;
+import com.xinmei365.font.ui.activity.NewCommentsActivity;
+import com.xinmei365.font.ui.activity.NewFollowersActivity;
 import com.xinmei365.font.ui.adapter.ConversationAdapter;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -30,9 +37,7 @@ import cn.bmob.newim.bean.BmobIMMessage;
 import cn.bmob.newim.event.MessageEvent;
 import cn.bmob.newim.event.OfflineMessageEvent;
 
-public class MessageCenterActivity extends BaseActivity {
-    @BindView(R.id.close)
-    AppCompatImageView mClose;
+public class MessageFragment extends BaseFragment {
     @BindView(R.id.root_view)
     LinearLayout mRootView;
     @BindView(R.id.iv_chat)
@@ -47,31 +52,35 @@ public class MessageCenterActivity extends BaseActivity {
     RecyclerView mRecyclerView;
     @BindView(R.id.empty_view)
     LinearLayout mEmptyView;
+    @BindView(R.id.empty_icon)
+    AppCompatImageView mEmptyIcon;
+    @BindView(R.id.empty_title)
+    AppCompatTextView mEmptyTitle;
+    @BindView(R.id.empty_info)
+    AppCompatTextView mEmptyInfo;
     @BindView(R.id.sw_refresh)
     SwipeRefreshLayout mSwipeRefresh;
 
     private ConversationAdapter mAdapter;
+    @Override
+    public View createMyView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_message, container, false);
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+    public void init() {
+        super.init();
         mIvChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MessageCenterActivity.this, ContactFriendsActivity.class));
+                startActivity(new Intent(getActivity(), ContactFriendsActivity.class));
             }
         });
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, linearLayoutManager.getOrientation()));
-        mAdapter = new ConversationAdapter(this);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), linearLayoutManager.getOrientation()));
+        mAdapter = new ConversationAdapter(getContext());
         mRecyclerView.setAdapter(mAdapter);
         mSwipeRefresh.setEnabled(true);
         mRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -91,26 +100,24 @@ public class MessageCenterActivity extends BaseActivity {
         mLikeFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MessageCenterActivity.this, LikeFavoriteActivity.class));
+                startActivity(new Intent(getActivity(), LikeFavoriteActivity.class));
             }
         });
         mFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MessageCenterActivity.this, NewFollowersActivity.class));
+                startActivity(new Intent(getActivity(), NewFollowersActivity.class));
             }
         });
         mComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MessageCenterActivity.this, NewCommentsActivity.class));
+                startActivity(new Intent(getActivity(), NewCommentsActivity.class));
             }
         });
-    }
-
-    @Override
-    protected void setMyContentView() {
-        setContentView(R.layout.activity_message_center);
+        mEmptyIcon.setImageResource(R.drawable.icon_empty_message);
+        mEmptyTitle.setText("暂无消息");
+        mEmptyInfo.setText("“快去找个好友来聊天吧”");
     }
 
     @Override
@@ -194,4 +201,5 @@ public class MessageCenterActivity extends BaseActivity {
             }
         });
         return conversationList;
-    }}
+    }
+}

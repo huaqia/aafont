@@ -112,12 +112,22 @@ public class PublishActivity extends BaseActivity {
         final String intro = getIntent().getExtras().getString("intro");
         mIntro.setText(intro);
         final String type = getIntent().getExtras().getString("type");
+        final User currentUser = BmobUser.getCurrentUser(User.class);
         if (type != null) {
             mNoteType.setText(type);
         } else {
-            mNoteType.setText("字体");
+            if (currentUser.getRole() == 1) {
+                mNoteType.setText("字体");
+            } else {
+                mNoteType.setText("其他");
+            }
         }
         mNoteId = getIntent().getExtras().getString("noteId");
+        if (currentUser.getRole() == 1) {
+            mSelectType.setVisibility(View.VISIBLE);
+        } else {
+            mSelectType.setVisibility(View.GONE);
+        }
         mSelectType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,7 +154,6 @@ public class PublishActivity extends BaseActivity {
                         if (urls.size() == mSavedUrls.size()) {
                             if (mNoteId == null) {
                                 Note note = new Note();
-                                User currentUser = BmobUser.getCurrentUser(User.class);
                                 note.setUser(currentUser);
                                 fillNoteData(note, (ArrayList<String>) urls);
                                 note.save(new SaveListener<String>() {
